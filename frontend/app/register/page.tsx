@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import { User, Mail, Lock } from 'lucide-react'
+import { User, Mail, Lock, GraduationCap, CheckCircle } from 'lucide-react'
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -23,121 +23,138 @@ export default function RegisterPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Integrate with backend
     console.log('Register:', formData)
   }
 
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen flex flex-col">
       <Navbar />
 
-      <section className="min-h-screen flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
+      <section className="flex-1 flex items-center justify-center px-4 py-12 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="w-full max-w-md animate-fade-in">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
-            <p className="text-gray-600">Join thousands of students preparing for their exams</p>
+            <p className="text-gray-600">Join 10K+ students preparing for their exams</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="card space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+          <form onSubmit={handleSubmit} className="card border-2 border-gray-200 mb-6">
+            <div className="mb-5">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
               <div className="relative">
-                <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                <User className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
                   name="name"
-                  placeholder="John Doe"
+                  placeholder="Your full name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="pl-10"
+                  className="pl-10 text-base"
                   required
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <div className="mb-5">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                <Mail className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
                   name="email"
-                  placeholder="your@email.com"
+                  placeholder="you@example.com"
                   value={formData.email}
                   onChange={handleChange}
-                  className="pl-10"
+                  className="pl-10 text-base"
                   required
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Target Exam</label>
-              <select
-                name="targetExam"
-                value={formData.targetExam}
-                onChange={handleChange}
-                className="w-full"
-                required
-              >
-                <option value="">Select an exam</option>
-                <option value="jee">JEE Mains/Advanced</option>
-                <option value="neet">NEET</option>
-                <option value="boards">Board Exams</option>
-                <option value="foundation">Foundation</option>
-              </select>
+            <div className="mb-5">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Target Exam</label>
+              <div className="relative">
+                <GraduationCap className="absolute left-3 top-3 w-5 h-5 text-gray-400 pointer-events-none" />
+                <select
+                  name="targetExam"
+                  value={formData.targetExam}
+                  onChange={handleChange}
+                  className="pl-10 text-base appearance-none"
+                  required
+                >
+                  <option value="">Select your target exam</option>
+                  <option value="jee">JEE Mains/Advanced</option>
+                  <option value="neet">NEET</option>
+                  <option value="boards">Board Exams</option>
+                  <option value="foundation">Foundation</option>
+                </select>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <div className="mb-5">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                 <input
                   type="password"
                   name="password"
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={handleChange}
-                  className="pl-10"
+                  className="pl-10 text-base"
                   required
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                 <input
                   type="password"
                   name="confirmPassword"
                   placeholder="••••••••"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="pl-10"
+                  className="pl-10 text-base"
                   required
                 />
               </div>
             </div>
 
-            <label className="flex items-start gap-2">
-              <input type="checkbox" className="w-4 h-4 mt-1" required />
+            <label className="flex items-start gap-3 mb-6 cursor-pointer">
+              <input type="checkbox" className="w-4 h-4 mt-1 rounded border-gray-300" required />
               <span className="text-sm text-gray-600">
-                I agree to the <Link href="/terms" className="text-blue-600">Terms & Conditions</Link>
+                I agree to the <Link href="/terms" className="text-blue-600 hover:underline font-medium">Terms & Conditions</Link> and <Link href="/privacy" className="text-blue-600 hover:underline font-medium">Privacy Policy</Link>
               </span>
             </label>
 
-            <button type="submit" className="btn btn-primary w-full">
-              Create Account
+            <button type="submit" className="btn btn-primary w-full text-base mb-4">
+              Create Free Account
             </button>
           </form>
 
-          <p className="text-center text-gray-600 mt-6">
+          <p className="text-center text-gray-600 mb-6">
             Already have an account?{' '}
-            <Link href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
-              Login
+            <Link href="/login" className="text-blue-600 hover:text-blue-700 font-semibold">
+              Sign In
             </Link>
           </p>
+
+          <div className="space-y-2 text-sm">
+            <div className="flex items-center gap-2 text-gray-600">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              <span>100% free to get started</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-600">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              <span>Access 100+ free lectures</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-600">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              <span>No credit card required</span>
+            </div>
+          </div>
         </div>
       </section>
 

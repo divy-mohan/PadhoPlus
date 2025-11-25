@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import BatchCard from '@/components/BatchCard'
-import { Search } from 'lucide-react'
+import { Search, Sparkles } from 'lucide-react'
 
 const mockBatches = [
   {
@@ -109,78 +109,101 @@ export default function BatchesPage() {
       <Navbar />
 
       {/* Breadcrumb */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-fade-in">
         <Breadcrumb items={[{ label: 'Batches' }]} />
       </div>
 
       <section className="px-4 py-12">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold mb-2 text-gray-900">All Batches</h1>
-          <p className="text-gray-600 mb-8">Find the perfect batch for your preparation</p>
+          {/* Header */}
+          <div className="mb-12 animate-fade-in">
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="w-5 h-5 text-blue-600" />
+              <span className="text-sm font-semibold text-blue-600">Explore All Batches</span>
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Find Your Perfect Batch</h1>
+            <p className="text-gray-600 text-lg">Choose from our curated selection of expert-led preparation programs</p>
+          </div>
 
           {/* Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
-              <div className="relative">
-                <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search batches..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+          <div className="mb-12 bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6 border border-gray-200 animate-fade-in fade-in-delay-1">
+            <h3 className="font-semibold text-gray-900 mb-4">Filter Results</h3>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search batches..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Exam</label>
-              <select value={selectedExam} onChange={(e) => setSelectedExam(e.target.value)}>
-                <option value="">All Exams</option>
-                <option value="JEE">JEE</option>
-                <option value="NEET">NEET</option>
-                <option value="Boards">Boards</option>
-                <option value="Foundation">Foundation</option>
-              </select>
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Exam</label>
+                <select value={selectedExam} onChange={(e) => setSelectedExam(e.target.value)}>
+                  <option value="">All Exams</option>
+                  <option value="JEE">JEE</option>
+                  <option value="NEET">NEET</option>
+                  <option value="Boards">Boards</option>
+                  <option value="Foundation">Foundation</option>
+                </select>
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
-              <select value={selectedPrice} onChange={(e) => setSelectedPrice(e.target.value)}>
-                <option value="">All Prices</option>
-                <option value="free">Free</option>
-                <option value="paid">Paid</option>
-              </select>
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                <select value={selectedPrice} onChange={(e) => setSelectedPrice(e.target.value)}>
+                  <option value="">All Prices</option>
+                  <option value="free">Free</option>
+                  <option value="paid">Paid</option>
+                </select>
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">&nbsp;</label>
-              <button 
-                onClick={() => {
-                  setSearchTerm('')
-                  setSelectedExam('')
-                  setSelectedPrice('')
-                }}
-                className="btn btn-secondary w-full"
-              >
-                Reset Filters
-              </button>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">&nbsp;</label>
+                <button 
+                  onClick={() => {
+                    setSearchTerm('')
+                    setSelectedExam('')
+                    setSelectedPrice('')
+                  }}
+                  className="btn btn-outline w-full"
+                >
+                  Reset
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Results */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {batches.map((batch) => (
-              <BatchCard key={batch.id} {...batch} />
-            ))}
+          <div>
+            {batches.length > 0 ? (
+              <>
+                <div className="mb-6 text-sm text-gray-600 font-medium">
+                  Showing <span className="text-blue-600 font-semibold">{batches.length}</span> batch{batches.length !== 1 ? 'es' : ''}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {batches.map((batch, idx) => (
+                    <div key={batch.id} className={`fade-in-delay-${(idx % 4) + 1}`}>
+                      <BatchCard {...batch} />
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-20 animate-fade-in">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-8 h-8 text-gray-400" />
+                </div>
+                <p className="text-gray-600 text-lg font-medium mb-2">No batches found</p>
+                <p className="text-gray-500">Try adjusting your filters</p>
+              </div>
+            )}
           </div>
-
-          {batches.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">No batches found matching your criteria</p>
-            </div>
-          )}
         </div>
       </section>
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,47 +12,88 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
 }
 
 body {
   background: #FFFFFF;
   color: #1F2937;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.6;
+  font-weight: 400;
 }
 
-/* Minimalistic button styles */
+/* ===== PROFESSIONAL BUTTON STYLES ===== */
 .btn {
-  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 inline-block;
+  @apply px-4 py-2 rounded-lg font-semibold transition-all duration-300 inline-flex items-center justify-center gap-2 cursor-pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .btn-primary {
-  @apply bg-blue-600 text-white hover:bg-blue-700 active:scale-95;
+  @apply bg-gradient-to-br from-blue-600 to-blue-700 text-white hover:shadow-lg hover:scale-105 active:scale-95;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
 }
 
 .btn-secondary {
-  @apply bg-gray-200 text-gray-900 hover:bg-gray-300 active:scale-95;
+  @apply bg-gray-100 text-gray-900 hover:bg-gray-200 active:scale-95 transition-smooth;
 }
 
 .btn-outline {
-  @apply border-2 border-blue-600 text-blue-600 hover:bg-blue-50 active:scale-95;
+  @apply border-2 border-blue-600 text-blue-600 hover:bg-blue-50 active:scale-95 transition-smooth;
 }
 
-/* Card styles */
+.btn-ghost {
+  @apply text-gray-700 hover:text-blue-600 hover:bg-gray-100 rounded-lg px-3 py-2 transition-smooth;
+}
+
+/* ===== BADGE STYLES ===== */
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+}
+
+.badge-primary {
+  @apply bg-blue-100 text-blue-700;
+}
+
+.badge-success {
+  @apply bg-green-100 text-green-700;
+}
+
+.badge-warning {
+  @apply bg-yellow-100 text-yellow-700;
+}
+
+/* ===== CARD STYLES ===== */
 .card {
-  @apply bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow;
+  @apply bg-white border border-gray-200 rounded-xl p-5 shadow-sm transition-all duration-300;
 }
 
-/* Minimalistic input */
+.card:hover {
+  @apply shadow-md border-gray-300;
+}
+
+.card-interactive {
+  @apply card hover:border-blue-300 hover:shadow-lg cursor-pointer;
+}
+
+/* ===== INPUT STYLES ===== */
 input, textarea, select {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition;
+  @apply w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 font-medium text-gray-900;
 }
 
-/* Animations */
+input::placeholder, textarea::placeholder {
+  @apply text-gray-500 font-medium;
+}
+
+/* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -58,6 +101,187 @@ input, textarea, select {
   }
 }
 
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+  }
+}
+
+/* ===== UTILITY ANIMATIONS ===== */
 .animate-fade-in {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.fade-in-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.fade-in-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.fade-in-delay-3 {
+  animation-delay: 0.3s;
+}
+
+.fade-in-delay-4 {
+  animation-delay: 0.4s;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.4s ease-out;
+}
+
+.animate-slide-in-down {
+  animation: slideInDown 0.4s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* ===== HOVER EFFECTS ===== */
+.hover-lift {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-2;
+}
+
+.hover-scale {
+  @apply transition-all duration-300 hover:scale-105;
+}
+
+.transition-smooth {
+  @apply transition-all duration-300 ease-out;
+}
+
+/* ===== GRADIENT TEXT ===== */
+.text-gradient {
+  @apply bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 bg-clip-text text-transparent;
+}
+
+/* ===== GLASS MORPHISM ===== */
+.glass {
+  @apply bg-white/30 backdrop-blur-lg border border-white/20 rounded-xl;
+}
+
+/* ===== SCROLLBAR STYLING ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-full hover:bg-gray-500 transition-smooth;
+}
+
+/* ===== SELECTION ===== */
+::selection {
+  @apply bg-blue-600 text-white;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .btn {
+    @apply px-3 py-2 text-sm;
+  }
+
+  .card {
+    @apply p-4;
+  }
 }
