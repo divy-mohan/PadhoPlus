@@ -1,4 +1,4 @@
-modules = ["python-3.11"]
+modules = ["python-3.11", "nodejs-22"]
 [agent]
 expertMode = true
 integrations = ["python_log_in_with_replit:1.0.0", "python_database:1.0.0"]
@@ -17,7 +17,23 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
+args = "PadhoPlus Frontend Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
 args = "PadhoPlus API Server"
+
+[[workflows.workflow]]
+name = "PadhoPlus Frontend Server"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd /home/runner/workspace/frontend && npm run dev"
+waitForPort = 5000
 
 [[workflows.workflow]]
 name = "PadhoPlus API Server"
@@ -26,15 +42,15 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
-waitForPort = 5000
+waitForPort = 8000
 
 [workflows.workflow.metadata]
-outputType = "webview"
+outputType = "console"
 
 [[ports]]
 localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 36395
-externalPort = 3001
+localPort = 34413
+externalPort = 3000

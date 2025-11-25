@@ -1,140 +1,230 @@
 # PadhoPlus - Online Education Platform
 
 ## Overview
-PadhoPlus is a comprehensive online education platform designed for JEE/NEET exam preparation. The backend is built with Django and Django REST Framework, using PostgreSQL as the database.
+PadhoPlus is a comprehensive online education platform for JEE/NEET exam preparation. Built with Django REST Framework backend and Next.js frontend, using PostgreSQL database.
 
 ## Project Status
-- **Backend**: Complete Django REST API with all core features
-- **Frontend**: Planned for Next.js (future development)
+- **Backend**: Complete Django REST API (Port 8000)
+- **Frontend**: Minimalistic Next.js application (Port 5000)
 - **Database**: PostgreSQL with all models implemented
+- **Status**: Fully functional development environment
 
 ## Project Structure
+
+### Backend (Python/Django)
 ```
 padhoplus/
-├── settings.py          # Django settings
+├── settings.py          # Django configuration
+├── permissions.py       # Role-based access control
 ├── urls.py              # API routing
 ├── users/               # User management & authentication
-├── batches/             # Batch, Subject, Topic management
-├── content/             # Lectures, Notes, Resources
-├── assessments/         # Tests, Questions, Practice sessions
+├── batches/             # Batch & course management
+├── content/             # Lectures, notes, resources
+├── assessments/         # Tests, questions, practice
 ├── doubts/              # Doubt resolution system
 └── analytics/           # Progress tracking & dashboards
 ```
 
-## User Roles
-1. **Student** - Main users who access courses, take tests, ask doubts
-2. **Teacher** - Faculty who create content, answer doubts, manage lectures
-3. **Parent** - View child's progress and performance
-4. **Admin** - Platform management, user management, content moderation
+### Frontend (Next.js/TypeScript)
+```
+frontend/
+├── app/
+│   ├── page.tsx              # Home/landing page
+│   ├── layout.tsx            # Root layout
+│   ├── globals.css           # Global styles
+│   ├── batches/              # Batches listing
+│   ├── batch/[slug]/         # Batch detail
+│   ├── login/                # Authentication
+│   ├── register/             # Registration
+│   ├── dashboard/            # Student dashboard
+│   └── about/                # About page
+├── components/
+│   ├── Navbar.tsx            # Navigation
+│   ├── Footer.tsx            # Footer
+│   ├── HeroSection.tsx       # Hero banner
+│   ├── BatchCard.tsx         # Batch component
+│   ├── Breadcrumb.tsx        # Navigation breadcrumbs
+│   ├── Banner.tsx            # Alerts/notifications
+│   └── LoadingSpinner.tsx    # Loading indicator
+├── lib/
+│   └── api.ts                # API client
+└── tailwind.config.ts        # Tailwind CSS config
+```
 
-## API Endpoints
+## User Roles & Permissions
+1. **Student** - Access courses, practice, tests, doubts
+2. **Teacher** - Create content, answer doubts, manage batches
+3. **Parent** - Track child's progress (future)
+4. **Admin** - Platform management, content moderation
 
-### Authentication
-- `POST /api/auth/register/` - User registration
-- `POST /api/auth/login/` - User login
-- `POST /api/auth/logout/` - User logout
-- `GET /api/auth/me/` - Get current user
+## Key Features
 
-### Batches & Courses
-- `GET /api/batches/` - List all batches
-- `GET /api/batches/{slug}/` - Batch details
-- `POST /api/batches/{slug}/enroll/` - Enroll in batch
-- `GET /api/subjects/` - List subjects
-- `GET /api/topics/` - List topics
+### Backend API (Port 8000)
+- **Authentication**: Session & JWT-based
+- **Role-based Access**: Student, Teacher, Parent, Admin
+- **Core Endpoints**:
+  - `/api/auth/` - Login, register, logout
+  - `/api/batches/` - Course batches
+  - `/api/lectures/` - Video content
+  - `/api/tests/` - Assessments
+  - `/api/doubts/` - Q&A system
+  - `/api/dashboard/` - Analytics
 
-### Content
-- `GET /api/lectures/` - List lectures
-- `GET /api/lectures/{id}/` - Lecture details
-- `POST /api/lectures/{id}/update_progress/` - Update watch progress
-- `GET /api/notes/` - List notes/resources
+### Frontend (Port 5000)
+- **Minimalistic Design**: Clean, distraction-free UI
+- **Responsive**: Mobile-first approach
+- **Education Icons**: Lucide React icons
+- **Pages Implemented**:
+  - Home/Landing page
+  - Batches listing with filters
+  - Batch detail with tabs
+  - Student dashboard
+  - Authentication (login/register)
+  - About page
 
-### Assessments
-- `GET /api/tests/` - List tests
-- `POST /api/tests/{id}/start/` - Start test
-- `POST /api/test-attempts/{id}/submit/` - Submit test
-- `GET /api/questions/random/` - Get random practice questions
-- `POST /api/practice-sessions/start/` - Start practice session
+## Technology Stack
 
-### Doubts
-- `GET /api/doubts/` - List doubts
-- `POST /api/doubts/` - Create doubt
-- `POST /api/doubts/{id}/resolve/` - Mark as resolved
-- `POST /api/doubt-responses/` - Answer a doubt
+### Backend
+- Python 3.10+
+- Django 4.2+
+- Django REST Framework
+- PostgreSQL
+- Gunicorn
 
-### Dashboard & Analytics
-- `GET /api/dashboard/student/` - Student dashboard
-- `GET /api/dashboard/teacher/` - Teacher dashboard
-- `GET /api/dashboard/admin/` - Admin dashboard
-- `GET /api/progress/summary/` - Progress summary
+### Frontend
+- Next.js 16
+- TypeScript
+- Tailwind CSS
+- Lucide React icons
+- Axios
 
-## Admin Panel
-Access at `/admin/` with credentials:
-- Username: `admin`
-- Password: `admin123`
+## Running the Application
 
-## Database Models
-
-### Users App
-- User (custom with roles)
-- Faculty (teacher profiles)
-- Testimonial
-- Result
-
-### Batches App
-- Subject
-- Topic
-- Batch
-- Schedule
-- Enrollment
-- Announcement
-- BatchReview
-- BatchFAQ
-
-### Content App
-- Lecture
-- Note
-- Resource
-- WatchHistory
-- Bookmark
-
-### Assessments App
-- Question
-- Test
-- TestAttempt
-- TestResponse
-- PracticeSession
-
-### Doubts App
-- Doubt
-- DoubtResponse
-- DoubtUpvote
-
-### Analytics App
-- UserProgress
-- DailyActivity
-- Streak
-- Achievement
-- UserAchievement
-- Leaderboard
-
-## Running the Server
+### Start Backend API (Port 8000)
 ```bash
 python main.py
 ```
-Server runs on port 5000 with Gunicorn.
+
+### Start Frontend (Port 5000)
+```bash
+cd frontend
+npm run dev
+```
+
+### Access Points
+- **Frontend**: http://localhost:5000
+- **API**: http://localhost:8000/api/
+- **Admin Panel**: http://localhost:8000/admin/
+
+## Database
+
+### Models Implemented
+- **Users**: User, Faculty, Testimonial, Result
+- **Batches**: Batch, Subject, Topic, Schedule, Enrollment, Announcement
+- **Content**: Lecture, Note, Resource, WatchHistory, Bookmark
+- **Assessments**: Question, Test, TestAttempt, TestResponse, PracticeSession
+- **Doubts**: Doubt, DoubtResponse, DoubtUpvote
+- **Analytics**: UserProgress, DailyActivity, Streak, Achievement
+
+### Environment Variables
+```
+DATABASE_URL=postgresql://user:password@host/db
+PGHOST=host
+PGPORT=5432
+PGUSER=user
+PGPASSWORD=password
+PGDATABASE=db
+SESSION_SECRET=random_secret_key
+```
+
+## API Authentication
+
+### Login
+```bash
+POST /api/auth/login/
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+### Register
+```bash
+POST /api/auth/register/
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "full_name": "User Name",
+  "role": "student"
+}
+```
+
+## Design System (Frontend)
+
+### Colors
+- Primary: Blue (#3B82F6)
+- Secondary: Purple (#8B5CF6)
+- Success: Green (#10B981)
+- Warning: Amber (#F59E0B)
+- Danger: Red (#EF4444)
+
+### Components
+- **Card**: Minimalistic card with shadow
+- **Button**: Primary, secondary, outline styles
+- **Navbar**: Sticky responsive navigation
+- **Breadcrumb**: Navigation trail
+- **Hero Section**: Eye-catching banner
+
+## Future Enhancements
+
+### Phase 2 (Frontend)
+- [ ] Full student portal with video player
+- [ ] Practice questions interface
+- [ ] Test series with analysis
+- [ ] Doubt resolution chat
+- [ ] Progress analytics charts
+- [ ] Parent portal
+- [ ] Teacher portal
+
+### Phase 3 (Features)
+- [ ] Payment integration (Stripe/Razorpay)
+- [ ] Video streaming (HLS)
+- [ ] Live class integration
+- [ ] Email notifications
+- [ ] Mobile app (React Native)
+- [ ] Multi-language support
+- [ ] AI-based recommendations
+
+## Admin Credentials
+- **Username**: admin
+- **Password**: admin123
+- **URL**: http://localhost:8000/admin/
 
 ## Recent Changes
-- 2025-11-25: Initial backend implementation complete
-  - Created all Django apps (users, batches, content, assessments, doubts, analytics)
-  - Implemented all database models
-  - Set up REST API with serializers and viewsets
-  - Configured authentication and role-based access
-  - Created admin interface
-  - Applied database migrations
+- **2025-11-25**: 
+  - Created minimalistic Next.js frontend with Tailwind CSS
+  - Implemented responsive design with mobile-first approach
+  - Created reusable components (Navbar, Footer, Cards, etc.)
+  - Set up education-focused color scheme and icons
+  - Configured API integration with axios
+  - Set up dual-port architecture (API:8000, Frontend:5000)
+  - Implemented 7 main pages with proper routing
 
-## Next Steps
-1. Frontend development with Next.js
-2. Payment integration for course purchases
-3. Video streaming integration
-4. Email notifications
-5. Parent portal implementation
+## Deployment Notes
+
+### Frontend Deployment (Vercel)
+```bash
+cd frontend
+npm run build
+npm start
+```
+
+### Backend Deployment (Gunicorn)
+Already configured in `main.py`. Can be deployed to Heroku, Railway, Render, etc.
+
+## Support & Documentation
+
+- **API Docs**: Available at `/api/`
+- **Admin Panel**: http://localhost:8000/admin/
+- **Frontend README**: `frontend/README.md`
+

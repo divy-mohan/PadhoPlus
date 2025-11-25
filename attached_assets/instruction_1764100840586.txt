@@ -1,0 +1,309 @@
+PadhoPlus is a platform for online education.
+Front end will be in the nextjs
+Also the front end which you will make in that do not make the UI very heavy or very big big elements we want minimalistic elements and you have to focus on the university things also little little banner batches because this is a tech batch so you kindly use the icons related to education and also and we are using the next yes that means that we want you guys would be best in the responsive and in the appearance also you can use the figma approach that how figma person approaches are designed so things like that and for each section like landing page hero section card banner breadcrumb everything.
+
+
+
+1. User roles & main journeys
+Roles
+•	Student (primary)
+•	Parent (optional, can track performance)
+•	Teacher / Mentor (you + future educators)
+•	Admin (you / core team)
+Core journeys for a student
+1.	Land on Home → Explore batches/courses → View batch detail → Watch demo → Enroll (free/paid) → Start learning.
+2.	Existing student: Login → Dashboard → Continue watching → Practice/Tests → Track progress & ranks.
+3.	Doubt flow: From lecture → Ask doubt (image/text/audio) → Mentor answers → Student gets notification.
+We’ll design the website structure around these.
+________________________________________
+2. Sitemap / Flow of pages
+A. Public / Marketing pages (no login needed)
+1.	Home (/)
+2.	Batches / Courses Listing (/batches, /courses)
+3.	Free Resources
+o	Notes & PDFs (/notes)
+o	PYQs & Solutions (/pyq)
+o	Formula Sheets / Cheat Sheets (/formula)
+4.	Result & Success Stories (/results)
+5.	Testimonials & Reviews (/reviews)
+6.	Faculties / Team (/faculty)
+7.	About Smart Study (/about)
+8.	Why Free / Low Cost? (Vision Page) (/vision)
+9.	Blog & Updates (/blog)
+10.	Contact / Support (/contact)
+11.	FAQs (/faq)
+12.	Careers / Teach with Us (/careers, /teach-with-us)
+13.	Scholarships & Financial Aid (/scholarship)
+14.	Legal
+o	Terms & Conditions (/terms)
+o	Privacy Policy (/privacy)
+o	Refund & Cancellation Policy (/refund)
+________________________________________
+B. Student Platform (after login)
+1.	Student Dashboard (/dashboard)
+o	Today’s classes
+o	Continue watching
+o	Upcoming tests
+o	Progress summary
+2.	My Batches (/my-batches)
+o	List of batches student is enrolled in
+3.	Batch Detail (Inside View) (/batch/:batchSlug)
+Tabs/sections inside:
+o	Overview
+o	Schedule & Calendar
+o	Lectures (Video list)
+o	Notes & PDFs
+o	DPP / Practice
+o	Tests & Assignments
+o	Doubts & Discussion
+o	Faculty
+o	Announcements
+4.	Lecture Player Page (/lecture/:id)
+o	Video player
+o	Lecture info
+o	Resources (PDF, notes)
+o	Comments / doubts
+o	Next/Previous navigation
+5.	Practice & Question Bank (/practice)
+o	Topic-wise questions
+o	Difficulty levels
+o	Instant solutions
+6.	Test Series / Exams (/tests)
+o	Upcoming tests
+o	Full syllabus tests
+o	Chapter-wise tests
+o	Past test attempts & analysis
+7.	Doubts / Q&A Hub (/doubts)
+o	Ask a doubt (upload image, type, voice -> text)
+o	Your asked doubts & answers
+o	Search previous doubts
+8.	Community / Discussion (/community)
+o	Batch-wise discussion rooms
+o	Announcement from mentors
+9.	Leaderboard & Gamification (/leaderboard)
+o	Ranks by test
+o	Streaks & points
+10.	Certificates & Achievements (/achievements)
+o	Course completion certificates
+o	Badges
+________________________________________
+C. Profile & Account (Student)
+1.	Profile (/profile)
+o	Name, photo, class, target exam, school/college
+o	Language preference (Hindi/English/Hinglish)
+2.	Learning Stats & Analytics (/analytics)
+o	Time spent
+o	Topic-wise strength/weakness
+o	Test performance graph
+3.	Watch History (/history)
+4.	Saved / Bookmarked Content (/saved)
+5.	Subscriptions & Payments (/billing)
+o	Plans / Batches purchased
+o	Invoices & payment history
+6.	Notifications (/notifications)
+7.	Referral & Rewards (/referral)
+o	Refer & earn model (like free months/coins)
+8.	Settings (/settings)
+o	Password, login, devices
+o	Notification preferences
+________________________________________
+D. Parent Portal (optional but future-proof)
+1.	Parent Dashboard (/parent/dashboard)
+o	Linked student accounts
+o	Overall performance snapshot
+2.	Progress Reports (/parent/reports)
+3.	Fees & Payment History (/parent/billing)
+________________________________________
+E. Teacher / Mentor Portal
+1.	Teacher Dashboard (/teacher/dashboard)
+o	Batches they handle
+o	Upcoming live classes
+o	Doubts pending
+2.	Content Management
+o	Upload Lectures (/teacher/lectures)
+o	Upload Notes / PDFs
+o	Create Practice Sets
+o	Create Tests (MCQ, subjective)
+3.	Student Doubts Desk (/teacher/doubts)
+4.	Announcements to Batches (/teacher/announcements)
+5.	Performance View (/teacher/performance)
+o	Batch-wise stats
+o	Top/weak students
+________________________________________
+F. Admin Panel (for your core team)
+1.	Admin Dashboard (/admin)
+2.	User Management (students/parents/teachers)
+3.	Batches & Courses Management
+4.	Content Moderation (doubts, community)
+5.	Payments & Finance Reports
+6.	Scholarship Management
+7.	CMS for Home, Blog, FAQ, etc.
+________________________________________
+3. Deep breakdown of key pages
+3.1 Home Page (Smart Study landing)
+Goal: Trust + Clarity + Fast funnel to right batch.
+Sections (in order):
+1.	Hero Section
+o	Tagline: “Smart Study – Quality IIT/NEET Prep at Lowest Cost / Free”
+o	CTA buttons:
+	“View Batches”
+	“Start Free Demo”
+2.	Exam / Class Selector
+o	“Select your target: JEE / NEET / Boards / Foundation / Others”
+3.	Featured Batches
+o	Top 4–6 batches with quick info:
+	Name, target exam, year, language, price (or FREE), key features.
+4.	Why Smart Study? (vs others)
+o	3–5 pillars: Low cost, structured content, doubt support, analytics, honest guidance etc.
+5.	Demo Lectures
+o	Embedded 3–6 demo videos (YouTube/Vimeo/self-hosted)
+6.	Student Results & Testimonials
+o	Toppers showcase
+o	Quotes/videos from real students
+7.	Free Resources Highlight
+o	“Download free notes, PYQs, formula sheets”
+8.	Faculty Section
+o	Short intro of you (IITM, educator) + key faculty
+9.	App Promotion (future)
+o	Links for Android/iOS when ready
+10.	Footer
+•	Important links (About, Contact, Careers, Legal, Social handles)
+________________________________________
+3.2 Batches / Courses Listing Page
+URL: /batches
+Features:
+•	Filters / Sort
+o	Target exam, Class, Language, Price (Free/Paid), Batch status (Ongoing/New/Completed)
+•	Batch Card (each item)
+o	Batch Name (e.g., NEET 2027 Lakshya)
+o	Target class & exam
+o	Start date, live class timings
+o	Faculty list (icons)
+o	Price + discount + EMI (if any)
+o	“Includes: Live + Recorded, DPP, Tests, Doubt Support”
+o	CTA: “View Details”
+________________________________________
+3.3 Batch Detail Page (VERY IMPORTANT)
+URL: /batch/:batchSlug
+Think of it as your sales page + internal hub.
+Sections (as tabs or blocks):
+1.	Top Summary
+o	Batch name, exam, duration
+o	Language
+o	Start date & schedule glance
+o	Price (or FREE)
+o	Enroll Button (+ “Try Free Demo”)
+2.	Overview
+o	What this batch covers
+o	Who should join (class, target year)
+o	Teaching pedagogy & strategy
+o	What students get:
+	Live classes
+	Recorded lectures
+	DPP, Notes, Tests
+	Doubts support
+o	Short video by you explaining the batch
+3.	Schedule & Teaching Plan
+o	Weekly timetable (Mon–Sun with subjects & times)
+o	Academic plan (months → topics)
+4.	Syllabus & Content Structure
+o	Subject-wise topic list
+o	Content type tags (Live/Recorded/Notes/Test available)
+5.	Faculty
+o	Detailed intro for each teacher
+o	Experience, credentials, style
+6.	Demo Section
+o	3–10 demo lectures
+o	Sample PDF / notes (download)
+7.	Features & Tech
+o	Doubt support method (chat, images)
+o	Availability of recordings
+o	Device support (mobile/web)
+o	Language options
+8.	Fees & Offers
+o	Final price
+o	EMI options
+o	Scholarships (if any)
+o	“No hidden charges / complete transparency”
+9.	Student Reviews & Ratings
+10.	FAQs (Batch-specific)
+________________________________________
+3.4 Lecture Player Page
+URL: /lecture/:id
+Layout:
+•	Center: Video player
+•	Right / Left side panel:
+o	Playlist of lectures in this topic/module
+•	Below video:
+o	Description
+o	Downloadable resources (Notes PDF, DPP, Slides)
+o	“Mark as completed”
+o	“Add to favourites”
+•	Doubt box:
+o	Button “Ask doubt from this lecture”
+o	Attach question image, type doubt
+________________________________________
+3.5 Practice / Question Bank Page
+URL: /practice
+Features:
+•	Filter by: Subject → Chapter → Topic
+•	Choose mode:
+o	Practice (untimed)
+o	Quiz (timed)
+•	Show:
+o	Question
+o	Options / Input
+o	“Show solution” and “Report error”
+•	At the end:
+o	Score, accuracy, explanations
+o	Suggested next topics
+________________________________________
+3.6 Test Series & Analysis
+URL: /tests
+Sections:
+1.	Upcoming Tests
+2.	Recommended Tests (based on weak topics)
+3.	Past Attempts
+o	Score, rank, percentile
+o	Compare with toppers
+4.	Detailed Analysis for a test
+o	Overall score
+o	Time spent per question
+o	Topic-wise performance
+o	Strong/weak topic suggestions
+________________________________________
+3.7 Doubts / Q&A
+URL: /doubts
+Features:
+•	Button: Ask a doubt
+o	Choose subject, topic
+o	Upload image / crop question
+o	Type doubt
+•	Doubts list:
+o	Status (Pending/Answered)
+o	Teacher answer (with image/latex)
+•	Search bar:
+o	Search previous doubts (like mini StackOverflow for your platform)
+________________________________________
+3.8 Student Dashboard & Profile
+Dashboard highlights:
+•	Today’s classes
+•	Continue watching
+•	Upcoming tests
+•	Quick progress overview
+Profile & Analytics:
+•	Personal info & targets
+•	Progress by subject
+•	Time spent studying
+•	Watch history, bookmarks
+•	Achievements, certificates
+________________________________________
+4. Future-proof features (you can add gradually)
+•	Mobile App (same backend, shared accounts)
+•	Multi-language support (Hindi / English / Hinglish)
+•	AI-based recommendations
+o	“You are weak in Rotational Motion – watch these 3 videos”
+•	Study planner / timetable generator
+•	Mentorship calls booking page
+•	Doubt solving via AI + human hybrid
+•	Offline center integration (if you ever open physical centers)

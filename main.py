@@ -29,7 +29,7 @@ if __name__ == '__main__':
     application = get_wsgi_application()
     
     options = {
-        'bind': '0.0.0.0:5000',
+        'bind': '0.0.0.0:8000',
         'workers': 2,
         'worker_class': 'sync',
         'timeout': 120,
