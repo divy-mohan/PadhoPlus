@@ -20,6 +20,11 @@ class IsTeacherOrAdmin(permissions.BasePermission):
         )
 
 
+class IsEnrolledStudent(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.filter(is_active=True)
     permission_classes = [IsTeacherOrAdmin]
@@ -53,7 +58,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def random(self, request):
         subject = request.query_params.get('subject')
         topic = request.query_params.get('topic')
@@ -75,7 +80,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
 class TestViewSet(viewsets.ModelViewSet):
     queryset = Test.objects.filter(is_active=True)
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsTeacherOrAdmin]
     
     def get_serializer_class(self):
         if self.action == 'list':
@@ -84,6 +89,17 @@ class TestViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         queryset = Test.objects.filter(is_active=True)
+        user = self.request.user
+        
+        if user.is_authenticated:
+            if user.is_student():
+                from padhoplus.batches.models import Enrollment
+                enrolled_batches = Enrollment.objects.filter(
+                    student=user, status='active'
+                ).values_list('batch_id', flat=True)
+                queryset = queryset.filter(batch_id__in=enrolled_batches)
+            elif user.is_teacher():
+                queryset = queryset.filter(Q(created_by=user) | Q(batch__faculty=user))
         
         batch = self.request.query_params.get('batch')
         subject = self.request.query_params.get('subject')
@@ -104,14 +120,25 @@ class TestViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def upcoming(self, request):
         now = timezone.now()
-        tests = Test.objects.filter(
+        user = request.user
+        
+        queryset = Test.objects.filter(
             is_active=True,
             status='scheduled',
             start_datetime__gt=now
-        ).select_related('batch', 'subject')[:10]
+        )
+        
+        if user.is_student():
+            from padhoplus.batches.models import Enrollment
+            enrolled_batches = Enrollment.objects.filter(
+                student=user, status='active'
+            ).values_list('batch_id', flat=True)
+            queryset = queryset.filter(batch_id__in=enrolled_batches)
+        
+        tests = queryset.select_related('batch', 'subject')[:10]
         serializer = TestListSerializer(tests, many=True)
         return Response(serializer.data)
     
@@ -119,6 +146,16 @@ class TestViewSet(viewsets.ModelViewSet):
     def start(self, request, pk=None):
         test = self.get_object()
         user = request.user
+        
+        if user.is_student():
+            from padhoplus.batches.models import Enrollment
+            if not Enrollment.objects.filter(
+                student=user, batch=test.batch, status='active'
+            ).exists():
+                return Response(
+                    {'error': 'You must be enrolled in this batch to take this test'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
         
         if TestAttempt.objects.filter(test=test, student=user).exists():
             attempt = TestAttempt.objects.get(test=test, student=user)
@@ -169,12 +206,23 @@ class TestAttemptViewSet(viewsets.ModelViewSet):
         if user.is_platform_admin():
             return TestAttempt.objects.all()
         elif user.is_teacher():
-            return TestAttempt.objects.filter(test__created_by=user)
+            return TestAttempt.objects.filter(
+                Q(test__created_by=user) | Q(test__batch__faculty=user)
+            )
+        elif user.is_parent():
+            children_ids = user.children.values_list('id', flat=True) if hasattr(user, 'children') else []
+            return TestAttempt.objects.filter(student_id__in=children_ids)
         return TestAttempt.objects.filter(student=user)
     
     @action(detail=True, methods=['post'])
     def submit_response(self, request, pk=None):
         attempt = self.get_object()
+        
+        if attempt.student != request.user:
+            return Response(
+                {'error': 'You can only submit responses for your own attempts'},
+                status=status.HTTP_403_FORBIDDEN
+            )
         
         if attempt.status == 'submitted':
             return Response(
@@ -209,6 +257,12 @@ class TestAttemptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def submit(self, request, pk=None):
         attempt = self.get_object()
+        
+        if attempt.student != request.user:
+            return Response(
+                {'error': 'You can only submit your own test attempts'},
+                status=status.HTTP_403_FORBIDDEN
+            )
         
         if attempt.status == 'submitted':
             return Response(
@@ -301,7 +355,11 @@ class PracticeSessionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return PracticeSession.objects.filter(student=self.request.user)
+        user = self.request.user
+        if user.is_parent():
+            children_ids = user.children.values_list('id', flat=True) if hasattr(user, 'children') else []
+            return PracticeSession.objects.filter(student_id__in=children_ids)
+        return PracticeSession.objects.filter(student=user)
     
     def perform_create(self, serializer):
         serializer.save(student=self.request.user)
@@ -343,6 +401,12 @@ class PracticeSessionViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def complete(self, request, pk=None):
         session = self.get_object()
+        
+        if session.student != request.user:
+            return Response(
+                {'error': 'You can only complete your own practice sessions'},
+                status=status.HTTP_403_FORBIDDEN
+            )
         
         session.correct_count = request.data.get('correct_count', 0)
         session.incorrect_count = request.data.get('incorrect_count', 0)

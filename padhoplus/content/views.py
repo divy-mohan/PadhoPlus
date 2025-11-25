@@ -10,9 +10,43 @@ from .serializers import (
 )
 
 
+class IsTeacherOrAdminOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user.is_authenticated and (
+            request.user.is_teacher() or request.user.is_platform_admin()
+        )
+
+
+class IsEnrolledOrTeacherOrAdmin(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return request.method in permissions.SAFE_METHODS
+        
+        if request.user.is_platform_admin() or request.user.is_teacher():
+            return True
+        
+        return True
+    
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_platform_admin() or request.user.is_teacher():
+            return True
+        
+        if obj.is_demo or obj.is_free:
+            return True
+        
+        from padhoplus.batches.models import Enrollment
+        return Enrollment.objects.filter(
+            student=request.user,
+            batch=obj.batch,
+            status='active'
+        ).exists()
+
+
 class LectureViewSet(viewsets.ModelViewSet):
     queryset = Lecture.objects.filter(is_active=True)
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsTeacherOrAdminOrReadOnly]
     
     def get_serializer_class(self):
         if self.action == 'list':
@@ -21,6 +55,21 @@ class LectureViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         queryset = Lecture.objects.filter(is_active=True)
+        user = self.request.user
+        
+        if user.is_authenticated:
+            if user.is_student():
+                from padhoplus.batches.models import Enrollment
+                enrolled_batches = Enrollment.objects.filter(
+                    student=user, status='active'
+                ).values_list('batch_id', flat=True)
+                queryset = queryset.filter(
+                    Q(batch_id__in=enrolled_batches) | Q(is_demo=True) | Q(is_free=True)
+                )
+            elif user.is_teacher():
+                queryset = queryset.filter(Q(teacher=user) | Q(batch__faculty=user))
+        else:
+            queryset = queryset.filter(Q(is_demo=True) | Q(is_free=True))
         
         batch = self.request.query_params.get('batch')
         subject = self.request.query_params.get('subject')
@@ -46,10 +95,31 @@ class LectureViewSet(viewsets.ModelViewSet):
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
+        
+        if not (instance.is_demo or instance.is_free):
+            from padhoplus.batches.models import Enrollment
+            if request.user.is_authenticated:
+                if not request.user.is_teacher() and not request.user.is_platform_admin():
+                    if not Enrollment.objects.filter(
+                        student=request.user, batch=instance.batch, status='active'
+                    ).exists():
+                        return Response(
+                            {'error': 'You must be enrolled in this batch to view this lecture'},
+                            status=status.HTTP_403_FORBIDDEN
+                        )
+            else:
+                return Response(
+                    {'error': 'Login required to view this lecture'},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+        
         instance.views_count += 1
         instance.save(update_fields=['views_count'])
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+    
+    def perform_create(self, serializer):
+        serializer.save(teacher=self.request.user)
     
     @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def update_progress(self, request, pk=None):
@@ -101,7 +171,7 @@ class LectureViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def demo(self, request):
-        lectures = self.get_queryset().filter(is_demo=True)[:10]
+        lectures = Lecture.objects.filter(is_active=True, is_demo=True)[:10]
         serializer = LectureListSerializer(lectures, many=True)
         return Response(serializer.data)
 
@@ -109,10 +179,23 @@ class LectureViewSet(viewsets.ModelViewSet):
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.filter(is_active=True)
     serializer_class = NoteSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsTeacherOrAdminOrReadOnly]
     
     def get_queryset(self):
         queryset = Note.objects.filter(is_active=True)
+        user = self.request.user
+        
+        if user.is_authenticated:
+            if user.is_student():
+                from padhoplus.batches.models import Enrollment
+                enrolled_batches = Enrollment.objects.filter(
+                    student=user, status='active'
+                ).values_list('batch_id', flat=True)
+                queryset = queryset.filter(
+                    Q(batch_id__in=enrolled_batches) | Q(is_free=True) | Q(batch__isnull=True)
+                )
+        else:
+            queryset = queryset.filter(is_free=True)
         
         batch = self.request.query_params.get('batch')
         subject = self.request.query_params.get('subject')
@@ -133,9 +216,22 @@ class NoteViewSet(viewsets.ModelViewSet):
         
         return queryset.select_related('subject', 'topic', 'batch')
     
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def download(self, request, pk=None):
         note = self.get_object()
+        
+        if not note.is_free:
+            from padhoplus.batches.models import Enrollment
+            user = request.user
+            if not user.is_teacher() and not user.is_platform_admin():
+                if not note.batch or not Enrollment.objects.filter(
+                    student=user, batch=note.batch, status='active'
+                ).exists():
+                    return Response(
+                        {'error': 'You must be enrolled to download this note'},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
+        
         note.downloads_count += 1
         note.save(update_fields=['downloads_count'])
         return Response({'download_url': note.file.url})
@@ -155,7 +251,7 @@ class NoteViewSet(viewsets.ModelViewSet):
 class ResourceViewSet(viewsets.ModelViewSet):
     queryset = Resource.objects.filter(is_active=True)
     serializer_class = ResourceSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsTeacherOrAdminOrReadOnly]
     
     def get_queryset(self):
         queryset = Resource.objects.filter(is_active=True)
@@ -170,7 +266,14 @@ class WatchHistoryViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return WatchHistory.objects.filter(user=self.request.user)
+        user = self.request.user
+        if user.is_parent():
+            children_ids = user.children.values_list('id', flat=True) if hasattr(user, 'children') else []
+            return WatchHistory.objects.filter(user_id__in=children_ids)
+        return WatchHistory.objects.filter(user=user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
     
     @action(detail=False, methods=['get'])
     def continue_watching(self, request):

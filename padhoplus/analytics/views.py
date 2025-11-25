@@ -14,6 +14,15 @@ from .serializers import (
 )
 
 
+class IsOwnerOrTeacherOrAdmin(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_platform_admin() or request.user.is_teacher():
+            return True
+        if hasattr(obj, 'user'):
+            return obj.user == request.user
+        return False
+
+
 class ProgressViewSet(viewsets.ModelViewSet):
     serializer_class = UserProgressSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -24,12 +33,20 @@ class ProgressViewSet(viewsets.ModelViewSet):
             return UserProgress.objects.all()
         elif user.is_teacher():
             return UserProgress.objects.filter(batch__faculty=user)
+        elif user.is_parent():
+            children_ids = user.children.values_list('id', flat=True) if hasattr(user, 'children') else []
+            return UserProgress.objects.filter(user_id__in=children_ids)
         return UserProgress.objects.filter(user=user)
     
     @action(detail=False, methods=['get'])
     def summary(self, request):
         user = request.user
-        progress = UserProgress.objects.filter(user=user)
+        
+        if user.is_parent():
+            children_ids = user.children.values_list('id', flat=True) if hasattr(user, 'children') else []
+            progress = UserProgress.objects.filter(user_id__in=children_ids)
+        else:
+            progress = UserProgress.objects.filter(user=user)
         
         total_time = progress.aggregate(total=Sum('time_spent_minutes'))['total'] or 0
         total_lectures = progress.aggregate(total=Sum('lectures_watched'))['total'] or 0
@@ -41,7 +58,6 @@ class ProgressViewSet(viewsets.ModelViewSet):
         ).annotate(
             total_time=Sum('time_spent_minutes'),
             total_lectures=Sum('lectures_watched'),
-            accuracy=Avg('questions_correct') * 100 / Avg('questions_attempted')
         )
         
         return Response({
@@ -88,10 +104,18 @@ class TestAnalyticsViewSet(viewsets.ViewSet):
         from padhoplus.assessments.models import TestAttempt
         
         user = request.user
-        attempts = TestAttempt.objects.filter(
-            student=user,
-            status='submitted'
-        ).select_related('test', 'test__subject')
+        
+        if user.is_parent():
+            children_ids = user.children.values_list('id', flat=True) if hasattr(user, 'children') else []
+            attempts = TestAttempt.objects.filter(
+                student_id__in=children_ids,
+                status='submitted'
+            ).select_related('test', 'test__subject')
+        else:
+            attempts = TestAttempt.objects.filter(
+                student=user,
+                status='submitted'
+            ).select_related('test', 'test__subject')
         
         if not attempts.exists():
             return Response({
@@ -156,10 +180,17 @@ class DashboardViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['get'])
     def student(self, request):
         user = request.user
+        
+        if not user.is_student():
+            return Response(
+                {'error': 'Only students can access this dashboard'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
         today = timezone.now().date()
         
         from padhoplus.batches.models import Enrollment
-        from padhoplus.content.models import WatchHistory, Lecture
+        from padhoplus.content.models import WatchHistory
         from padhoplus.assessments.models import Test, TestAttempt
         from padhoplus.doubts.models import Doubt
         
@@ -171,8 +202,12 @@ class DashboardViewSet(viewsets.ViewSet):
             user=user, is_completed=False
         ).select_related('lecture', 'lecture__subject')[:5]
         
+        enrolled_batch_ids = Enrollment.objects.filter(
+            student=user, status='active'
+        ).values_list('batch_id', flat=True)
+        
         upcoming_tests = Test.objects.filter(
-            batch__enrollments__student=user,
+            batch_id__in=enrolled_batch_ids,
             status='scheduled',
             start_datetime__gt=timezone.now()
         ).order_by('start_datetime')[:5]
@@ -239,6 +274,53 @@ class DashboardViewSet(viewsets.ViewSet):
                 'questions_practiced': today_activity.questions_practiced
             }
         })
+    
+    @action(detail=False, methods=['get'])
+    def parent(self, request):
+        user = request.user
+        
+        if not user.is_parent():
+            return Response(
+                {'error': 'Only parents can access this dashboard'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        children_ids = user.children.values_list('id', flat=True) if hasattr(user, 'children') else []
+        
+        from padhoplus.batches.models import Enrollment
+        from padhoplus.assessments.models import TestAttempt
+        from padhoplus.analytics.models import DailyActivity, Streak
+        
+        children_data = []
+        for child_id in children_ids:
+            from padhoplus.users.models import User
+            try:
+                child = User.objects.get(id=child_id)
+                enrollments = Enrollment.objects.filter(student=child, status='active').count()
+                recent_tests = TestAttempt.objects.filter(
+                    student=child, status='submitted'
+                ).order_by('-submitted_at')[:3]
+                streak, _ = Streak.objects.get_or_create(user=child)
+                
+                children_data.append({
+                    'id': child.id,
+                    'name': child.full_name,
+                    'enrolled_batches': enrollments,
+                    'current_streak': streak.current_streak,
+                    'recent_tests': [
+                        {
+                            'test_title': a.test.title,
+                            'score': a.score,
+                            'rank': a.rank,
+                            'date': a.submitted_at
+                        }
+                        for a in recent_tests
+                    ]
+                })
+            except User.DoesNotExist:
+                pass
+        
+        return Response({'children': children_data})
     
     @action(detail=False, methods=['get'])
     def teacher(self, request):

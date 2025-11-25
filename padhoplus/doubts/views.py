@@ -9,6 +9,19 @@ from .serializers import (
 )
 
 
+class IsOwnerOrTeacherOrAdmin(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if request.user.is_platform_admin() or request.user.is_teacher():
+            return True
+        if hasattr(obj, 'student'):
+            return obj.student == request.user
+        if hasattr(obj, 'responder'):
+            return obj.responder == request.user
+        return False
+
+
 class DoubtViewSet(viewsets.ModelViewSet):
     queryset = Doubt.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -17,6 +30,13 @@ class DoubtViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return DoubtListSerializer
         return DoubtSerializer
+    
+    def get_permissions(self):
+        if self.action in ['create']:
+            return [permissions.IsAuthenticated()]
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [IsOwnerOrTeacherOrAdmin()]
+        return [permissions.IsAuthenticatedOrReadOnly()]
     
     def get_queryset(self):
         queryset = Doubt.objects.filter(is_public=True)
@@ -29,6 +49,10 @@ class DoubtViewSet(viewsets.ModelViewSet):
                 )
             elif user.is_platform_admin():
                 queryset = Doubt.objects.all()
+            else:
+                queryset = Doubt.objects.filter(
+                    Q(is_public=True) | Q(student=user)
+                )
         
         subject = self.request.query_params.get('subject')
         topic = self.request.query_params.get('topic')
@@ -158,6 +182,11 @@ class DoubtViewSet(viewsets.ModelViewSet):
 class DoubtResponseViewSet(viewsets.ModelViewSet):
     serializer_class = DoubtResponseSerializer
     permission_classes = [permissions.IsAuthenticated]
+    
+    def get_permissions(self):
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [IsOwnerOrTeacherOrAdmin()]
+        return [permissions.IsAuthenticated()]
     
     def get_queryset(self):
         queryset = DoubtResponse.objects.all()

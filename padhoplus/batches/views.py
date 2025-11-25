@@ -14,10 +14,26 @@ from .serializers import (
 )
 
 
+class IsAdminOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user.is_authenticated and request.user.is_platform_admin()
+
+
+class IsTeacherOrAdminOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user.is_authenticated and (
+            request.user.is_teacher() or request.user.is_platform_admin()
+        )
+
+
 class SubjectViewSet(viewsets.ModelViewSet):
     queryset = Subject.objects.filter(is_active=True)
     serializer_class = SubjectSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
     lookup_field = 'slug'
     
     @action(detail=True, methods=['get'])
@@ -31,7 +47,7 @@ class SubjectViewSet(viewsets.ModelViewSet):
 class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.filter(is_active=True)
     serializer_class = TopicSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
     
     def get_queryset(self):
         queryset = Topic.objects.filter(is_active=True)
@@ -43,7 +59,7 @@ class TopicViewSet(viewsets.ModelViewSet):
 
 class BatchViewSet(viewsets.ModelViewSet):
     queryset = Batch.objects.filter(is_active=True)
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
     lookup_field = 'slug'
     
     def get_serializer_class(self):
@@ -150,7 +166,7 @@ class BatchViewSet(viewsets.ModelViewSet):
 class ScheduleViewSet(viewsets.ModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
     
     def get_queryset(self):
         queryset = Schedule.objects.all()
@@ -164,13 +180,29 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
     serializer_class = EnrollmentSerializer
     permission_classes = [permissions.IsAuthenticated]
     
+    def get_permissions(self):
+        if self.action in ['create']:
+            return [permissions.IsAuthenticated()]
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [IsAdminOrReadOnly()]
+        return [permissions.IsAuthenticated()]
+    
     def get_queryset(self):
         user = self.request.user
         if user.is_platform_admin():
             return Enrollment.objects.all()
         elif user.is_teacher():
             return Enrollment.objects.filter(batch__faculty=user)
+        elif user.is_parent():
+            children_ids = user.children.values_list('id', flat=True) if hasattr(user, 'children') else []
+            return Enrollment.objects.filter(student_id__in=children_ids)
         return Enrollment.objects.filter(student=user)
+    
+    def perform_create(self, serializer):
+        user = self.request.user
+        if not user.is_student():
+            raise PermissionError("Only students can create enrollments")
+        serializer.save(student=user)
     
     @action(detail=False, methods=['get'])
     def my_batches(self, request):
@@ -184,14 +216,32 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
 
 class AnnouncementViewSet(viewsets.ModelViewSet):
     serializer_class = AnnouncementSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsTeacherOrAdminOrReadOnly]
     
     def get_queryset(self):
         queryset = Announcement.objects.filter(is_active=True)
+        user = self.request.user
+        
+        if user.is_authenticated:
+            if user.is_student():
+                enrolled_batches = Enrollment.objects.filter(
+                    student=user, status='active'
+                ).values_list('batch_id', flat=True)
+                queryset = queryset.filter(batch_id__in=enrolled_batches)
+            elif user.is_teacher():
+                queryset = queryset.filter(batch__faculty=user)
+        
         batch = self.request.query_params.get('batch')
         if batch:
             queryset = queryset.filter(batch__slug=batch)
+        
         return queryset
     
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        batch = serializer.validated_data.get('batch')
+        user = self.request.user
+        
+        if not user.is_platform_admin() and user not in batch.faculty.all():
+            raise PermissionError("You can only create announcements for batches you teach")
+        
+        serializer.save(author=user)

@@ -2,7 +2,32 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
 from rest_framework.routers import DefaultRouter
+
+
+def api_root(request):
+    return JsonResponse({
+        'name': 'PadhoPlus API',
+        'version': '1.0.0',
+        'description': 'Comprehensive online education platform for JEE/NEET preparation',
+        'documentation': '/api/',
+        'admin': '/admin/',
+        'endpoints': {
+            'auth': '/api/auth/',
+            'users': '/api/users/',
+            'batches': '/api/batches/',
+            'subjects': '/api/subjects/',
+            'topics': '/api/topics/',
+            'lectures': '/api/lectures/',
+            'notes': '/api/notes/',
+            'tests': '/api/tests/',
+            'questions': '/api/questions/',
+            'doubts': '/api/doubts/',
+            'progress': '/api/progress/',
+            'dashboard': '/api/dashboard/',
+        }
+    })
 
 from padhoplus.users.views import UserViewSet, AuthViewSet
 from padhoplus.batches.views import (
@@ -53,6 +78,7 @@ router.register(r'test-analytics', TestAnalyticsViewSet, basename='test-analytic
 router.register(r'dashboard', DashboardViewSet, basename='dashboard')
 
 urlpatterns = [
+    path('', api_root, name='api-root'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),

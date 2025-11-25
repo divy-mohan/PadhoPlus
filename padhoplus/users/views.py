@@ -11,15 +11,21 @@ from .serializers import (
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
         return obj == request.user or request.user.is_platform_admin()
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [permissions.IsAuthenticated()]
+        if self.action == 'create':
+            return [permissions.AllowAny()]
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [IsOwnerOrAdmin()]
+        return [permissions.IsAuthenticated()]
     
     def get_serializer_class(self):
         if self.action == 'create':
@@ -27,10 +33,28 @@ class UserViewSet(viewsets.ModelViewSet):
         return UserSerializer
     
     def get_queryset(self):
-        queryset = User.objects.all()
+        user = self.request.user
+        if not user.is_authenticated:
+            return User.objects.none()
+        
+        if user.is_platform_admin():
+            queryset = User.objects.all()
+        elif user.is_teacher():
+            from padhoplus.batches.models import Enrollment
+            student_ids = Enrollment.objects.filter(
+                batch__faculty=user, status='active'
+            ).values_list('student_id', flat=True)
+            queryset = User.objects.filter(id__in=student_ids) | User.objects.filter(id=user.id)
+        elif user.is_parent():
+            children_ids = user.children.values_list('id', flat=True) if hasattr(user, 'children') else []
+            queryset = User.objects.filter(id__in=children_ids) | User.objects.filter(id=user.id)
+        else:
+            queryset = User.objects.filter(id=user.id)
+        
         role = self.request.query_params.get('role')
-        if role:
+        if role and user.is_platform_admin():
             queryset = queryset.filter(role=role)
+        
         return queryset
     
     @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
