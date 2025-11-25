@@ -1,92 +1,108 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4rem;
+  }
+
+  body {
+    @apply bg-white text-gray-900;
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  input, textarea, select {
+    @apply w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 font-medium text-gray-900;
+  }
+
+  input::placeholder, textarea::placeholder {
+    @apply text-gray-500 font-medium;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 4rem;
-}
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-semibold transition-all duration-300 inline-flex items-center justify-center gap-2 cursor-pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
 
-body {
-  background: #FFFFFF;
-  color: #1F2937;
-  font-family: 'Inter', system-ui, sans-serif;
-  line-height: 1.6;
-  font-weight: 400;
-}
+  .btn-primary {
+    @apply bg-gradient-to-br from-blue-600 to-blue-700 text-white hover:shadow-lg hover:scale-105 active:scale-95;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  }
 
-/* ===== PROFESSIONAL BUTTON STYLES ===== */
-.btn {
-  @apply px-4 py-2 rounded-lg font-semibold transition-all duration-300 inline-flex items-center justify-center gap-2 cursor-pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+  .btn-primary:hover {
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+  }
 
-.btn-primary {
-  @apply bg-gradient-to-br from-blue-600 to-blue-700 text-white hover:shadow-lg hover:scale-105 active:scale-95;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-}
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-900 hover:bg-gray-200 active:scale-95;
+  }
 
-.btn-primary:hover {
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
-}
+  .btn-outline {
+    @apply border-2 border-blue-600 text-blue-600 hover:bg-blue-50 active:scale-95;
+  }
 
-.btn-secondary {
-  @apply bg-gray-100 text-gray-900 hover:bg-gray-200 active:scale-95 transition-smooth;
-}
+  .btn-ghost {
+    @apply text-gray-700 hover:text-blue-600 hover:bg-gray-100 rounded-lg px-3 py-2;
+  }
 
-.btn-outline {
-  @apply border-2 border-blue-600 text-blue-600 hover:bg-blue-50 active:scale-95 transition-smooth;
-}
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
 
-.btn-ghost {
-  @apply text-gray-700 hover:text-blue-600 hover:bg-gray-100 rounded-lg px-3 py-2 transition-smooth;
-}
+  .badge-primary {
+    @apply bg-blue-100 text-blue-700;
+  }
 
-/* ===== BADGE STYLES ===== */
-.badge {
-  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
-}
+  .badge-success {
+    @apply bg-green-100 text-green-700;
+  }
 
-.badge-primary {
-  @apply bg-blue-100 text-blue-700;
-}
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-700;
+  }
 
-.badge-success {
-  @apply bg-green-100 text-green-700;
-}
+  .card {
+    @apply bg-white border border-gray-200 rounded-xl p-5 shadow-sm transition-all duration-300;
+  }
 
-.badge-warning {
-  @apply bg-yellow-100 text-yellow-700;
-}
+  .card:hover {
+    @apply shadow-md border-gray-300;
+  }
 
-/* ===== CARD STYLES ===== */
-.card {
-  @apply bg-white border border-gray-200 rounded-xl p-5 shadow-sm transition-all duration-300;
-}
+  .card-interactive {
+    @apply bg-white border border-gray-200 rounded-xl p-5 shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-lg cursor-pointer;
+  }
 
-.card:hover {
-  @apply shadow-md border-gray-300;
-}
+  .hover-lift {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-2;
+  }
 
-.card-interactive {
-  @apply card hover:border-blue-300 hover:shadow-lg cursor-pointer;
-}
+  .hover-scale {
+    @apply transition-all duration-300 hover:scale-105;
+  }
 
-/* ===== INPUT STYLES ===== */
-input, textarea, select {
-  @apply w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 font-medium text-gray-900;
-}
+  .transition-smooth {
+    @apply transition-all duration-300 ease-out;
+  }
 
-input::placeholder, textarea::placeholder {
-  @apply text-gray-500 font-medium;
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 bg-clip-text text-transparent;
+  }
+
+  .glass {
+    @apply bg-white/30 backdrop-blur-lg border border-white/20 rounded-xl;
+  }
 }
 
 /* ===== ANIMATIONS ===== */
@@ -156,30 +172,12 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
     transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
   }
 }
 
@@ -229,33 +227,6 @@ input::placeholder, textarea::placeholder {
   animation: float 3s ease-in-out infinite;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s infinite;
-}
-
-/* ===== HOVER EFFECTS ===== */
-.hover-lift {
-  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-2;
-}
-
-.hover-scale {
-  @apply transition-all duration-300 hover:scale-105;
-}
-
-.transition-smooth {
-  @apply transition-all duration-300 ease-out;
-}
-
-/* ===== GRADIENT TEXT ===== */
-.text-gradient {
-  @apply bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 bg-clip-text text-transparent;
-}
-
-/* ===== GLASS MORPHISM ===== */
-.glass {
-  @apply bg-white/30 backdrop-blur-lg border border-white/20 rounded-xl;
-}
-
 /* ===== SCROLLBAR STYLING ===== */
 ::-webkit-scrollbar {
   width: 8px;
@@ -267,7 +238,7 @@ input::placeholder, textarea::placeholder {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 rounded-full hover:bg-gray-500 transition-smooth;
+  @apply bg-gray-400 rounded-full hover:bg-gray-500;
 }
 
 /* ===== SELECTION ===== */
