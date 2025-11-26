@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
-  allowedDevOrigins: ["*.replit.dev", "*.picard.replit.dev"],
+  allowedDevOrigins: ["*.replit.dev", "*.picard.replit.dev", "localhost", "127.0.0.1"],
 };
 
 export default nextConfig;
