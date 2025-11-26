@@ -44,7 +44,7 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       const apiUrl = typeof window !== 'undefined' 
-        ? `http://${window.location.hostname.replace(':5000', '')}:8000` 
+        ? `${window.location.protocol}//${window.location.hostname.split('-')[0]}-8000-${window.location.hostname.split('-').slice(1).join('-')}`
         : 'http://localhost:8000'
 
       const response = await fetch(`${apiUrl}/api/auth/register/`, {
