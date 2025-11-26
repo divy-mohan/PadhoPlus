@@ -1,20 +1,23 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const backendUrl = 'http://localhost:8000'
+    
+    // Get all cookies from the browser request
+    const cookies = request.headers.get('cookie') || ''
     
     const response = await fetch(`${backendUrl}/api/auth/check/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Cookie': cookies,
       },
-      credentials: 'include',
     })
 
     const data = await response.json()
     
-    if (data.authenticated) {
+    if (data.authenticated && data.user) {
       return NextResponse.json({ user: data.user }, { status: 200 })
     } else {
       return NextResponse.json(
