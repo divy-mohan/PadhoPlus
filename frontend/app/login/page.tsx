@@ -10,6 +10,7 @@ import { Mail, Lock, Eye, EyeOff, CheckCircle } from 'lucide-react'
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({ email: '', password: '' })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,10 +20,36 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError(null)
     setLoading(true)
+    
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      console.log('Login:', formData)
+      const apiUrl = typeof window !== 'undefined' 
+        ? `http://${window.location.hostname.replace(':5000', '')}:8000` 
+        : 'http://localhost:8000'
+
+      const response = await fetch(`${apiUrl}/api/auth/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        window.location.href = '/dashboard'
+      } else {
+        setError(data.message || data.error || 'Invalid email or password')
+      }
+    } catch (err) {
+      setError('Unable to connect to server. Please try again later.')
+      console.error('Login error:', err)
     } finally {
       setLoading(false)
     }
@@ -38,6 +65,12 @@ export default function LoginPage() {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
             <p className="text-gray-600">Continue your learning journey with us</p>
           </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 text-sm font-medium">{error}</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="card border-2 border-gray-200 mb-6">
             <div className="mb-5">

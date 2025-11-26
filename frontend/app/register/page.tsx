@@ -18,6 +18,8 @@ export default function RegisterPage() {
   })
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -26,10 +28,64 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError(null)
+    setSuccess(false)
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match')
+      return
+    }
+
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters long')
+      return
+    }
+
     setLoading(true)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      console.log('Register:', formData)
+      const apiUrl = typeof window !== 'undefined' 
+        ? `http://${window.location.hostname.replace(':5000', '')}:8000` 
+        : 'http://localhost:8000'
+
+      const response = await fetch(`${apiUrl}/api/auth/register/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          username: formData.email.split('@')[0],
+          email: formData.email,
+          password: formData.password,
+          confirm_password: formData.confirmPassword,
+          first_name: formData.name.split(' ')[0],
+          last_name: formData.name.split(' ').slice(1).join(' ') || '',
+          role: formData.role,
+          phone: ''
+        })
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSuccess(true)
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          targetExam: '',
+          role: 'student'
+        })
+        setTimeout(() => {
+          window.location.href = '/dashboard'
+        }, 1500)
+      } else {
+        setError(data.email?.[0] || data.message || 'Registration failed. Please try again.')
+      }
+    } catch (err) {
+      setError('Unable to connect to server. Please try again later.')
+      console.error('Registration error:', err)
     } finally {
       setLoading(false)
     }
@@ -45,6 +101,18 @@ export default function RegisterPage() {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
             <p className="text-gray-600">Join 10K+ students preparing for their exams</p>
           </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 text-sm font-medium">{error}</p>
+            </div>
+          )}
+
+          {success && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-green-700 text-sm font-medium">✓ Account created successfully! Redirecting...</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="card border-2 border-gray-200 mb-6">
             <div className="mb-5">
