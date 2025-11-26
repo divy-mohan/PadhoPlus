@@ -1,20 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, use } from 'react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import { Star, Users, CheckCircle, GraduationCap, Calendar, BookOpen, Zap } from 'lucide-react'
 import Link from 'next/link'
 
-export default function BatchDetailPage({ params }: { params: { slug: string } }) {
+export default function BatchDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const [activeTab, setActiveTab] = useState('overview')
+  const resolvedParams = use(params)
 
   const batch = {
     id: '1',
     name: 'NEET 2025 - Lakshya',
     exam: 'NEET',
-    slug: params.slug,
+    slug: resolvedParams.slug,
     price: 4999,
     isFree: false,
     language: 'Hindi',
