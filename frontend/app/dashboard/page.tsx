@@ -120,7 +120,7 @@ export default function DashboardPage() {
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">Your Courses</h2>
           {enrollments && enrollments.length > 0 ? (
             <div className="space-y-4">
-              {enrollments.map((batch, idx) => (
+              {enrollments.map((batch) => (
                 <div key={batch.id} className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6 hover:shadow-md transition-all duration-300 border border-slate-200">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-4">
