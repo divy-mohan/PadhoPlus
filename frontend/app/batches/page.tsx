@@ -5,7 +5,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import BatchCard from '@/components/BatchCard'
-import { Search, Sparkles } from 'lucide-react'
+import AnimatedEducationCard from '@/components/AnimatedEducationCard'
+import { Search, Sparkles, Star, TrendingUp } from 'lucide-react'
 
 const mockBatches = [
   {

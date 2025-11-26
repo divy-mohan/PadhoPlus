@@ -3,7 +3,8 @@ import Footer from '@/components/Footer'
 import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
 import FeatureCard from '@/components/FeatureCard'
-import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle } from 'lucide-react'
+import AnimatedEducationCard from '@/components/AnimatedEducationCard'
+import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb } from 'lucide-react'
 import Link from 'next/link'
 
 const featuredBatches = [
@@ -115,9 +116,11 @@ export default function Home() {
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">Everything you need to ace your exams, at a fraction of the cost</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
             {features.map((feature, idx) => (
-              <FeatureCard key={idx} {...feature} delay={`fade-in-delay-${(idx % 4) + 1}`} />
+              <AnimatedEducationCard key={idx} delay={idx * 100} variant={['primary', 'success', 'warning', 'info'][idx % 4] as any}>
+                <FeatureCard {...feature} delay={`fade-in-delay-${(idx % 4) + 1}`} />
+              </AnimatedEducationCard>
             ))}
           </div>
         </div>
@@ -158,11 +161,11 @@ export default function Home() {
             <p className="text-gray-600">Start your preparation with our most loved programs</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 stagger-children">
             {featuredBatches.map((batch, idx) => (
-              <div key={batch.id} className={`fade-in-delay-${(idx % 4) + 1}`}>
+              <AnimatedEducationCard key={batch.id} delay={idx * 100} variant="primary">
                 <BatchCard {...batch} />
-              </div>
+              </AnimatedEducationCard>
             ))}
           </div>
 
@@ -171,6 +174,29 @@ export default function Home() {
               View All Batches
               <ArrowRight className="w-4 h-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section with Animations */}
+      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: Users, label: '10,000+', text: 'Active Students', color: 'from-blue-600 to-blue-700' },
+              { icon: Award, label: '500+', text: 'Expert Lectures', color: 'from-purple-600 to-purple-700' },
+              { icon: Lightbulb, label: '100%', text: 'Success Rate', color: 'from-orange-500 to-red-500' }
+            ].map((stat, idx) => (
+              <div key={idx} className={`animate-fade-in fade-in-delay-${idx + 1}`}>
+                <div className={`bg-gradient-to-br ${stat.color} rounded-2xl p-8 text-white text-center transform hover:scale-110 transition-all duration-300`}>
+                  <div className="flex justify-center mb-4 animate-bounce-smooth">
+                    <stat.icon className="w-10 h-10 animate-star-pulse" />
+                  </div>
+                  <h3 className="text-3xl font-bold mb-2">{stat.label}</h3>
+                  <p className="text-sm font-medium opacity-90">{stat.text}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
