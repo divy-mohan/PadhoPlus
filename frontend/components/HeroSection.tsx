@@ -1,7 +1,20 @@
+'use client'
+
 import Link from 'next/link'
 import { ArrowRight, Play, Sparkles } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 export default function HeroSection() {
+  const [examType, setExamType] = useState(0)
+  const exams = ['9 to 12th', 'JEE', 'NEET']
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setExamType((prev) => (prev + 1) % exams.length)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <section className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-24 px-4 overflow-hidden">
       {/* Decorative elements */}
@@ -15,7 +28,7 @@ export default function HeroSection() {
         </div>
 
         <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight fade-in-delay-2">
-          Master <span className="text-gradient">JEE & NEET</span> with Expert Guidance
+          Master <span className={`text-gradient inline-block min-w-[280px] transition-all duration-500 ease-in-out`}>{exams[examType]}</span> with Expert Guidance
         </h1>
 
         <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto fade-in-delay-3">
