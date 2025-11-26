@@ -175,11 +175,18 @@ class TestAnalyticsViewSet(viewsets.ViewSet):
 
 
 class DashboardViewSet(viewsets.ViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     
     @action(detail=False, methods=['get'])
     def student_dashboard(self, request):
         user = request.user
+        
+        # Check if user is authenticated
+        if not user.is_authenticated:
+            return Response(
+                {'error': 'Please log in', 'success': False},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
         
         # Get basic user info
         name = user.get_full_name() or user.username
