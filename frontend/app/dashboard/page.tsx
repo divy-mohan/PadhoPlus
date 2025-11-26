@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import AnimatedEducationCard from '@/components/AnimatedEducationCard'
-import { Clock, BookOpen, Zap, TrendingUp, Award, Target, PlayCircle, CheckCircle, Star, Medal } from 'lucide-react'
+import { Clock, BookOpen, Zap, TrendingUp, Award, Target, Play, Star, Medal } from 'lucide-react'
 
 export default function DashboardPage() {
   const [studentData] = useState({
@@ -121,7 +121,7 @@ export default function DashboardPage() {
                   </div>
 
                   <button className="btn btn-primary btn-sm flex items-center gap-2">
-                    <PlayCircle className="w-4 h-4" />
+                    <Play className="w-4 h-4" />
                     Continue Learning →
                   </button>
                 </div>
@@ -149,57 +149,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </main>
-
-      <div className="mt-12">
-                  <h3 className="font-semibold text-gray-900">Chemistry - Organic</h3>
-                  <p className="text-sm text-gray-600">2:00 PM - 3:30 PM</p>
-                </div>
-              </div>
-              <button className="btn btn-secondary text-sm">Upcoming</button>
-            </div>
-          </div>
-        </section>
-
-        {/* Continue Watching */}
-        <section className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Continue Watching</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="card cursor-pointer hover:border-blue-300">
-                <div className="aspect-video bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
-                  <BookOpen className="w-8 h-8 text-gray-400" />
-                </div>
-                <h3 className="font-semibold text-gray-900 text-sm mb-2">Lecture {i}: Introduction to Thermodynamics</h3>
-                <div className="w-full bg-gray-200 rounded-full h-1 mb-2">
-                  <div className="bg-blue-600 h-1 rounded-full" style={{ width: `${60 + i * 10}%` }}></div>
-                </div>
-                <p className="text-xs text-gray-600">{60 + i * 10}% completed</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Upcoming Tests */}
-        <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Upcoming Tests</h2>
-          <div className="card">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <div>
-                <h3 className="font-semibold text-gray-900">Full Syllabus Test - Physics</h3>
-                <p className="text-sm text-gray-600">Tomorrow at 6:00 PM</p>
-              </div>
-              <button className="btn btn-primary text-sm">Prepare</button>
-            </div>
-            <div className="flex items-center justify-between p-4">
-              <div>
-                <h3 className="font-semibold text-gray-900">Chapter-wise Test - Chemistry</h3>
-                <p className="text-sm text-gray-600">Day after tomorrow</p>
-              </div>
-              <button className="btn btn-secondary text-sm">View</button>
-            </div>
-          </div>
-        </section>
-      </div>
 
       <Footer />
     </div>
