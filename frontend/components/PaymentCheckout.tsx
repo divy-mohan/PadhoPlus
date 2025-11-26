@@ -33,7 +33,9 @@ const getApiBaseUrl = () => {
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
       return 'http://localhost:8000'
     }
-    return `https://${hostname.replace(':5000', ':8000')}`
+    // For Replit: convert xxx-00-yyy.picard.replit.dev to xxx-8000-yyy.picard.replit.dev
+    const backendHost = hostname.replace(/([^.]+)-00-/, '$1-8000-')
+    return `${window.location.protocol}//${backendHost}`
   }
   return process.env.NEXT_PUBLIC_API_URL || ''
 }
