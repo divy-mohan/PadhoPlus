@@ -5,7 +5,6 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import BatchCard from '@/components/BatchCard'
-import AnimatedEducationCard from '@/components/AnimatedEducationCard'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { Search, Sparkles } from 'lucide-react'
 
@@ -177,7 +176,6 @@ export default function BatchesPage() {
                   {batches.map((batch) => (
                     <div key={batch.id}>
                       <BatchCard 
-                        id={batch.id}
                         name={batch.name} 
                         exam={batch.get_target_exam_display} 
                         startDate={batch.start_date}
