@@ -35,6 +35,40 @@ class BatchPricing(models.Model):
         return f"{self.batch.name} - {self.get_pricing_type_display()}"
 
 
+class PaymentGateway(models.Model):
+    """Configuration for available payment gateways"""
+    GATEWAY_CHOICES = [
+        ('phonepe', 'PhonePe'),
+        ('razorpay', 'Razorpay'),
+        ('stripe', 'Stripe'),
+        ('paytm', 'Paytm'),
+    ]
+    
+    name = models.CharField(max_length=50, choices=GATEWAY_CHOICES, unique=True)
+    display_name = models.CharField(max_length=100)
+    icon = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    
+    is_active = models.BooleanField(default=True)
+    is_default = models.BooleanField(default=False)
+    priority = models.IntegerField(default=0)
+    
+    supports_upi = models.BooleanField(default=True)
+    supports_cards = models.BooleanField(default=True)
+    supports_netbanking = models.BooleanField(default=True)
+    supports_wallets = models.BooleanField(default=False)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'payment_gateways'
+        ordering = ['-is_default', 'priority', 'name']
+    
+    def __str__(self):
+        return self.display_name
+
+
 class Payment(models.Model):
     """Track all payments"""
     STATUS_CHOICES = [
@@ -46,24 +80,30 @@ class Payment(models.Model):
     ]
     
     PAYMENT_METHOD_CHOICES = [
-        ('stripe', 'Stripe'),
+        ('phonepe', 'PhonePe'),
         ('razorpay', 'Razorpay'),
+        ('stripe', 'Stripe'),
+        ('paytm', 'Paytm'),
         ('upi', 'UPI'),
         ('manual', 'Manual Transfer'),
     ]
     
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments')
     enrollment = models.OneToOneField(Enrollment, on_delete=models.CASCADE, related_name='payment', null=True, blank=True)
+    gateway = models.ForeignKey(PaymentGateway, on_delete=models.SET_NULL, null=True, blank=True, related_name='payments')
     
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=3, default='INR')
     
-    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, default='stripe')
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, default='phonepe')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     
     transaction_id = models.CharField(max_length=255, unique=True)
-    stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
-    stripe_payment_intent_id = models.CharField(max_length=255, blank=True, null=True)
+    merchant_transaction_id = models.CharField(max_length=255, blank=True, null=True)
+    
+    gateway_transaction_id = models.CharField(max_length=255, blank=True, null=True)
+    gateway_order_id = models.CharField(max_length=255, blank=True, null=True)
+    gateway_response = models.JSONField(blank=True, null=True)
     
     payment_date = models.DateTimeField(blank=True, null=True)
     failed_reason = models.TextField(blank=True, null=True)
