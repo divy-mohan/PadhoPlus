@@ -3,27 +3,27 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   try {
     const backendUrl = 'http://localhost:8000'
-    const cookie = request.headers.get('cookie')
+    
+    // Get all cookies including sessionid
+    const cookies = request.headers.get('cookie') || ''
     
     const response = await fetch(`${backendUrl}/api/dashboard/student_dashboard/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        ...(cookie && { 'Cookie': cookie })
-      },
-      credentials: 'include' as any,
+        'Cookie': cookies
+      }
     })
 
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 403) {
       return NextResponse.json(
-        { error: 'Unauthorized', success: false },
+        { error: 'Please log in to view dashboard', success: false },
         { status: 401 }
       )
     }
 
     if (!response.ok) {
-      const text = await response.text()
-      console.error('Backend error:', text)
+      console.error('Backend error status:', response.status)
       return NextResponse.json(
         { error: 'Dashboard error', success: false },
         { status: response.status }
