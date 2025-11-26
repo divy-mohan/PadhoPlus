@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
     const backendUrl = 'http://localhost:8000'
     const cookie = request.headers.get('cookie')
     
-    const response = await fetch(`${backendUrl}/api/dashboard/student/`, {
+    const response = await fetch(`${backendUrl}/api/dashboard/student_dashboard/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -22,9 +22,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (!response.ok) {
-      const errorData = await response.json()
+      const text = await response.text()
+      console.error('Backend error:', text)
       return NextResponse.json(
-        { error: errorData.message || 'Dashboard error', success: false },
+        { error: 'Dashboard error', success: false },
         { status: response.status }
       )
     }

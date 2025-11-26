@@ -181,98 +181,59 @@ class DashboardViewSet(viewsets.ViewSet):
     def student_dashboard(self, request):
         user = request.user
         
-        if not user.is_student():
-            return Response(
-                {'error': 'Only students can access this dashboard'},
-                status=status.HTTP_403_FORBIDDEN
-            )
+        # Get basic user info
+        name = user.get_full_name() or user.username
+        email = user.email
         
-        today = timezone.now().date()
-        
+        # Get enrollments
         from padhoplus.batches.models import Enrollment
-        from padhoplus.content.models import WatchHistory
-        from padhoplus.assessments.models import Test, TestAttempt
-        from padhoplus.doubts.models import Doubt
+        try:
+            enrolled_count = Enrollment.objects.filter(student=user, status='active').count()
+        except:
+            enrolled_count = 0
         
-        enrolled_batches = Enrollment.objects.filter(
-            student=user, status='active'
-        ).count()
+        # Get progress statistics
+        progress = UserProgress.objects.filter(user=user)
+        total_watch_time = progress.aggregate(Sum('time_spent_minutes'))['time_spent_minutes__sum'] or 0
+        total_tests = progress.aggregate(Sum('tests_taken'))['tests_taken__sum'] or 0
+        avg_score = progress.aggregate(Avg('average_test_score'))['average_test_score__avg'] or 0
         
-        continue_watching = WatchHistory.objects.filter(
-            user=user, is_completed=False
-        ).select_related('lecture', 'lecture__subject')[:5]
+        # Get streak
+        try:
+            streak_obj, _ = Streak.objects.get_or_create(user=user)
+            current_streak = streak_obj.current_streak
+        except:
+            current_streak = 0
         
-        enrolled_batch_ids = Enrollment.objects.filter(
-            student=user, status='active'
-        ).values_list('batch_id', flat=True)
-        
-        upcoming_tests = Test.objects.filter(
-            batch_id__in=enrolled_batch_ids,
-            status='scheduled',
-            start_datetime__gt=timezone.now()
-        ).order_by('start_datetime')[:5]
-        
-        recent_test_attempts = TestAttempt.objects.filter(
-            student=user, status='submitted'
-        ).order_by('-submitted_at')[:3]
-        
-        my_doubts = Doubt.objects.filter(student=user).order_by('-created_at')[:5]
-        
-        streak, _ = Streak.objects.get_or_create(user=user)
-        
-        today_activity, _ = DailyActivity.objects.get_or_create(
-            user=user, date=today
-        )
+        # Get achievements
+        achievements_list = []
+        try:
+            achievements = UserAchievement.objects.filter(user=user).select_related('achievement')
+            achievements_list = [
+                {
+                    'id': ua.achievement.id,
+                    'name': ua.achievement.name,
+                    'icon': ua.achievement.icon or '🏆',
+                    'earnedAt': ua.earned_at.strftime('%b %d, %Y')
+                }
+                for ua in achievements
+            ]
+        except:
+            pass
         
         return Response({
-            'enrolled_batches': enrolled_batches,
-            'continue_watching': [
-                {
-                    'lecture_id': h.lecture.id,
-                    'lecture_title': h.lecture.title,
-                    'subject': h.lecture.subject.name,
-                    'progress': h.last_position,
-                    'duration': h.lecture.duration_minutes
-                }
-                for h in continue_watching
-            ],
-            'upcoming_tests': [
-                {
-                    'id': t.id,
-                    'title': t.title,
-                    'start_datetime': t.start_datetime,
-                    'duration_minutes': t.duration_minutes
-                }
-                for t in upcoming_tests
-            ],
-            'recent_tests': [
-                {
-                    'test_title': a.test.title,
-                    'score': a.score,
-                    'rank': a.rank,
-                    'date': a.submitted_at
-                }
-                for a in recent_test_attempts
-            ],
-            'my_doubts': [
-                {
-                    'id': d.id,
-                    'title': d.title,
-                    'status': d.status,
-                    'created_at': d.created_at
-                }
-                for d in my_doubts
-            ],
+            'success': True,
+            'name': name,
+            'email': email,
+            'enrolled_batches': enrolled_count,
+            'total_watch_time': int(total_watch_time),
             'streak': {
-                'current': streak.current_streak,
-                'longest': streak.longest_streak,
-                'points': streak.total_points
+                'current': current_streak,
             },
-            'today_activity': {
-                'time_spent': today_activity.time_spent_minutes,
-                'lectures_watched': today_activity.lectures_watched,
-                'questions_practiced': today_activity.questions_practiced
-            }
+            'avg_score': float(avg_score) if avg_score else 0,
+            'total_tests': int(total_tests),
+            'achievements_earned': achievements_list,
+            'continue_watching': [],
         })
     
     @action(detail=False, methods=['get'])
