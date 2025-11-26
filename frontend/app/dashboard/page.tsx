@@ -9,7 +9,7 @@ import WatchMeter from '@/components/WatchMeter'
 import StreakCalendar from '@/components/StreakCalendar'
 import AchievementCard from '@/components/AchievementCard'
 import { useSkeleton } from '@/context/SkeletonContext'
-import { BookOpen, ArrowUpRight, Play } from 'lucide-react'
+import { BookOpen, Play } from 'lucide-react'
 
 export default function DashboardPage() {
   const router = useRouter()
