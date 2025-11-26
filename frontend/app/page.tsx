@@ -92,12 +92,12 @@ const features = [
 ]
 
 const benefits = [
-  'Live interactive classes 5 days a week',
-  'Recorded lectures for flexible learning',
-  'Daily practice problems & assignments',
-  '24/7 doubt support from experts',
-  'Weekly test analysis & feedback',
-  'Progress tracking dashboard'
+  '🎯 Structured Learning - Complete syllabus coverage with a planned roadmap',
+  '📚 Top-Level Content - Notes, PYQs, DPPs & test series by expert educators',
+  '🤝 1:1 Doubt Support - Ask anytime and get quick, clear solutions',
+  '📊 AI-Powered Analytics - Track strengths & weaknesses with smart analysis',
+  '🔁 Live + Recorded - Never miss a class, learn at your own pace',
+  '🪙 Most Affordable - Premium features without expensive price tags',
 ]
 
 export default function Home() {

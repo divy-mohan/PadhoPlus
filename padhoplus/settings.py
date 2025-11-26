@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'padhoplus.assessments',
     'padhoplus.doubts',
     'padhoplus.analytics',
+    'padhoplus.payments',
 ]
 
 MIDDLEWARE = [
