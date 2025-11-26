@@ -57,9 +57,17 @@ export default function ProfilePage() {
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Profile</h1>
-          <p className="text-gray-500">Manage your account and view your learning history</p>
+        <div className="mb-12 flex justify-between items-start">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Profile</h1>
+            <p className="text-gray-500">Manage your account and view your learning history</p>
+          </div>
+          <a
+            href="/profile/edit"
+            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300 whitespace-nowrap"
+          >
+            Edit Profile
+          </a>
         </div>
 
         {/* Profile Information */}
