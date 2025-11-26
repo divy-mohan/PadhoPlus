@@ -1,7 +1,7 @@
 modules = ["python-3.11", "nodejs-22"]
 [agent]
 expertMode = true
-integrations = ["python_log_in_with_replit:1.0.0", "python_database:1.0.0"]
+integrations = ["python_log_in_with_replit:1.0.0", "python_database:1.0.0", "stripe:1.0.0"]
 
 [nix]
 channel = "stable-25_05"
@@ -54,6 +54,10 @@ externalPort = 80
 [[ports]]
 localPort = 8000
 externalPort = 8000
+
+[[ports]]
+localPort = 40399
+externalPort = 3001
 
 [[ports]]
 localPort = 42379
