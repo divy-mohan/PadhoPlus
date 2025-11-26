@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  allowedDevOrigins: ["*.replit.dev", "*.picard.replit.dev"],
 };
 
 export default nextConfig;

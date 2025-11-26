@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { Users, Clock, BookOpen, ArrowRight, Star, ImageOff } from 'lucide-react'
 
 interface BatchCardProps {
@@ -25,37 +24,17 @@ export default function BatchCard({
   slug,
   image
 }: BatchCardProps) {
-  const getApiUrl = () => {
-    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-      return 'http://localhost:8000'
-    }
-    return process.env.NEXT_PUBLIC_API_URL || `https://${typeof window !== 'undefined' ? window.location.hostname : 'api'}`
-  }
-
-  const imageUrl = image && !image.startsWith('http') ? `${getApiUrl()}${image}` : image
-
   return (
     <Link href={`/batch/${slug}`}>
       <div className="card-interactive group overflow-hidden">
         {/* Image Section - Responsive with landscape orientation */}
         <div className="relative w-full aspect-video bg-gradient-to-br from-blue-50 to-purple-50 overflow-hidden mb-4">
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={name}
-              fill
-              className="object-cover group-hover:scale-110 transition-transform duration-300"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority={false}
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
-              <div className="flex flex-col items-center gap-2">
-                <ImageOff className="w-8 h-8 text-gray-400" />
-                <span className="text-xs text-gray-500 font-medium">No image</span>
-              </div>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+            <div className="flex flex-col items-center gap-2">
+              <BookOpen className="w-12 h-12 text-blue-500" />
+              <span className="text-sm text-blue-600 font-medium">{exam}</span>
             </div>
-          )}
+          </div>
         </div>
 
         {/* Content Section */}
