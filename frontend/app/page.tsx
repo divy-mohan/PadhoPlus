@@ -102,6 +102,51 @@ const benefits = [
   { icon: DollarSign, title: 'Most Affordable', desc: 'Premium features without expensive price tags' },
 ]
 
+const examCategories = [
+  {
+    id: 'neet',
+    name: 'NEET',
+    icon: Target,
+    subcategories: ['Class 11', 'Class 12', 'Dropper'],
+    gradient: 'from-red-500 to-pink-500'
+  },
+  {
+    id: 'jee',
+    name: 'IIT JEE',
+    icon: Brain,
+    subcategories: ['Class 11', 'Class 12', 'Dropper'],
+    gradient: 'from-blue-500 to-cyan-500'
+  },
+  {
+    id: 'school',
+    name: 'School Preparation',
+    icon: BookOpen,
+    subcategories: ['Class 6', 'Class 7', 'Class 8', 'More...'],
+    gradient: 'from-green-500 to-emerald-500'
+  },
+  {
+    id: 'upsc',
+    name: 'UPSC',
+    icon: Award,
+    subcategories: [],
+    gradient: 'from-yellow-500 to-orange-500'
+  },
+  {
+    id: 'govt',
+    name: 'Govt Job Exams',
+    icon: Zap,
+    subcategories: ['SSC', 'Banking', 'Teaching', 'Judiciary'],
+    gradient: 'from-purple-500 to-pink-500'
+  },
+  {
+    id: 'defence',
+    name: 'Defence',
+    icon: Shield,
+    subcategories: ['NDA', 'CDS', 'AFCAT', 'Agniveer'],
+    gradient: 'from-indigo-500 to-blue-500'
+  },
+]
+
 export default function Home() {
   return (
     <div className="bg-white">
@@ -235,6 +280,77 @@ export default function Home() {
             animation: shineOnce 0.6s ease-in-out;
           }
         `}</style>
+      </section>
+
+      {/* Exam Categories Section */}
+      <section className="py-24 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto">
+          <ScrollAnimation type="fade-up">
+            <div className="text-center mb-16">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <Layers className="w-8 h-8 text-blue-600" />
+                <h2 className="text-4xl font-bold text-gray-900">Exam Categories</h2>
+                <Layers className="w-8 h-8 text-blue-600" />
+              </div>
+              <p className="text-gray-600 text-lg">Choose your exam and get prepared with our comprehensive courses</p>
+            </div>
+          </ScrollAnimation>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {examCategories.map((category, idx) => {
+              const CategoryIcon = category.icon
+              return (
+                <ScrollAnimation key={category.id} type="zoom-in" delay={idx * 100}>
+                  <div className="group relative h-full">
+                    {/* Glow effect */}
+                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${category.gradient} rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500`}></div>
+
+                    {/* Card */}
+                    <div className="relative h-full bg-white rounded-2xl p-8 border border-gray-200 group-hover:border-blue-300 transition-all duration-300 shadow-md group-hover:shadow-2xl flex flex-col">
+                      {/* Shine effect */}
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                      {/* Content */}
+                      <div className="relative z-10 flex-1">
+                        {/* Icon container */}
+                        <div className={`inline-flex items-center justify-center mb-4 p-4 bg-gradient-to-br ${category.gradient} rounded-xl relative group/icon`}>
+                          <div className="absolute inset-0 bg-white/30 rounded-xl opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300"></div>
+                          <CategoryIcon className="w-8 h-8 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
+                        </div>
+
+                        {/* Title */}
+                        <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-blue-600 group-hover:bg-clip-text transition-all duration-300">
+                          {category.name}
+                        </h3>
+
+                        {/* Subcategories */}
+                        {category.subcategories.length > 0 && (
+                          <div className="space-y-2 mb-6">
+                            {category.subcategories.map((sub, subIdx) => (
+                              <p key={subIdx} className="text-gray-600 text-sm flex items-center gap-2 group-hover:text-gray-700 transition-colors">
+                                <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r to-blue-500 from-blue-400"></span>
+                                {sub}
+                              </p>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Explore Button */}
+                      <Link href={`/batches?category=${category.id}`} className="relative z-10 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 text-blue-600 font-semibold hover:from-blue-100 hover:to-purple-100 hover:border-blue-400 transition-all duration-300 group/btn">
+                        Explore Category
+                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                      </Link>
+
+                      {/* Bottom accent bar */}
+                      <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${category.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-2xl`}></div>
+                    </div>
+                  </div>
+                </ScrollAnimation>
+              )
+            })}
+          </div>
+        </div>
       </section>
 
       {/* Featured Batches */}
