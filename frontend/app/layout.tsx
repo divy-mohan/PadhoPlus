@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import AdvancedLoader from '@/components/AdvancedLoader'
+import PageProgressBar from '@/components/PageProgressBar'
 
 export const metadata: Metadata = {
   title: 'PadhoPlus - Online Education for JEE/NEET',
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AdvancedLoader />
+        <PageProgressBar />
         {children}
       </body>
     </html>
