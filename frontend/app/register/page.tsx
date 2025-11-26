@@ -5,9 +5,11 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import LoadingButton from '@/components/LoadingButton'
+import { useSkeleton } from '@/context/SkeletonContext'
 import { User, Mail, Lock, GraduationCap, CheckCircle, Eye, EyeOff } from 'lucide-react'
 
 export default function RegisterPage() {
+  const { setIsLoading } = useSkeleton()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -73,6 +75,7 @@ export default function RegisterPage() {
           role: 'student'
         })
         setTimeout(() => {
+          setIsLoading(true)
           window.location.href = '/dashboard'
         }, 1500)
       } else {
