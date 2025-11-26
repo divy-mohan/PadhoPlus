@@ -91,15 +91,15 @@ export default function DashboardPage() {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {[
-            { icon: BookOpen, label: 'Enrolled Batches', value: studentData?.stats?.enrolledBatches || 0 },
-            { icon: Clock, label: 'Watch Time', value: `${studentData?.stats?.watchTime || 0}m` },
-            { icon: Zap, label: 'Streak', value: `${studentData?.stats?.streak || 0}d` },
-            { icon: Award, label: 'Achievements', value: studentData?.stats?.achievements || 0 },
+            { icon: BookOpen, label: 'Enrolled Batches', value: studentData?.stats?.enrolledBatches || 0, color: 'text-blue-600' },
+            { icon: Clock, label: 'Watch Time', value: `${studentData?.stats?.watchTime || 0}m`, color: 'text-purple-600' },
+            { icon: Zap, label: 'Streak', value: `${studentData?.stats?.streak || 0}d`, color: 'text-amber-600' },
+            { icon: Award, label: 'Achievements', value: studentData?.stats?.achievements || 0, color: 'text-emerald-600' },
           ].map((stat, idx) => (
             <div key={idx}>
               <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6 hover:shadow-md transition-all duration-300 border border-slate-200">
                 <div className="flex justify-between items-start mb-4">
-                  <stat.icon className="w-8 h-8 text-slate-600" />
+                  <stat.icon className={`w-8 h-8 ${stat.color}`} />
                 </div>
                 <h3 className="text-3xl font-semibold text-slate-900 mb-1">{stat.value}</h3>
                 <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">{stat.label}</p>
