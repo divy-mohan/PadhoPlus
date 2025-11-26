@@ -43,19 +43,11 @@ export default function RegisterPage() {
 
     setLoading(true)
     try {
-      let apiUrl = 'http://localhost:8000'
-      if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
-        // For Replit: convert xxx-00-yyy.picard.replit.dev to xxx-8000-yyy.picard.replit.dev
-        const backendHost = window.location.hostname.replace(/([^.]+)-00-/, '$1-8000-')
-        apiUrl = `${window.location.protocol}//${backendHost}`
-      }
-
-      const response = await fetch(`${apiUrl}/api/auth/register/`, {
+      const response = await fetch('/api/auth/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify({
           username: formData.email.split('@')[0],
           email: formData.email,
