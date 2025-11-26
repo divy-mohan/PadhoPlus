@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   try {
     const backendUrl = 'http://localhost:8000'
-    
-    // Get all cookies including sessionid
     const cookies = request.headers.get('cookie') || ''
     
     const response = await fetch(`${backendUrl}/api/dashboard/student_dashboard/`, {
@@ -12,7 +10,8 @@ export async function GET(request: NextRequest) {
       headers: {
         'Content-Type': 'application/json',
         'Cookie': cookies
-      }
+      },
+      credentials: 'include'
     })
 
     if (response.status === 401 || response.status === 403) {
@@ -31,14 +30,9 @@ export async function GET(request: NextRequest) {
     }
 
     const data = await response.json()
-    
-    // Transform backend data to match frontend expectations
     return NextResponse.json({
       success: true,
-      user: {
-        name: data.name || 'Student',
-        email: data.email || '',
-      },
+      user: { name: data.name || 'Student', email: data.email || '' },
       stats: {
         enrolledBatches: data.enrolled_batches || 0,
         watchTime: data.total_watch_time || 0,

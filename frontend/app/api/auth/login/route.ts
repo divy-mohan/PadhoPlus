@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
     const backendUrl = 'http://localhost:8000'
     
     const response = await fetch(`${backendUrl}/api/auth/login/`, {
@@ -12,12 +11,18 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
+      credentials: 'include',
     })
 
     const data = await response.json()
     
     if (response.ok) {
-      return NextResponse.json(data, { status: 200 })
+      const result = NextResponse.json(data, { status: 200 })
+      const setCookieHeader = response.headers.get('set-cookie')
+      if (setCookieHeader) {
+        result.headers.set('set-cookie', setCookieHeader)
+      }
+      return result
     } else {
       return NextResponse.json(data, { status: response.status })
     }
