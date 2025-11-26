@@ -25,7 +25,6 @@ interface PaymentCheckoutProps {
   batchName: string
   amount: number
   onBack?: () => void
-  onSuccess?: (transactionId: string) => void
 }
 
 const getApiBaseUrl = () => {
@@ -43,8 +42,7 @@ export default function PaymentCheckout({
   batchId,
   batchName,
   amount,
-  onBack,
-  onSuccess
+  onBack
 }: PaymentCheckoutProps) {
   const [selectedGateway, setSelectedGateway] = useState<PaymentGateway | null>(null)
   const [loading, setLoading] = useState(false)

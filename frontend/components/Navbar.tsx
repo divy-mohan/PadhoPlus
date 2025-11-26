@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BookOpen, Menu, X, GraduationCap, FileText, Users, Info, LogIn, UserPlus, Sparkles } from 'lucide-react'
+import { BookOpen, Menu, X, GraduationCap, FileText, Users, Info, LogIn, UserPlus } from 'lucide-react'
 import { useState } from 'react'
 
 export default function Navbar() {
