@@ -6,7 +6,7 @@ import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
 import FeatureCard from '@/components/FeatureCard'
 import ScrollAnimation from '@/components/ScrollAnimation'
-import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Book, Droplet, BadgeCheck, Briefcase, GraduationCap, Gavel } from 'lucide-react'
+import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Book, Droplet, BadgeCheck, Briefcase, GraduationCap, Gavel, Smile, Clock, HelpCircle } from 'lucide-react'
 import Link from 'next/link'
 
 const featuredBatches = [
@@ -478,19 +478,25 @@ export default function Home() {
           {/* Floating stats indicators */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { number: '98%', label: 'Student Satisfaction' },
-              { number: '50K+', label: 'Problems Solved' },
-              { number: '24/7', label: 'Doubt Support' }
-            ].map((item, idx) => (
-              <ScrollAnimation key={idx} type="blur-fade" delay={idx * 100}>
-                <div className="bg-blue-100/50 backdrop-blur-sm border border-blue-300 rounded-lg p-4 text-center hover:bg-blue-100 transition-all duration-300 group cursor-pointer">
-                  <div className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text group-hover:scale-110 transition-transform duration-300 inline-block">
-                    {item.number}
+              { number: '98%', label: 'Student Satisfaction', icon: Smile, color: 'text-green-500' },
+              { number: '50K+', label: 'Problems Solved', icon: CheckCircle, color: 'text-blue-500' },
+              { number: '24/7', label: 'Doubt Support', icon: Clock, color: 'text-orange-500' }
+            ].map((item, idx) => {
+              const ItemIcon = item.icon
+              return (
+                <ScrollAnimation key={idx} type="blur-fade" delay={idx * 100}>
+                  <div className="bg-blue-100/50 backdrop-blur-sm border border-blue-300 rounded-lg p-4 text-center hover:bg-blue-100 transition-all duration-300 group cursor-pointer flex items-center gap-3">
+                    <ItemIcon className={`w-6 h-6 ${item.color} flex-shrink-0`} />
+                    <div>
+                      <div className="text-xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text group-hover:scale-110 transition-transform duration-300 inline-block">
+                        {item.number}
+                      </div>
+                      <p className="text-blue-700 text-xs mt-0.5 group-hover:text-blue-900 transition-colors duration-300">{item.label}</p>
+                    </div>
                   </div>
-                  <p className="text-blue-700 text-sm mt-1 group-hover:text-blue-900 transition-colors duration-300">{item.label}</p>
-                </div>
-              </ScrollAnimation>
-            ))}
+                </ScrollAnimation>
+              )
+            })}
           </div>
         </div>
       </section>

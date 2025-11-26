@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BookOpen, Mail, Linkedin, Twitter } from 'lucide-react'
+import { BookOpen, Mail, Linkedin, Twitter, Layers, BookMarked, Users, Info, Briefcase, Shield, FileText, RotateCcw } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -19,31 +19,31 @@ export default function Footer() {
 
           {/* Links */}
           <div>
-            <h4 className="font-semibold mb-4 text-gray-100">Platform</h4>
+            <h4 className="font-semibold mb-4 text-gray-100 flex items-center gap-2"><Layers className="w-4 h-4 text-blue-400" />Platform</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/batches" className="text-gray-400 hover:text-blue-400 transition-smooth">Batches</Link></li>
-              <li><Link href="/notes" className="text-gray-400 hover:text-blue-400 transition-smooth">Resources</Link></li>
-              <li><Link href="/faculty" className="text-gray-400 hover:text-blue-400 transition-smooth">Faculty</Link></li>
+              <li><Link href="/batches" className="text-gray-400 hover:text-blue-400 transition-smooth flex items-center gap-2"><BookMarked className="w-3.5 h-3.5" />Batches</Link></li>
+              <li><Link href="/notes" className="text-gray-400 hover:text-blue-400 transition-smooth flex items-center gap-2"><BookOpen className="w-3.5 h-3.5" />Resources</Link></li>
+              <li><Link href="/faculty" className="text-gray-400 hover:text-blue-400 transition-smooth flex items-center gap-2"><Users className="w-3.5 h-3.5" />Faculty</Link></li>
             </ul>
           </div>
 
           {/* Company */}
           <div>
-            <h4 className="font-semibold mb-4 text-gray-100">Company</h4>
+            <h4 className="font-semibold mb-4 text-gray-100 flex items-center gap-2"><Info className="w-4 h-4 text-purple-400" />Company</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/about" className="text-gray-400 hover:text-blue-400 transition-smooth">About</Link></li>
-              <li><Link href="/careers" className="text-gray-400 hover:text-blue-400 transition-smooth">Careers</Link></li>
-              <li><Link href="/contact" className="text-gray-400 hover:text-blue-400 transition-smooth">Contact</Link></li>
+              <li><Link href="/about" className="text-gray-400 hover:text-blue-400 transition-smooth flex items-center gap-2"><Info className="w-3.5 h-3.5" />About</Link></li>
+              <li><Link href="/careers" className="text-gray-400 hover:text-blue-400 transition-smooth flex items-center gap-2"><Briefcase className="w-3.5 h-3.5" />Careers</Link></li>
+              <li><Link href="/contact" className="text-gray-400 hover:text-blue-400 transition-smooth flex items-center gap-2"><MailIcon className="w-3.5 h-3.5" />Contact</Link></li>
             </ul>
           </div>
 
           {/* Legal */}
           <div>
-            <h4 className="font-semibold mb-4 text-gray-100">Legal</h4>
+            <h4 className="font-semibold mb-4 text-gray-100 flex items-center gap-2"><FileText className="w-4 h-4 text-green-400" />Legal</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/terms" className="text-gray-400 hover:text-blue-400 transition-smooth">Terms</Link></li>
-              <li><Link href="/privacy" className="text-gray-400 hover:text-blue-400 transition-smooth">Privacy</Link></li>
-              <li><Link href="/refund" className="text-gray-400 hover:text-blue-400 transition-smooth">Refund Policy</Link></li>
+              <li><Link href="/terms" className="text-gray-400 hover:text-blue-400 transition-smooth flex items-center gap-2"><FileText className="w-3.5 h-3.5" />Terms</Link></li>
+              <li><Link href="/privacy" className="text-gray-400 hover:text-blue-400 transition-smooth flex items-center gap-2"><Shield className="w-3.5 h-3.5" />Privacy</Link></li>
+              <li><Link href="/refund" className="text-gray-400 hover:text-blue-400 transition-smooth flex items-center gap-2"><RotateCcw className="w-3.5 h-3.5" />Refund Policy</Link></li>
             </ul>
           </div>
         </div>
