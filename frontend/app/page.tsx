@@ -170,11 +170,11 @@ export default function Home() {
             <p className="text-gray-600">Start your preparation with our most loved programs</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 stagger-children">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-10">
             {featuredBatches.map((batch, idx) => (
-              <AnimatedEducationCard key={batch.id} delay={idx * 100} variant="primary">
+              <div key={batch.id} className={`animate-fade-in fade-in-delay-${(idx % 4) + 1}`}>
                 <BatchCard {...batch} />
-              </AnimatedEducationCard>
+              </div>
             ))}
           </div>
 
