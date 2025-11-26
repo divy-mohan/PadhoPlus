@@ -9,6 +9,7 @@ import LoadingButton from '@/components/LoadingButton'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { Star, Users, CheckCircle, GraduationCap, Calendar, BookOpen, Zap } from 'lucide-react'
 import Link from 'next/link'
+import { apiEndpoints } from '@/utils/api'
 
 export default function BatchDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const [activeTab, setActiveTab] = useState('overview')
@@ -23,7 +24,7 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
     const fetchBatch = async () => {
       try {
         const resolvedParams = await params
-        const response = await fetch(`http://localhost:8000/api/batches/${resolvedParams.slug}/`, {
+        const response = await fetch(apiEndpoints.batch(resolvedParams.slug), {
           credentials: 'include'
         })
         
@@ -47,7 +48,7 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   const handleEnroll = async () => {
     setEnrollLoading(true)
     try {
-      const response = await fetch(`http://localhost:8000/api/batches/${batch.slug}/enroll/`, {
+      const response = await fetch(apiEndpoints.batchEnroll(batch.slug), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   const handleDemo = async () => {
     setDemoLoading(true)
     try {
-      const response = await fetch(`http://localhost:8000/api/batches/${batch.slug}/demo_lectures/`, {
+      const response = await fetch(apiEndpoints.batchDemo(batch.slug), {
         credentials: 'include'
       })
 

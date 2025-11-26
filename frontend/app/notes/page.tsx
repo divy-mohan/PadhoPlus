@@ -6,6 +6,7 @@ import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { BookOpen, FileText, Download } from 'lucide-react'
+import { apiEndpoints } from '@/utils/api'
 
 export default function NotesPage() {
   const [notes, setNotes] = useState<any[]>([])
@@ -17,7 +18,7 @@ export default function NotesPage() {
 
   const fetchNotes = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/notes/?is_active=true', {
+      const response = await fetch(apiEndpoints.notes(), {
         credentials: 'include'
       })
       if (response.ok) {

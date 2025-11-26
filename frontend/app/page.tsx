@@ -8,6 +8,7 @@ import ScrollAnimation from '@/components/ScrollAnimation'
 import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Smile, Clock, MessageCircle, Heart } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { apiEndpoints } from '@/utils/api'
 
 const featuredBatches = [
   {
@@ -202,7 +203,7 @@ export default function Home() {
   useEffect(() => {
     const fetchBatchesByCategory = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/batches/?is_active=true', {
+        const response = await fetch(apiEndpoints.batches(), {
           credentials: 'include'
         })
         if (response.ok) {

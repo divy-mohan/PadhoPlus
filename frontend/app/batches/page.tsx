@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import BatchCard from '@/components/BatchCard'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { Search, Sparkles } from 'lucide-react'
+import { apiEndpoints } from '@/utils/api'
 
 export default function BatchesPage() {
   const [batches, setBatches] = useState<any[]>([])
@@ -23,7 +24,7 @@ export default function BatchesPage() {
 
   const fetchBatches = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/batches/?is_active=true', {
+      const response = await fetch(apiEndpoints.batches(), {
         credentials: 'include'
       })
       if (response.ok) {

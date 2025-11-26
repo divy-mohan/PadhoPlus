@@ -6,6 +6,7 @@ import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { Users, Star } from 'lucide-react'
+import { apiEndpoints } from '@/utils/api'
 
 export default function FacultyPage() {
   const [faculty, setFaculty] = useState<any[]>([])
@@ -17,7 +18,7 @@ export default function FacultyPage() {
 
   const fetchFaculty = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/users/faculty/', {
+      const response = await fetch(apiEndpoints.faculty(), {
         credentials: 'include'
       })
       if (response.ok) {
