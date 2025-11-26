@@ -255,23 +255,84 @@ export default function Home() {
       </section>
 
       {/* Stats Section with Animations */}
-      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+      <section className="py-24 px-4 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-600/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <ScrollAnimation type="fade-up">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-white mb-3">Why Students Choose Us</h2>
+              <p className="text-blue-200 text-lg">Join thousands of successful learners</p>
+            </div>
+          </ScrollAnimation>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { icon: Users, label: '10,000+', text: 'Active Students', color: 'from-blue-600 to-blue-700' },
-              { icon: Award, label: '500+', text: 'Expert Lectures', color: 'from-purple-600 to-purple-700' },
+              { icon: Users, label: '10,000+', text: 'Active Students', color: 'from-blue-500 to-cyan-500' },
+              { icon: Award, label: '500+', text: 'Expert Lectures', color: 'from-purple-500 to-pink-500' },
               { icon: Lightbulb, label: '100%', text: 'Success Rate', color: 'from-orange-500 to-red-500' }
-            ].map((stat, idx) => (
-              <div key={idx} className={`animate-fade-in fade-in-delay-${idx + 1}`}>
-                <div className={`bg-gradient-to-br ${stat.color} rounded-2xl p-8 text-white text-center transform hover:scale-110 transition-all duration-300`}>
-                  <div className="flex justify-center mb-4 animate-bounce-smooth">
-                    <stat.icon className="w-10 h-10 animate-star-pulse" />
+            ].map((stat, idx) => {
+              const StatIcon = stat.icon
+              return (
+                <ScrollAnimation key={idx} type="zoom-in" delay={idx * 150}>
+                  <div className="group relative">
+                    {/* Glow effect */}
+                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${stat.color} rounded-2xl opacity-0 group-hover:opacity-100 blur transition-all duration-500`}></div>
+                    
+                    {/* Card */}
+                    <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 border border-slate-700 group-hover:border-slate-600 transition-all duration-300">
+                      {/* Shine effect */}
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                      {/* Content */}
+                      <div className="relative z-10 text-center">
+                        {/* Icon container */}
+                        <div className={`inline-flex items-center justify-center mb-6 p-4 bg-gradient-to-br ${stat.color} rounded-full relative group/icon`}>
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent rounded-full opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300"></div>
+                          <StatIcon className="w-8 h-8 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
+                        </div>
+
+                        {/* Animated counter */}
+                        <div className="mb-3">
+                          <h3 className={`text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 inline-block`}>
+                            {stat.label}
+                          </h3>
+                        </div>
+
+                        {/* Text */}
+                        <p className="text-slate-300 font-semibold group-hover:text-white transition-colors duration-300">
+                          {stat.text}
+                        </p>
+                      </div>
+
+                      {/* Bottom accent bar */}
+                      <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-2xl`}></div>
+                    </div>
                   </div>
-                  <h3 className="text-3xl font-bold mb-2">{stat.label}</h3>
-                  <p className="text-sm font-medium opacity-90">{stat.text}</p>
+                </ScrollAnimation>
+              )
+            })}
+          </div>
+
+          {/* Floating stats indicators */}
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              { number: '98%', label: 'Student Satisfaction' },
+              { number: '50K+', label: 'Problems Solved' },
+              { number: '24/7', label: 'Doubt Support' }
+            ].map((item, idx) => (
+              <ScrollAnimation key={idx} type="blur-fade" delay={idx * 100}>
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 text-center hover:bg-white/10 transition-all duration-300 group cursor-pointer">
+                  <div className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text group-hover:scale-110 transition-transform duration-300 inline-block">
+                    {item.number}
+                  </div>
+                  <p className="text-slate-400 text-sm mt-1 group-hover:text-slate-200 transition-colors duration-300">{item.label}</p>
                 </div>
-              </div>
+              </ScrollAnimation>
             ))}
           </div>
         </div>
