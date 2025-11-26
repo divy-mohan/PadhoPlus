@@ -17,7 +17,8 @@ const mockBatches = [
     isFree: false,
     language: 'Hindi',
     faculty: ['Dr. Sharma', 'Prof. Verma'],
-    slug: 'neet-2025-lakshya'
+    slug: 'neet-2025-lakshya',
+    image: '/media/batches/thumbnails/neet-2025-lakshya.jpg'
   },
   {
     id: '2',
@@ -28,7 +29,8 @@ const mockBatches = [
     isFree: true,
     language: 'English',
     faculty: ['Mr. Patel'],
-    slug: 'jee-mains-2025'
+    slug: 'jee-mains-2025',
+    image: '/media/batches/thumbnails/jee-mains-2025.jpg'
   },
   {
     id: '3',
@@ -39,7 +41,8 @@ const mockBatches = [
     isFree: false,
     language: 'Hinglish',
     faculty: ['Dr. Reddy'],
-    slug: 'neet-2026-foundation'
+    slug: 'neet-2026-foundation',
+    image: '/media/batches/thumbnails/neet-2026-foundation.jpg'
   },
   {
     id: '4',
@@ -50,7 +53,8 @@ const mockBatches = [
     isFree: true,
     language: 'English',
     faculty: ['Prof. Khan'],
-    slug: 'class-12-physics'
+    slug: 'class-12-physics',
+    image: '/media/batches/thumbnails/class-12-physics.jpg'
   },
   {
     id: '5',
@@ -61,7 +65,8 @@ const mockBatches = [
     isFree: false,
     language: 'Hindi',
     faculty: ['Mr. Saxena'],
-    slug: 'advanced-mathematics'
+    slug: 'advanced-mathematics',
+    image: '/media/batches/thumbnails/advanced-mathematics.jpg'
   },
   {
     id: '6',
@@ -72,7 +77,8 @@ const mockBatches = [
     isFree: true,
     language: 'Hinglish',
     faculty: ['Dr. Patel'],
-    slug: 'chemistry-fundamentals'
+    slug: 'chemistry-fundamentals',
+    image: '/media/batches/thumbnails/chemistry-fundamentals.jpg'
   },
 ]
 

@@ -16,7 +16,8 @@ const featuredBatches = [
     isFree: false,
     language: 'Hindi',
     faculty: ['Dr. Sharma', 'Prof. Verma'],
-    slug: 'neet-2025-lakshya'
+    slug: 'neet-2025-lakshya',
+    image: '/media/batches/thumbnails/neet-2025-lakshya.jpg'
   },
   {
     id: '2',
@@ -27,7 +28,8 @@ const featuredBatches = [
     isFree: true,
     language: 'English',
     faculty: ['Mr. Patel'],
-    slug: 'jee-advanced-prep'
+    slug: 'jee-advanced-prep',
+    image: '/media/batches/thumbnails/jee-advanced-prep.jpg'
   },
   {
     id: '3',
@@ -38,7 +40,8 @@ const featuredBatches = [
     isFree: false,
     language: 'Hinglish',
     faculty: ['Dr. Reddy'],
-    slug: 'class-12-physics'
+    slug: 'class-12-physics',
+    image: '/media/batches/thumbnails/class-12-physics.jpg'
   },
   {
     id: '4',
@@ -49,7 +52,8 @@ const featuredBatches = [
     isFree: true,
     language: 'English',
     faculty: ['Prof. Khan'],
-    slug: 'foundation-math'
+    slug: 'foundation-math',
+    image: '/media/batches/thumbnails/foundation-math.jpg'
   },
 ]
 
