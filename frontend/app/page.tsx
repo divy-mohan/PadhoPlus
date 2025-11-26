@@ -4,7 +4,7 @@ import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
 import FeatureCard from '@/components/FeatureCard'
 import AnimatedEducationCard from '@/components/AnimatedEducationCard'
-import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb } from 'lucide-react'
+import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Trending2, Download, DollarSign, UserCheck, TrendingUp as TrendingUp2, PlayCircle } from 'lucide-react'
 import Link from 'next/link'
 
 const featuredBatches = [
@@ -92,12 +92,12 @@ const features = [
 ]
 
 const benefits = [
-  '🎯 Structured Learning - Complete syllabus coverage with a planned roadmap',
-  '📚 Top-Level Content - Notes, PYQs, DPPs & test series by expert educators',
-  '🤝 1:1 Doubt Support - Ask anytime and get quick, clear solutions',
-  '📊 AI-Powered Analytics - Track strengths & weaknesses with smart analysis',
-  '🔁 Live + Recorded - Never miss a class, learn at your own pace',
-  '🪙 Most Affordable - Premium features without expensive price tags',
+  { icon: Target, title: 'Structured Learning', desc: 'Complete syllabus coverage with a planned roadmap' },
+  { icon: BookMarked, title: 'Top-Level Content', desc: 'Notes, PYQs, DPPs & test series by expert educators' },
+  { icon: UserCheck, title: '1:1 Doubt Support', desc: 'Ask anytime and get quick, clear solutions' },
+  { icon: Brain, title: 'AI-Powered Analytics', desc: 'Track strengths & weaknesses with smart analysis' },
+  { icon: PlayCircle, title: 'Live + Recorded', desc: 'Never miss a class, learn at your own pace' },
+  { icon: DollarSign, title: 'Most Affordable', desc: 'Premium features without expensive price tags' },
 ]
 
 export default function Home() {
@@ -112,11 +112,11 @@ export default function Home() {
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14 animate-fade-in">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Choose PadhoPlus?</h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">Everything you need to ace your exams, at a fraction of the cost</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Why Choose PadhoPlus?</h2>
+            <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">Everything you need to ace your exams, at a fraction of the cost</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
             {features.map((feature, idx) => (
               <AnimatedEducationCard key={idx} delay={idx * 100} variant={['primary', 'success', 'warning', 'info'][idx % 4] as any}>
                 <FeatureCard {...feature} delay={`fade-in-delay-${(idx % 4) + 1}`} />
@@ -181,7 +181,7 @@ export default function Home() {
       {/* Stats Section with Animations */}
       <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {[
               { icon: Users, label: '10,000+', text: 'Active Students', color: 'from-blue-600 to-blue-700' },
               { icon: Award, label: '500+', text: 'Expert Lectures', color: 'from-purple-600 to-purple-700' },
@@ -207,13 +207,21 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-4 animate-fade-in">What You Get in Every Batch</h2>
           <p className="text-blue-100 mb-12 animate-fade-in">Complete preparation with everything you need to succeed</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {benefits.map((benefit, idx) => (
-              <div key={idx} className={`flex items-center gap-3 fade-in-delay-${(idx % 4) + 1}`}>
-                <CheckCircle className="w-5 h-5 flex-shrink-0 text-blue-200" />
-                <span className="font-medium">{benefit}</span>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {benefits.map((benefit, idx) => {
+              const BenefitIcon = benefit.icon;
+              return (
+                <div key={idx} className={`flex items-start gap-4 fade-in-delay-${(idx % 4) + 1}`}>
+                  <div className="p-2 bg-blue-300 rounded-lg flex-shrink-0">
+                    <BenefitIcon className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-1">{benefit.title}</h4>
+                    <p className="text-blue-100 text-sm">{benefit.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

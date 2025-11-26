@@ -65,7 +65,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 stagger-children">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12 stagger-children">
           {[
             { icon: BookOpen, label: 'Enrolled Batches', value: studentData.enrolledBatches, color: 'from-blue-500 to-blue-600' },
             { icon: Clock, label: 'Watch Time', value: `${studentData.watchTime}m`, color: 'from-purple-500 to-purple-600' },
@@ -133,7 +133,7 @@ export default function DashboardPage() {
         {/* Achievements Section */}
         <div>
           <h2 className="text-2xl font-bold text-gray-900 mb-6 animate-fade-in">Achievements Unlocked</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
             {achievements.map((ach, idx) => (
               <div key={idx} className={`animate-fade-in fade-in-delay-${(idx % 4) + 1}`}>
                 <div className={`rounded-2xl p-6 text-center transition-all duration-300 ${
