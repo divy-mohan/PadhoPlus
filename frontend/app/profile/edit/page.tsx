@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import ImageCropper from '@/components/ImageCropper'
 import { useAuth } from '@/context/AuthContext'
 import { useSkeleton } from '@/context/SkeletonContext'
 import { ArrowLeft, Upload } from 'lucide-react'
@@ -29,6 +30,8 @@ export default function EditProfilePage() {
   const [success, setSuccess] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [showCropper, setShowCropper] = useState(false)
+  const [tempImageUrl, setTempImageUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function EditProfilePage() {
     if (isAuthenticated && user) {
       fetchProfileData()
     }
-  }, [isAuthenticated, user, authLoading, router])
+  }, [isAuthenticated, user, authLoading])
 
   const fetchProfileData = async () => {
     try {
@@ -79,20 +82,33 @@ export default function EditProfilePage() {
     setError(null)
   }
 
-  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      const imageUrl = event.target?.result as string
+      setTempImageUrl(imageUrl)
+      setShowCropper(true)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handleCropComplete = async (croppedImage: string) => {
+    setShowCropper(false)
     setUploading(true)
     setError(null)
 
     try {
-      const formData = new FormData()
-      formData.append('avatar', file)
-
+      const base64String = croppedImage.split(',')[1]
+      
       const response = await fetch('/api/users/upload-avatar', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: base64String }),
         credentials: 'include'
       })
 
@@ -107,6 +123,7 @@ export default function EditProfilePage() {
       setError('Unable to upload profile picture')
     } finally {
       setUploading(false)
+      setTempImageUrl(null)
     }
   }
 
@@ -151,6 +168,17 @@ export default function EditProfilePage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
+
+      {showCropper && tempImageUrl && (
+        <ImageCropper
+          imageSrc={tempImageUrl}
+          onCropComplete={handleCropComplete}
+          onClose={() => {
+            setShowCropper(false)
+            setTempImageUrl(null)
+          }}
+        />
+      )}
 
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">

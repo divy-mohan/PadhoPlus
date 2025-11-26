@@ -96,11 +96,16 @@ export default function Navbar() {
                 <div className="flex items-center gap-3">
                   <Link
                     href="/profile"
-                    className="group relative px-4 py-2 rounded-lg font-semibold text-sm text-gray-700 overflow-hidden transition-all duration-300 flex items-center gap-2"
+                    className="group flex items-center gap-2 px-3 py-2 rounded-lg font-semibold text-sm text-gray-700 hover:bg-gray-100 transition-all duration-300"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-100 to-slate-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <User className="w-4 h-4 group-hover:scale-110 transition-transform duration-300 relative z-10" />
-                    <span className="relative z-10">{user?.first_name || user?.email.split('@')[0]}</span>
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden shadow">
+                      {(user as any)?.profile_image ? (
+                        <img src={(user as any).profile_image} alt={user?.first_name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xs font-bold text-white">{user?.first_name?.[0]}</span>
+                      )}
+                    </div>
+                    <span>{user?.first_name || user?.email.split('@')[0]}</span>
                   </Link>
                   <button
                     onClick={handleLogout}
@@ -189,8 +194,14 @@ export default function Navbar() {
                       className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-50 transition-all duration-300"
                       onClick={() => setIsOpen(false)}
                     >
-                      <User className="w-5 h-5" />
-                      Profile
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden shadow">
+                        {(user as any)?.profile_image ? (
+                          <img src={(user as any).profile_image} alt={user?.first_name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-xs font-bold text-white">{user?.first_name?.[0]}</span>
+                        )}
+                      </div>
+                      <span>{user?.first_name || 'Profile'}</span>
                     </Link>
                     <button 
                       onClick={handleLogout}

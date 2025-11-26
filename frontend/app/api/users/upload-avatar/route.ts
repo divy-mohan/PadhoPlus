@@ -2,26 +2,29 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData()
+    const body = await request.json()
     const backendUrl = 'http://localhost:8000'
     
-    // Get cookies from the browser request
     const cookies = request.headers.get('cookie') || ''
     
-    const backendFormData = new FormData()
-    
-    // Get the file from the request
-    const file = formData.get('avatar') as File
-    if (file) {
-      backendFormData.append('profile_image', file)
+    // Convert base64 to File/Blob
+    const base64String = body.image
+    const binaryString = atob(base64String)
+    const bytes = new Uint8Array(binaryString.length)
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i)
     }
+    const blob = new Blob([bytes], { type: 'image/jpeg' })
+    
+    const formData = new FormData()
+    formData.append('profile_image', blob, 'avatar.jpg')
 
     const response = await fetch(`${backendUrl}/api/users/upload-avatar/`, {
       method: 'POST',
       headers: {
         'Cookie': cookies,
       },
-      body: backendFormData,
+      body: formData,
     })
 
     if (response.ok) {
