@@ -1,159 +1,150 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
-import LoadingSpinner from '@/components/LoadingSpinner'
-import { MessageCircle, Send, ThumbsUp, Clock } from 'lucide-react'
+import { MessageCircle, Search, Plus, Zap, TrendingUp } from 'lucide-react'
+
+const SUBJECTS = [
+  { id: 'physics', name: 'Physics', color: 'from-blue-600 to-cyan-500', icon: '⚛️' },
+  { id: 'chemistry', name: 'Chemistry', color: 'from-green-600 to-emerald-500', icon: '🧪' },
+  { id: 'biology', name: 'Biology', color: 'from-red-600 to-pink-500', icon: '🧬' },
+  { id: 'mathematics', name: 'Mathematics', color: 'from-purple-600 to-pink-500', icon: '∑' },
+]
 
 export default function DoubtPage() {
-  const [doubts, setDoubts] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [newDoubt, setNewDoubt] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-
-  useEffect(() => {
-    fetchDoubts()
-  }, [])
-
-  const fetchDoubts = async () => {
-    try {
-      const response = await fetch('http://306c74e6-6a15-4903-90bc-458370a2f624-00-27zy41y8ejs1o.picard.replit.dev:8000/api/doubts/', {
-        credentials: 'include'
-      })
-      if (response.ok) {
-        const data = await response.json()
-        setDoubts(data.results || data)
-      }
-    } catch (error) {
-      console.error('Error fetching doubts:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleSubmitDoubt = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newDoubt.trim()) return
-
-    setSubmitting(true)
-    try {
-      const response = await fetch('http://306c74e6-6a15-4903-90bc-458370a2f624-00-27zy41y8ejs1o.picard.replit.dev:8000/api/doubts/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ question: newDoubt })
-      })
-
-      if (response.ok) {
-        setNewDoubt('')
-        fetchDoubts()
-        alert('Doubt posted successfully!')
-      } else {
-        alert('Failed to post doubt')
-      }
-    } catch (error) {
-      console.error('Error posting doubt:', error)
-      alert('Unable to post doubt')
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  if (loading) {
-    return <LoadingSpinner />
-  }
+  const [activeTab, setActiveTab] = useState<'browse' | 'myDoubts'>('browse')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedSubject, setSelectedSubject] = useState('')
 
   return (
     <div className="bg-white min-h-screen">
       <Navbar />
       <Breadcrumb items={[{ label: 'Ask Doubts', href: '/doubt' }]} />
 
-      <main className="max-w-6xl mx-auto px-4 py-12">
+      <main className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <MessageCircle className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Ask Your Doubts</h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">Get instant answers from our expert faculty and community. Ask anything related to your studies.</p>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <MessageCircle className="w-12 h-12 text-blue-600" />
+            <h1 className="text-4xl font-bold text-gray-900">Doubt Portal</h1>
+          </div>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">Get instant answers from expert faculty. Ask anything, clear everything!</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Ask Doubt Section */}
-          <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 border border-gray-200 sticky top-20">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Ask a Question</h2>
-              <form onSubmit={handleSubmitDoubt} className="space-y-4">
-                <textarea
-                  value={newDoubt}
-                  onChange={(e) => setNewDoubt(e.target.value)}
-                  placeholder="Type your doubt here... Be specific for quick answers"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                  rows={6}
-                />
-                <button
-                  type="submit"
-                  disabled={submitting || !newDoubt.trim()}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-all"
-                >
-                  <Send className="w-4 h-4" />
-                  {submitting ? 'Posting...' : 'Post Question'}
-                </button>
-              </form>
-            </div>
-          </div>
+        {/* Quick Action */}
+        <div className="mb-12">
+          <Link href="/doubt/ask" className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
+            <Plus className="w-5 h-5" />
+            Ask a New Doubt
+          </Link>
+        </div>
 
-          {/* Doubts List */}
-          <div className="lg:col-span-2 space-y-4">
-            {doubts.length > 0 ? (
-              doubts.map((doubt) => (
-                <div key={doubt.id} className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-all">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1">{doubt.question}</h3>
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <span className="font-medium text-gray-700">{doubt.asker_name || 'Student'}</span>
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          {doubt.created_at ? new Date(doubt.created_at).toLocaleDateString() : 'Recently'}
-                        </div>
+        {/* Tabs */}
+        <div className="flex gap-4 mb-8 border-b border-gray-200">
+          <button
+            onClick={() => setActiveTab('browse')}
+            className={`px-4 py-3 font-semibold transition-all ${activeTab === 'browse' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-gray-900'}`}
+          >
+            <span className="flex items-center gap-2">
+              <Search className="w-5 h-5" />
+              Browse & Search
+            </span>
+          </button>
+          <button
+            onClick={() => setActiveTab('myDoubts')}
+            className={`px-4 py-3 font-semibold transition-all ${activeTab === 'myDoubts' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-gray-900'}`}
+          >
+            <span className="flex items-center gap-2">
+              <MessageCircle className="w-5 h-5" />
+              My Doubts
+            </span>
+          </button>
+        </div>
+
+        {/* Browse Doubts */}
+        {activeTab === 'browse' && (
+          <div className="space-y-8">
+            {/* Search & Filter */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  placeholder="Search doubts..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <select
+                value={selectedSubject}
+                onChange={(e) => setSelectedSubject(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              >
+                <option value="">All Subjects</option>
+                {SUBJECTS.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
+
+            {/* Subject Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {SUBJECTS.map(subject => (
+                <Link key={subject.id} href={`/doubt/browse?subject=${subject.id}`} className="group relative">
+                  <div className={`absolute -inset-0.5 bg-gradient-to-r ${subject.color} rounded-xl opacity-0 group-hover:opacity-50 blur transition-all duration-500`}></div>
+                  <div className={`relative bg-white rounded-xl p-6 border border-gray-200 text-center hover:shadow-lg transition-all`}>
+                    <div className="text-4xl mb-2">{subject.icon}</div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{subject.name}</h3>
+                    <p className="text-sm text-gray-500">Browse {subject.name} doubts</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Recent Doubts */}
+            <div className="mt-12">
+              <div className="flex items-center gap-2 mb-6">
+                <TrendingUp className="w-6 h-6 text-blue-600" />
+                <h2 className="text-2xl font-bold text-gray-900">Recent Questions</h2>
+              </div>
+              
+              <div className="space-y-4">
+                {[1, 2, 3, 4].map(i => (
+                  <Link key={i} href={`/doubt/answer/${i}`} className="group block">
+                    <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md hover:border-blue-300 transition-all">
+                      <div className="flex items-start gap-4 mb-3">
+                        <span className="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-semibold rounded-full">Physics</span>
+                        <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">Medium</span>
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition">How to solve kinematics problems efficiently?</h3>
+                      <p className="text-gray-600 text-sm mb-4">I struggle with relative motion problems. Can you explain the approach?</p>
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <span>Asked by Student • 2 hours ago</span>
+                        <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Answered</span>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Answers */}
-                  {doubt.answers && doubt.answers.length > 0 && (
-                    <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                      <h4 className="text-sm font-semibold text-green-900 mb-2">Expert Answer</h4>
-                      <p className="text-sm text-green-800">{doubt.answers[0].answer}</p>
-                      <p className="text-xs text-green-600 mt-2">Answered by {doubt.answers[0].answered_by || 'Faculty'}</p>
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                    <div className="flex items-center gap-4 text-sm">
-                      <button className="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition">
-                        <ThumbsUp className="w-4 h-4" />
-                        <span>Helpful</span>
-                      </button>
-                      <span className="text-gray-500">{doubt.answers?.length || 0} Answers</span>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-16 bg-gray-50 rounded-xl">
-                <MessageCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-600 text-lg">No questions yet</p>
-                <p className="text-gray-500 text-sm mt-2">Be the first to ask a doubt!</p>
+                  </Link>
+                ))}
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* My Doubts */}
+        {activeTab === 'myDoubts' && (
+          <div className="space-y-6">
+            <div className="text-center py-12 bg-gray-50 rounded-xl">
+              <MessageCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-600 text-lg">No doubts yet</p>
+              <p className="text-gray-500 text-sm mt-2">Start by asking your first doubt</p>
+              <Link href="/doubt/ask" className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg mt-4 hover:bg-blue-700">
+                <Plus className="w-4 h-4" />
+                Ask Now
+              </Link>
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />

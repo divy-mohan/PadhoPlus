@@ -1,0 +1,111 @@
+🎯 Goal of Doubt Portal UI
+
+✔ Help students ask doubts easily
+✔ Help mentors respond quickly
+✔ Make browsing previous doubts fast and searchable
+✔ Keep interface clean, youth-friendly, and distraction-free
+
+🧩 Main Screens (Web + Mobile UI)
+1️⃣ Ask a Doubt Page
+
+Quick and simple submission
+
+Section	Description
+Subject selection	Dropdown or icons (Physics, Chemistry, Maths, Biology, etc.)
+Topic selection	Auto-suggestion / chapter list
+Doubt description box	Type doubt text
+Upload feature	Image upload (crop tool + multiple images)
+Voice-to-text support	Optional future feature
+Tag difficulty	Easy / Medium / Hard
+Submit button	CTA: Ask Doubt
+
+⚡ Bonus:
+
+Suggest similar previously answered doubts before submitting
+
+2️⃣ My Doubts Page
+
+Track status of each doubt
+
+Column	Details
+Doubt preview	Image + text clipping
+Status	Pending / Answered / In-Progress
+Subject/Topic tags	Quick filtering
+Timeline	Asked at, Answered at
+CTA	View Answer
+
+Filters:
+
+Subject filter
+
+Status filter
+
+Recent/Old
+
+3️⃣ View Doubt Answer Page
+
+Provide clarity + allow follow-up
+
+Component	Example
+Question	Full text + image zoom
+Mentor Answer	Explanation + handwritten image/diagram support
+Helpful?	Like/Dislike/Rate answer
+Follow-up chat	Threaded messages allowed
+Related doubts	Smart suggestions
+4️⃣ Search Previous Doubts
+
+Reduce workload + improve learning
+
+UI features:
+
+Search bar (keyword-based)
+
+Filters: Subject, Chapter, Difficulty
+
+Result cards with thumbnails + short text
+
+Pagination or Infinite scrolling
+
+🧑‍🏫 Mentor View (for your future team)
+Dashboard
+
+Doubts queue
+
+Priorities (auto rank: oldest first / trending topics)
+
+Subject filter
+
+Direct Answer input (text, equation editor, image upload)
+
+Analytics
+
+Number of doubts solved
+
+Avg response time
+
+Student satisfaction rating
+
+🎨 Design & Styling Recommendations
+Type	Guidelines
+Colors	Use subject theme colors (Physics = Blue, Maths = Purple etc.)
+Typography	Large and clean fonts for readability
+Layout	Card style design with spacing
+Icons	Use recognizable book/pen/chat visuals
+Highlight pending doubts	Yellow or alert badge
+🔒 Trust & Safety
+
+Protect student identity
+
+No public exposure — private question thread
+
+Flag inappropriate queries
+
+🌟 Advanced Features (Future)
+
+AI auto-scan & auto-answers for basic doubts
+
+LaTeX math input + solution formatting
+
+OCR for hand-written doubt text recognition
+
+Points + rewards for asking quality questions
