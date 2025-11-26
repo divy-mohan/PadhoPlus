@@ -527,6 +527,21 @@
   animation: scrollBlurFade 0.9s ease-out forwards;
 }
 
+/* ===== FLOW ANIMATIONS ===== */
+@keyframes slideFlow {
+  0%, 100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 0%;
+  }
+}
+
+.animate-slide-flow {
+  background-size: 200% 100%;
+  animation: slideFlow 3s ease-in-out infinite;
+}
+
 /* ===== SCROLLBAR STYLING ===== */
 ::-webkit-scrollbar {
   width: 8px;
