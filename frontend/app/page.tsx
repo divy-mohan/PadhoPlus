@@ -4,11 +4,10 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
-import FeatureCard from '@/components/FeatureCard'
 import ScrollAnimation from '@/components/ScrollAnimation'
-import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Book, Droplet, BadgeCheck, Briefcase, GraduationCap, Gavel, Smile, Clock, HelpCircle, MessageCircle, Heart } from 'lucide-react'
+import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Smile, Clock, MessageCircle, Heart } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const featuredBatches = [
   {
@@ -103,71 +102,34 @@ const benefits = [
   { icon: DollarSign, title: 'Most Affordable', desc: 'Premium features without expensive price tags' },
 ]
 
-const examCategories = [
+const examCategoriesConfig = [
   {
     id: 'neet',
     name: 'NEET',
     icon: Target,
-    subcategories: [
-      { name: 'Class 11', icon: BookOpen },
-      { name: 'Class 12', icon: Book },
-      { name: 'Dropper', icon: Droplet }
-    ],
-    gradient: 'from-red-500 to-pink-500'
+    gradient: 'from-red-500 to-pink-500',
+    classLevels: ['Class 11', 'Class 12', 'Dropper']
   },
   {
-    id: 'jee',
+    id: 'jee_main',
     name: 'IIT JEE',
     icon: Brain,
-    subcategories: [
-      { name: 'Class 11', icon: BookOpen },
-      { name: 'Class 12', icon: Book },
-      { name: 'Dropper', icon: Droplet }
-    ],
-    gradient: 'from-blue-500 to-cyan-500'
+    gradient: 'from-blue-500 to-cyan-500',
+    classLevels: ['Class 11', 'Class 12', 'Dropper']
   },
   {
-    id: 'school',
-    name: 'School Preparation',
+    id: 'foundation',
+    name: 'Foundation',
     icon: BookOpen,
-    subcategories: [
-      { name: 'Class 6', icon: BookMarked },
-      { name: 'Class 7', icon: BookOpen },
-      { name: 'Class 8', icon: Book },
-      { name: 'More...', icon: ArrowRight }
-    ],
-    gradient: 'from-green-500 to-emerald-500'
+    gradient: 'from-green-500 to-emerald-500',
+    classLevels: ['Class 9-10']
   },
   {
-    id: 'upsc',
-    name: 'UPSC',
+    id: 'boards',
+    name: 'Board Exams',
     icon: Award,
-    subcategories: [],
-    gradient: 'from-yellow-500 to-orange-500'
-  },
-  {
-    id: 'govt',
-    name: 'Govt Job Exams',
-    icon: Zap,
-    subcategories: [
-      { name: 'SSC', icon: CheckCircle },
-      { name: 'Banking', icon: Briefcase },
-      { name: 'Teaching', icon: GraduationCap },
-      { name: 'Judiciary', icon: Gavel }
-    ],
-    gradient: 'from-purple-500 to-pink-500'
-  },
-  {
-    id: 'defence',
-    name: 'Defence',
-    icon: Shield,
-    subcategories: [
-      { name: 'NDA', icon: BadgeCheck },
-      { name: 'CDS', icon: Shield },
-      { name: 'AFCAT', icon: Target },
-      { name: 'Agniveer', icon: Zap }
-    ],
-    gradient: 'from-indigo-500 to-blue-500'
+    gradient: 'from-yellow-500 to-orange-500',
+    classLevels: ['Class 10', 'Class 12']
   },
 ]
 
@@ -235,7 +197,36 @@ const testimonials = [
 ]
 
 export default function Home() {
-  const [activeTestimonial, setActiveTestimonial] = useState(0)
+  const [batchesByCategory, setBatchesByCategory] = useState<any>({})
+
+  useEffect(() => {
+    const fetchBatchesByCategory = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/batches/?is_active=true', {
+          credentials: 'include'
+        })
+        if (response.ok) {
+          const data = await response.json()
+          const batches = data.results || data
+          
+          // Group batches by exam type
+          const grouped: any = {}
+          examCategoriesConfig.forEach(cat => {
+            grouped[cat.id] = {}
+            cat.classLevels.forEach(level => {
+              grouped[cat.id][level] = batches.filter(
+                (b: any) => b.target_exam === cat.id && b.target_class === level
+              )
+            })
+          })
+          setBatchesByCategory(grouped)
+        }
+      } catch (error) {
+        console.error('Error fetching batches:', error)
+      }
+    }
+    fetchBatchesByCategory()
+  }, [])
   
   return (
     <div className="bg-white">
@@ -385,57 +376,77 @@ export default function Home() {
             </div>
           </ScrollAnimation>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {examCategories.map((category, idx) => {
+          <div className="space-y-12">
+            {examCategoriesConfig.map((category, idx) => {
               const CategoryIcon = category.icon
+              const categoryBatches = batchesByCategory[category.id] || {}
+              
               return (
-                <ScrollAnimation key={category.id} type="zoom-in" delay={idx * 100}>
-                  <div className="group relative h-full">
-                    {/* Glow effect */}
-                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${category.gradient} rounded-xl opacity-0 group-hover:opacity-50 blur transition-all duration-500`}></div>
-
-                    {/* Card */}
-                    <div className="relative h-full bg-white rounded-xl p-5 border border-gray-200 group-hover:border-blue-300 transition-all duration-300 shadow-md group-hover:shadow-lg flex flex-col">
-                      {/* Shine effect */}
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                      {/* Content */}
-                      <div className="relative z-10 flex-1">
-                        {/* Icon container */}
-                        <div className={`inline-flex items-center justify-center mb-3 p-3 bg-gradient-to-br ${category.gradient} rounded-lg relative group/icon`}>
+                <ScrollAnimation key={category.id} type="fade-up" delay={idx * 100}>
+                  <div className="group relative">
+                    {/* Category Header */}
+                    <div className="mb-6">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className={`inline-flex items-center justify-center p-3 bg-gradient-to-br ${category.gradient} rounded-lg relative group/icon`}>
                           <div className="absolute inset-0 bg-white/30 rounded-lg opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300"></div>
                           <CategoryIcon className="w-6 h-6 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
                         </div>
-
-                        {/* Title */}
-                        <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-blue-600 group-hover:bg-clip-text transition-all duration-300">
-                          {category.name}
-                        </h3>
-
-                        {/* Subcategories */}
-                        {category.subcategories.length > 0 && (
-                          <div className="space-y-1.5 mb-4">
-                            {category.subcategories.map((sub, subIdx) => {
-                              const SubIcon = sub.icon
-                              return (
-                                <p key={subIdx} className="text-gray-600 text-xs flex items-center gap-2 group-hover:text-gray-700 transition-colors">
-                                  <SubIcon className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
-                                  <span>{sub.name}</span>
-                                </p>
-                              )
-                            })}
-                          </div>
-                        )}
+                        <div>
+                          <h3 className="text-2xl font-bold text-gray-900">{category.name}</h3>
+                          <p className="text-gray-600 text-sm mt-1">Choose your class level and start learning</p>
+                        </div>
                       </div>
+                    </div>
 
-                      {/* Explore Button */}
-                      <Link href={`/batches?category=${category.id}`} className="relative z-10 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 text-blue-600 font-semibold hover:from-blue-100 hover:to-purple-100 hover:border-blue-400 transition-all duration-300 group/btn">
-                        Explore
-                        <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
-                      </Link>
+                    {/* Class Level Groups */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {category.classLevels.map((classLevel) => {
+                        const classBatches = categoryBatches[classLevel] || []
+                        return (
+                          <div key={classLevel} className="relative h-full">
+                            <div className={`absolute -inset-0.5 bg-gradient-to-r ${category.gradient} rounded-lg opacity-0 group-hover:opacity-30 blur transition-all duration-500`}></div>
+                            
+                            <div className="relative bg-white rounded-lg p-5 border border-gray-200 group-hover:border-blue-300 transition-all duration-300 shadow-sm group-hover:shadow-md flex flex-col h-full">
+                              {/* Class Level Header */}
+                              <div className="mb-4 pb-3 border-b border-gray-100">
+                                <h4 className={`text-base font-semibold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-blue-600 group-hover:bg-clip-text transition-all duration-300`}>
+                                  {classLevel}
+                                </h4>
+                              </div>
 
-                      {/* Bottom accent bar */}
-                      <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${category.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-xl`}></div>
+                              {/* Batches for this Class Level */}
+                              <div className="flex-1 space-y-2 mb-4">
+                                {classBatches.length > 0 ? (
+                                  classBatches.map((batch: any) => (
+                                    <Link
+                                      key={batch.id}
+                                      href={`/batch/${batch.slug}`}
+                                      className="block text-sm text-gray-700 hover:text-blue-600 hover:font-semibold truncate transition-all group/batch"
+                                    >
+                                      <span className="text-xs text-gray-500 mr-1">→</span>
+                                      {batch.name}
+                                    </Link>
+                                  ))
+                                ) : (
+                                  <p className="text-xs text-gray-400 italic">Coming soon</p>
+                                )}
+                              </div>
+
+                              {/* Explore Button */}
+                              <Link 
+                                href={`/batches?exam=${category.id}&class=${classLevel.replace(/[\s-]/g, '_')}`}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 text-blue-600 font-semibold hover:from-blue-100 hover:to-purple-100 hover:border-blue-400 transition-all duration-300 group/btn w-full justify-center"
+                              >
+                                View All
+                                <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
+                              </Link>
+
+                              {/* Bottom accent bar */}
+                              <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${category.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-lg`}></div>
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
                 </ScrollAnimation>

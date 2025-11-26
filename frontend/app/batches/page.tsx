@@ -16,6 +16,7 @@ export default function BatchesPage() {
   const [selectedExam, setSelectedExam] = useState('')
   const [selectedPrice, setSelectedPrice] = useState('')
   const [loading, setLoading] = useState(true)
+  const [selectedClass, setSelectedClass] = useState('')
 
   useEffect(() => {
     fetchBatches()
@@ -51,6 +52,10 @@ export default function BatchesPage() {
       filtered = filtered.filter(b => b.target_exam === selectedExam)
     }
 
+    if (selectedClass) {
+      filtered = filtered.filter(b => b.target_class === selectedClass)
+    }
+
     if (selectedPrice === 'free') {
       filtered = filtered.filter(b => b.is_free)
     } else if (selectedPrice === 'paid') {
@@ -58,7 +63,7 @@ export default function BatchesPage() {
     }
 
     setBatches(filtered)
-  }, [searchTerm, selectedExam, selectedPrice, allBatches])
+  }, [searchTerm, selectedExam, selectedClass, selectedPrice, allBatches])
 
   if (loading) {
     return <LoadingSpinner />
@@ -117,6 +122,22 @@ export default function BatchesPage() {
               </div>
 
               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Class</label>
+                <select 
+                  value={selectedClass} 
+                  onChange={(e) => setSelectedClass(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                >
+                  <option value="">All Classes</option>
+                  <option value="Class 9-10">Class 9-10</option>
+                  <option value="Class 10">Class 10</option>
+                  <option value="Class 11">Class 11</option>
+                  <option value="Class 12">Class 12</option>
+                  <option value="Dropper">Dropper</option>
+                </select>
+              </div>
+
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
                 <select 
                   value={selectedPrice} 
@@ -135,6 +156,7 @@ export default function BatchesPage() {
                   onClick={() => {
                     setSearchTerm('')
                     setSelectedExam('')
+                    setSelectedClass('')
                     setSelectedPrice('')
                   }}
                   className="btn btn-outline w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-lg py-2 font-semibold"
