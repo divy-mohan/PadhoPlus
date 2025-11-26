@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import PaymentGatewaySelector from './PaymentGatewaySelector'
-import { ArrowLeft, Loader2, AlertCircle, CheckCircle } from 'lucide-react'
+import LoadingButton from './LoadingButton'
+import { ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react'
 
 interface PaymentGateway {
   id: string
@@ -137,30 +138,16 @@ export default function PaymentCheckout({
         )}
 
         <div className="mt-6">
-          <button
+          <LoadingButton
             onClick={handlePayment}
-            disabled={loading || !selectedGateway || selectedGateway.comingSoon}
-            className={`
-              w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all
-              flex items-center justify-center gap-2
-              ${loading || !selectedGateway || selectedGateway?.comingSoon
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl'
-              }
-            `}
+            disabled={!selectedGateway || selectedGateway.comingSoon}
+            loading={loading}
+            variant="primary"
+            className="py-4 px-6 rounded-xl text-lg"
           >
-            {loading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                <span>Processing...</span>
-              </>
-            ) : (
-              <>
-                <CheckCircle className="w-5 h-5" />
-                <span>Pay ₹{amount.toLocaleString('en-IN')} with {selectedGateway?.displayName || 'Selected Gateway'}</span>
-              </>
-            )}
-          </button>
+            <CheckCircle className="w-5 h-5" />
+            <span>Pay ₹{amount.toLocaleString('en-IN')} with {selectedGateway?.displayName || 'Selected Gateway'}</span>
+          </LoadingButton>
         </div>
 
         <p className="text-center text-xs text-gray-500 mt-4">

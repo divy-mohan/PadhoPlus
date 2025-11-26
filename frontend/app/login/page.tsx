@@ -4,10 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import LoadingButton from '@/components/LoadingButton'
 import { Mail, Lock, Eye, EyeOff, CheckCircle } from 'lucide-react'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({ email: '', password: '' })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,9 +17,15 @@ export default function LoginPage() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Login:', formData)
+    setLoading(true)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log('Login:', formData)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -81,9 +89,9 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            <button type="submit" className="btn btn-primary w-full text-base">
+            <LoadingButton type="submit" loading={loading} className="text-base">
               Sign In to Your Account
-            </button>
+            </LoadingButton>
           </form>
 
           <div className="relative mb-6">

@@ -4,11 +4,14 @@ import { useState, use } from 'react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
+import LoadingButton from '@/components/LoadingButton'
 import { Star, Users, CheckCircle, GraduationCap, Calendar, BookOpen, Zap } from 'lucide-react'
 import Link from 'next/link'
 
 export default function BatchDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const [activeTab, setActiveTab] = useState('overview')
+  const [enrollLoading, setEnrollLoading] = useState(false)
+  const [demoLoading, setDemoLoading] = useState(false)
   const resolvedParams = use(params)
 
   const batch = {
@@ -46,6 +49,26 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   }
 
   const tabs = ['overview', 'schedule', 'syllabus', 'faculty', 'reviews', 'faq']
+
+  const handleEnroll = async () => {
+    setEnrollLoading(true)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log('Enroll in:', batch.name)
+    } finally {
+      setEnrollLoading(false)
+    }
+  }
+
+  const handleDemo = async () => {
+    setDemoLoading(true)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log('Demo for:', batch.name)
+    } finally {
+      setDemoLoading(false)
+    }
+  }
 
   return (
     <div className="bg-white">
@@ -109,12 +132,22 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
                   )}
                 </div>
 
-                <button className="btn btn-primary w-full mb-3">
+                <LoadingButton 
+                  loading={enrollLoading} 
+                  onClick={handleEnroll}
+                  className="mb-3"
+                  variant="primary"
+                >
                   Enroll Now
-                </button>
-                <button className="btn btn-outline w-full mb-6">
+                </LoadingButton>
+                <LoadingButton 
+                  loading={demoLoading} 
+                  onClick={handleDemo}
+                  className="mb-6"
+                  variant="outline"
+                >
                   Try Demo
-                </button>
+                </LoadingButton>
 
                 <div className="space-y-3 text-sm">
                   {batch.highlights.slice(0, 4).map((highlight, idx) => (

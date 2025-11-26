@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import LoadingButton from '@/components/LoadingButton'
 import { User, Mail, Lock, GraduationCap, CheckCircle, Eye, EyeOff } from 'lucide-react'
 
 export default function RegisterPage() {
@@ -16,15 +17,22 @@ export default function RegisterPage() {
     role: 'student'
   })
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Register:', formData)
+    setLoading(true)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log('Register:', formData)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -142,9 +150,9 @@ export default function RegisterPage() {
               </span>
             </label>
 
-            <button type="submit" className="btn btn-primary w-full text-base mb-4">
+            <LoadingButton type="submit" loading={loading} className="text-base mb-4">
               Create Free Account
-            </button>
+            </LoadingButton>
           </form>
 
           <p className="text-center text-gray-600 mb-6">
