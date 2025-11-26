@@ -178,7 +178,7 @@ class DashboardViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     @action(detail=False, methods=['get'])
-    def student(self, request):
+    def student_dashboard(self, request):
         user = request.user
         
         if not user.is_student():
