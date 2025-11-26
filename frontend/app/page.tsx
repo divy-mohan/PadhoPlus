@@ -6,8 +6,9 @@ import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
 import FeatureCard from '@/components/FeatureCard'
 import ScrollAnimation from '@/components/ScrollAnimation'
-import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Book, Droplet, BadgeCheck, Briefcase, GraduationCap, Gavel, Smile, Clock, HelpCircle } from 'lucide-react'
+import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Book, Droplet, BadgeCheck, Briefcase, GraduationCap, Gavel, Smile, Clock, HelpCircle, MessageCircle, Heart } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 
 const featuredBatches = [
   {
@@ -170,7 +171,72 @@ const examCategories = [
   },
 ]
 
+const testimonials = [
+  {
+    id: 1,
+    name: 'Arjun Kumar',
+    exam: 'IIT JEE',
+    rank: 'AIR 47',
+    year: 2024,
+    quote: 'PadhoPlus transformed my JEE preparation. The structured content and doubt support were exactly what I needed to crack AIR 47. Best investment in my education!',
+    image: 'https://i.pravatar.cc/150?img=12',
+    featured: true
+  },
+  {
+    id: 2,
+    name: 'Priya Singh',
+    exam: 'NEET',
+    rank: 'AIR 132',
+    year: 2024,
+    quote: 'The video lectures and daily practice problems kept me on track. I could never have scored 710 without PadhoPlus. Highly recommended for NEET aspirants!',
+    image: 'https://i.pravatar.cc/150?img=47',
+    featured: true
+  },
+  {
+    id: 3,
+    name: 'Rohit Patel',
+    exam: 'IIT JEE',
+    rank: 'AIR 156',
+    year: 2024,
+    quote: 'The analytics dashboard showed me exactly where I was weak. The personalized study plan helped me improve from 45% to 89% in just 6 months!',
+    image: 'https://i.pravatar.cc/150?img=33',
+    featured: true
+  },
+  {
+    id: 4,
+    name: 'Sakshi Sharma',
+    exam: 'NEET',
+    rank: 'AIR 89',
+    year: 2024,
+    quote: 'The 1:1 doubt support was a game-changer. I got my doubts cleared instantly, and the faculty guidance was invaluable. PadhoPlus is worth every penny!',
+    image: 'https://i.pravatar.cc/150?img=25',
+    featured: true
+  },
+  {
+    id: 5,
+    name: 'Vikram Singh',
+    exam: 'IIT JEE',
+    rank: 'AIR 203',
+    year: 2024,
+    quote: 'From zero confidence to AIR 203 - that\'s the PadhoPlus effect! The live classes and recorded sessions made learning flexible and effective.',
+    image: 'https://i.pravatar.cc/150?img=21',
+    featured: false
+  },
+  {
+    id: 6,
+    name: 'Anjali Verma',
+    exam: 'NEET',
+    rank: 'AIR 156',
+    year: 2024,
+    quote: 'Affordable quality education is no longer a dream. PadhoPlus proves that you don\'t need expensive coaching to succeed. Grateful forever!',
+    image: 'https://i.pravatar.cc/150?img=58',
+    featured: false
+  }
+]
+
 export default function Home() {
+  const [activeTestimonial, setActiveTestimonial] = useState(0)
+  
   return (
     <div className="bg-white">
       <Navbar />
@@ -577,6 +643,74 @@ export default function Home() {
                 </ScrollAnimation>
               )
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-24 px-4 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-20 w-80 h-80 bg-purple-200/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-10 right-20 w-80 h-80 bg-pink-200/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          <ScrollAnimation type="fade-up">
+            <div className="text-center mb-16">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <Heart className="w-8 h-8 text-red-500" />
+                <h2 className="text-4xl font-bold text-gray-900">Success Stories from Students</h2>
+                <Heart className="w-8 h-8 text-red-500" />
+              </div>
+              <p className="text-gray-600 text-lg">Thousands of students have achieved their dreams with PadhoPlus</p>
+            </div>
+          </ScrollAnimation>
+
+          {/* Featured Testimonials Carousel */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            {testimonials.filter((_, idx) => idx < 3).map((testimonial, idx) => (
+              <ScrollAnimation key={testimonial.id} type="zoom-in" delay={idx * 100}>
+                <div className="group relative h-full">
+                  {/* Glow */}
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500"></div>
+
+                  {/* Card */}
+                  <div className="relative h-full bg-white rounded-2xl p-6 border border-gray-200 group-hover:border-purple-300 transition-all duration-300 shadow-md group-hover:shadow-2xl flex flex-col">
+                    {/* Quote Icon */}
+                    <MessageCircle className="w-6 h-6 text-purple-500 mb-3" />
+
+                    {/* Quote */}
+                    <p className="text-gray-700 italic mb-4 flex-1 text-sm leading-relaxed">
+                      "{testimonial.quote}"
+                    </p>
+
+                    {/* Divider */}
+                    <div className="h-0.5 bg-gradient-to-r from-purple-200 to-pink-200 mb-4"></div>
+
+                    {/* Author */}
+                    <div className="flex items-center gap-3">
+                      <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover" />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-bold text-gray-900 text-sm">{testimonial.name}</h4>
+                        <p className="text-xs text-purple-600 font-semibold">{testimonial.exam} - Rank {testimonial.rank}</p>
+                      </div>
+                      <Star className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+                    </div>
+                  </div>
+                </div>
+              </ScrollAnimation>
+            ))}
+          </div>
+
+          {/* Add Your Testimonial Button */}
+          <div className="text-center">
+            <Link href="/submit-testimonial" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 hover:scale-105">
+              <MessageCircle className="w-5 h-5" />
+              Share Your Success Story
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <p className="text-gray-600 text-xs mt-3">Your testimonial will be verified by our admin team</p>
           </div>
         </div>
       </section>

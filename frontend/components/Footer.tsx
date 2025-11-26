@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { BookOpen, Mail, Linkedin, Twitter, Layers, BookMarked, Users, Info, Briefcase, Shield, FileText, RotateCcw } from 'lucide-react'
 
+const MailIcon = Mail
+
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-b from-gray-900 to-black text-white mt-20 py-16">
