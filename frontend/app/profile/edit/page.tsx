@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { useAuth } from '@/context/AuthContext'
 import { useSkeleton } from '@/context/SkeletonContext'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Upload } from 'lucide-react'
 
 export default function EditProfilePage() {
   const router = useRouter()
@@ -27,6 +27,9 @@ export default function EditProfilePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -56,6 +59,9 @@ export default function EditProfilePage() {
           target_exam: data.target_exam || '',
           school_college: data.school_college || ''
         })
+        if (data.profile_image) {
+          setAvatarUrl(data.profile_image)
+        }
       } else {
         setError('Unable to load profile data')
       }
@@ -71,6 +77,37 @@ export default function EditProfilePage() {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
     setError(null)
+  }
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploading(true)
+    setError(null)
+
+    try {
+      const formData = new FormData()
+      formData.append('avatar', file)
+
+      const response = await fetch('/api/users/upload-avatar', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setAvatarUrl(data.profile_image)
+      } else {
+        setError('Failed to upload profile picture')
+      }
+    } catch (err) {
+      console.error('Avatar upload error:', err)
+      setError('Unable to upload profile picture')
+    } finally {
+      setUploading(false)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -140,6 +177,38 @@ export default function EditProfilePage() {
               <p className="text-green-700 text-sm font-medium">Profile updated successfully! Redirecting...</p>
             </div>
           )}
+
+          <div className="mb-8 text-center">
+            <label className="block text-sm font-semibold text-slate-900 mb-4">Profile Picture</label>
+            <div className="flex justify-center">
+              <div className="relative">
+                <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+                  {avatarUrl ? (
+                    <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-4xl text-white">U</span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-all disabled:opacity-50"
+                >
+                  <Upload className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarChange}
+              className="hidden"
+              disabled={uploading}
+            />
+            <p className="text-xs text-slate-500 mt-4">Click the upload button to change your profile picture</p>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
             <div>

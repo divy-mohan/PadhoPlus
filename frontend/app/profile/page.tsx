@@ -75,8 +75,12 @@ export default function ProfilePage() {
           {/* User Card */}
           <div className="md:col-span-1 bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-8 border border-slate-200">
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <User className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden">
+                {(user as any).profile_image ? (
+                  <img src={(user as any).profile_image} alt={user.first_name} className="w-full h-full object-cover" />
+                ) : (
+                  <User className="w-10 h-10 text-white" />
+                )}
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">{user.first_name} {user.last_name}</h2>
               <div className="flex items-center gap-2 text-sm text-slate-600 justify-center mb-6">
