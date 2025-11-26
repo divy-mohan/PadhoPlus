@@ -1,10 +1,12 @@
+'use client'
+
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
 import FeatureCard from '@/components/FeatureCard'
 import AnimatedEducationCard from '@/components/AnimatedEducationCard'
-import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Trending2, Download, DollarSign, UserCheck, TrendingUp as TrendingUp2, PlayCircle } from 'lucide-react'
+import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck } from 'lucide-react'
 import Link from 'next/link'
 
 const featuredBatches = [
@@ -96,7 +98,7 @@ const benefits = [
   { icon: BookMarked, title: 'Top-Level Content', desc: 'Notes, PYQs, DPPs & test series by expert educators' },
   { icon: UserCheck, title: '1:1 Doubt Support', desc: 'Ask anytime and get quick, clear solutions' },
   { icon: Brain, title: 'AI-Powered Analytics', desc: 'Track strengths & weaknesses with smart analysis' },
-  { icon: PlayCircle, title: 'Live + Recorded', desc: 'Never miss a class, learn at your own pace' },
+  { icon: Play, title: 'Live + Recorded', desc: 'Never miss a class, learn at your own pace' },
   { icon: DollarSign, title: 'Most Affordable', desc: 'Premium features without expensive price tags' },
 ]
 
