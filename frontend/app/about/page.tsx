@@ -90,21 +90,45 @@ export default function AboutPage() {
         </section>
 
         {/* Learning Advantage */}
-        <section className="mb-16 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl p-12">
+        <section className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">The PadhoPlus Learning Advantage</h2>
-            <p className="text-blue-100 text-lg">All in one platform — designed to help you score higher</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-3">The PadhoPlus Learning Advantage</h2>
+            <p className="text-gray-600 text-lg">All in one platform — designed to help you score higher</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {advantages.map((adv, idx) => {
               const AdvIcon = adv.icon
+              const colors = [
+                'from-blue-500 to-blue-600',
+                'from-purple-500 to-purple-600',
+                'from-green-500 to-green-600',
+                'from-orange-500 to-orange-600',
+                'from-pink-500 to-pink-600',
+                'from-indigo-500 to-indigo-600',
+              ]
               return (
-                <div key={idx} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all">
-                  <div className="flex items-center gap-3 mb-3">
-                    <AdvIcon className="w-6 h-6 text-white" />
-                    <h3 className="font-semibold">{adv.title}</h3>
+                <div key={idx} className={`group relative overflow-hidden rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer`}>
+                  {/* Gradient background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${colors[idx % colors.length]} opacity-100`}></div>
+                  
+                  {/* Animated overlay effect */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:bg-white/30 transition-all">
+                        <AdvIcon className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold leading-tight">{adv.title}</h3>
+                      </div>
+                    </div>
+                    <p className="text-white/90 font-medium text-base leading-relaxed mt-3">{adv.desc}</p>
                   </div>
-                  <p className="text-blue-100">{adv.desc}</p>
+
+                  {/* Decorative bottom accent */}
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 group-hover:h-1.5 transition-all duration-300"></div>
                 </div>
               )
             })}
