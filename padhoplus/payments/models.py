@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from padhoplus.users.models import User
-from padhoplus.batches.models import Batch
+from padhoplus.batches.models import Batch, Enrollment
 
 
 class BatchPricing(models.Model):
@@ -33,37 +33,6 @@ class BatchPricing(models.Model):
     
     def __str__(self):
         return f"{self.batch.name} - {self.get_pricing_type_display()}"
-
-
-class Enrollment(models.Model):
-    """Track student enrollment in batches"""
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('active', 'Active'),
-        ('completed', 'Completed'),
-        ('cancelled', 'Cancelled'),
-    ]
-    
-    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='enrollments')
-    batch = models.ForeignKey(Batch, on_delete=models.CASCADE, related_name='enrollments')
-    
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
-    enrollment_date = models.DateTimeField(auto_now_add=True)
-    completed_date = models.DateTimeField(blank=True, null=True)
-    
-    progress_percentage = models.FloatField(default=0)
-    total_watch_time = models.IntegerField(default=0)  # in minutes
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        db_table = 'enrollments'
-        unique_together = ['student', 'batch']
-        ordering = ['-enrollment_date']
-    
-    def __str__(self):
-        return f"{self.student.username} -> {self.batch.name}"
 
 
 class Payment(models.Model):
@@ -108,69 +77,3 @@ class Payment(models.Model):
     
     def __str__(self):
         return f"Payment {self.transaction_id} - {self.student.username}"
-
-
-class StudentProgress(models.Model):
-    """Track student progress and learning stats"""
-    student = models.OneToOneField(User, on_delete=models.CASCADE, related_name='progress')
-    
-    total_watch_time = models.IntegerField(default=0)  # in minutes
-    current_streak = models.IntegerField(default=0)  # in days
-    longest_streak = models.IntegerField(default=0)
-    
-    total_doubts_resolved = models.IntegerField(default=0)
-    total_tests_taken = models.IntegerField(default=0)
-    average_test_score = models.FloatField(default=0)
-    
-    last_activity_date = models.DateField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        db_table = 'student_progress'
-    
-    def __str__(self):
-        return f"Progress - {self.student.username}"
-
-
-class Achievement(models.Model):
-    """Gamification - Student achievements and badges"""
-    TYPE_CHOICES = [
-        ('badge', 'Badge'),
-        ('milestone', 'Milestone'),
-        ('streak', 'Streak'),
-        ('achievement', 'Achievement'),
-    ]
-    
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    
-    icon = models.CharField(max_length=50)  # lucide icon name
-    color = models.CharField(max_length=50, default='blue')
-    
-    points = models.IntegerField(default=10)
-    is_active = models.BooleanField(default=True)
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        db_table = 'achievements'
-    
-    def __str__(self):
-        return self.title
-
-
-class StudentAchievement(models.Model):
-    """Track which achievements a student has earned"""
-    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='achievements')
-    achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
-    
-    earned_date = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        db_table = 'student_achievements'
-        unique_together = ['student', 'achievement']
-    
-    def __str__(self):
-        return f"{self.student.username} -> {self.achievement.title}"
