@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
-import { Send, Upload, AlertCircle } from 'lucide-react'
+import { BootstrapIcon } from '@/components/BootstrapIcon'
 
 const SUBJECTS = [
-  { id: 'physics', name: 'Physics', icon: '⚛️' },
-  { id: 'chemistry', name: 'Chemistry', icon: '🧪' },
-  { id: 'biology', name: 'Biology', icon: '🧬' },
-  { id: 'mathematics', name: 'Mathematics', icon: '∑' },
+  { id: 'physics', name: 'Physics', icon: 'lightbulb' },
+  { id: 'chemistry', name: 'Chemistry', icon: 'flask' },
+  { id: 'biology', name: 'Biology', icon: 'heart-pulse' },
+  { id: 'mathematics', name: 'Mathematics', icon: 'calculator' },
 ]
 
 const TOPICS: Record<string, string[]> = {
@@ -100,7 +100,7 @@ export default function AskDoubtPage() {
         <form onSubmit={handleSubmit} className="space-y-8 bg-gray-50 p-8 rounded-xl border border-gray-200">
           {/* Alert */}
           <div className="flex gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <BootstrapIcon name="info-circle" className="text-xl text-blue-600 flex-shrink-0" />
             <div className="text-sm text-blue-800">
               <p className="font-semibold mb-1">Tips for getting better answers:</p>
               <ul className="list-disc list-inside space-y-1 text-blue-700">
@@ -128,7 +128,7 @@ export default function AskDoubtPage() {
                         : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
                     }`}
                   >
-                    <div className="text-2xl mb-1">{s.icon}</div>
+                    <BootstrapIcon name={s.icon} className="block mx-auto mb-1 text-2xl" />
                     {s.name}
                   </button>
                 ))}
@@ -206,7 +206,7 @@ export default function AskDoubtPage() {
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-3">Upload Images</label>
             <label className="flex items-center justify-center gap-2 p-6 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
-              <Upload className="w-5 h-5 text-gray-400" />
+              <BootstrapIcon name="cloud-upload" className="text-xl text-gray-400" />
               <span className="text-gray-600">Click to upload or drag and drop</span>
               <input
                 type="file"
@@ -247,7 +247,7 @@ export default function AskDoubtPage() {
               disabled={submitting}
               className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-all"
             >
-              <Send className="w-5 h-5" />
+              <BootstrapIcon name="send" className="text-lg" />
               {submitting ? 'Posting...' : 'Post Your Doubt'}
             </button>
           </div>

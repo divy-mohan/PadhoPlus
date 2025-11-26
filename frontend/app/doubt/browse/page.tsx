@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import { Search, Filter, TrendingUp } from 'lucide-react'
+import { BootstrapIcon } from '@/components/BootstrapIcon'
 
 function BrowseContent() {
   const searchParams = useSearchParams()
@@ -57,21 +57,21 @@ function BrowseContent() {
 
       <main className="max-w-6xl mx-auto px-4 py-12">
         <div className="flex items-center gap-3 mb-8">
-          <TrendingUp className="w-8 h-8 text-blue-600" />
+          <BootstrapIcon name="graph-up" className="text-2xl text-blue-600" />
           <h1 className="text-3xl font-bold text-gray-900">Browse Questions</h1>
         </div>
 
         {/* Filters */}
         <div className="mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
           <div className="flex items-center gap-2 mb-4">
-            <Filter className="w-5 h-5 text-gray-700" />
+            <BootstrapIcon name="funnel" className="text-lg text-gray-700" />
             <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
               <div className="relative">
-                <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                <BootstrapIcon name="search" className="absolute left-3 top-3 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search questions..."

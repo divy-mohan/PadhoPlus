@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import { ThumbsUp, MessageCircle, Clock, User, CheckCircle } from 'lucide-react'
+import { BootstrapIcon } from '@/components/BootstrapIcon'
 
 export default function AnswerPage({ params }: { params: Promise<{ id: string }> }) {
   const [id, setId] = useState<string | null>(null)
@@ -66,7 +66,7 @@ export default function AnswerPage({ params }: { params: Promise<{ id: string }>
             </div>
             {doubt.status === 'answered' && (
               <span className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">
-                <CheckCircle className="w-4 h-4" />
+                <BootstrapIcon name="check-circle" className="text-sm" />
                 Answered
               </span>
             )}
@@ -76,11 +76,11 @@ export default function AnswerPage({ params }: { params: Promise<{ id: string }>
           
           <div className="flex items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
-              <User className="w-4 h-4" />
+              <BootstrapIcon name="person" className="text-lg" />
               <span>{doubt.asker_name || 'Student'}</span>
             </div>
             <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
+              <BootstrapIcon name="clock" className="text-lg" />
               <span>{new Date(doubt.created_at).toLocaleDateString()}</span>
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function AnswerPage({ params }: { params: Promise<{ id: string }>
               <div key={idx} className="bg-green-50 border border-green-200 rounded-xl p-8">
                 <div className="flex items-start justify-between mb-4">
                   <h2 className="text-2xl font-bold text-green-900 flex items-center gap-2">
-                    <CheckCircle className="w-6 h-6" />
+                    <BootstrapIcon name="check-circle" className="text-2xl" />
                     Expert Answer
                   </h2>
                 </div>
@@ -107,7 +107,7 @@ export default function AnswerPage({ params }: { params: Promise<{ id: string }>
           </div>
         ) : (
           <div className="text-center py-12 bg-yellow-50 border border-yellow-200 rounded-xl">
-            <Clock className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
+            <BootstrapIcon name="clock" className="block mx-auto mb-4 text-4xl text-yellow-600" />
             <p className="text-yellow-900 font-semibold">Answer Pending</p>
             <p className="text-yellow-700 text-sm mt-2">Our experts are working on this. Check back soon!</p>
           </div>
@@ -128,7 +128,7 @@ export default function AnswerPage({ params }: { params: Promise<{ id: string }>
                   : 'bg-white border border-gray-300 text-gray-700 hover:border-blue-500'
               }`}
             >
-              <ThumbsUp className="w-5 h-5" />
+              <BootstrapIcon name={helpful ? 'hand-thumbs-up-fill' : 'hand-thumbs-up'} className="text-lg" />
               {helpful ? 'Helpful!' : 'Mark Helpful'}
             </button>
           </div>
@@ -137,7 +137,7 @@ export default function AnswerPage({ params }: { params: Promise<{ id: string }>
         {/* Follow-up */}
         <div className="mt-8 p-8 bg-blue-50 border border-blue-200 rounded-xl">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <MessageCircle className="w-5 h-5" />
+            <BootstrapIcon name="chat-dots" className="text-xl" />
             Have more questions?
           </h3>
           <p className="text-gray-700 mb-4">Ask a follow-up question or explore related doubts</p>

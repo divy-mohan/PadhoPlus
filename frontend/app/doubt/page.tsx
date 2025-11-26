@@ -5,13 +5,13 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
-import { MessageCircle, Search, Plus, Zap, TrendingUp } from 'lucide-react'
+import { BootstrapIcon } from '@/components/BootstrapIcon'
 
 const SUBJECTS = [
-  { id: 'physics', name: 'Physics', color: 'from-blue-600 to-cyan-500', icon: '⚛️' },
-  { id: 'chemistry', name: 'Chemistry', color: 'from-green-600 to-emerald-500', icon: '🧪' },
-  { id: 'biology', name: 'Biology', color: 'from-red-600 to-pink-500', icon: '🧬' },
-  { id: 'mathematics', name: 'Mathematics', color: 'from-purple-600 to-pink-500', icon: '∑' },
+  { id: 'physics', name: 'Physics', color: 'from-blue-600 to-cyan-500', icon: 'lightbulb' },
+  { id: 'chemistry', name: 'Chemistry', color: 'from-green-600 to-emerald-500', icon: 'flask' },
+  { id: 'biology', name: 'Biology', color: 'from-red-600 to-pink-500', icon: 'heart-pulse' },
+  { id: 'mathematics', name: 'Mathematics', color: 'from-purple-600 to-pink-500', icon: 'calculator' },
 ]
 
 export default function DoubtPage() {
@@ -28,7 +28,7 @@ export default function DoubtPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <MessageCircle className="w-12 h-12 text-blue-600" />
+            <BootstrapIcon name="chat-dots" className="w-12 h-12 text-blue-600 text-3xl" />
             <h1 className="text-4xl font-bold text-gray-900">Doubt Portal</h1>
           </div>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">Get instant answers from expert faculty. Ask anything, clear everything!</p>
@@ -37,7 +37,7 @@ export default function DoubtPage() {
         {/* Quick Action */}
         <div className="mb-12">
           <Link href="/doubt/ask" className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
-            <Plus className="w-5 h-5" />
+            <BootstrapIcon name="plus" className="text-xl" />
             Ask a New Doubt
           </Link>
         </div>
@@ -46,21 +46,17 @@ export default function DoubtPage() {
         <div className="flex gap-4 mb-8 border-b border-gray-200">
           <button
             onClick={() => setActiveTab('browse')}
-            className={`px-4 py-3 font-semibold transition-all ${activeTab === 'browse' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-gray-900'}`}
+            className={`px-4 py-3 font-semibold transition-all flex items-center gap-2 ${activeTab === 'browse' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-gray-900'}`}
           >
-            <span className="flex items-center gap-2">
-              <Search className="w-5 h-5" />
-              Browse & Search
-            </span>
+            <BootstrapIcon name="search" className="text-lg" />
+            Browse & Search
           </button>
           <button
             onClick={() => setActiveTab('myDoubts')}
-            className={`px-4 py-3 font-semibold transition-all ${activeTab === 'myDoubts' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-gray-900'}`}
+            className={`px-4 py-3 font-semibold transition-all flex items-center gap-2 ${activeTab === 'myDoubts' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-gray-900'}`}
           >
-            <span className="flex items-center gap-2">
-              <MessageCircle className="w-5 h-5" />
-              My Doubts
-            </span>
+            <BootstrapIcon name="chat-dots" className="text-lg" />
+            My Doubts
           </button>
         </div>
 
@@ -94,7 +90,7 @@ export default function DoubtPage() {
                 <Link key={subject.id} href={`/doubt/browse?subject=${subject.id}`} className="group relative">
                   <div className={`absolute -inset-0.5 bg-gradient-to-r ${subject.color} rounded-xl opacity-0 group-hover:opacity-50 blur transition-all duration-500`}></div>
                   <div className={`relative bg-white rounded-xl p-6 border border-gray-200 text-center hover:shadow-lg transition-all`}>
-                    <div className="text-4xl mb-2">{subject.icon}</div>
+                    <BootstrapIcon name={subject.icon} className={`block mx-auto mb-2 text-4xl`} />
                     <h3 className="text-lg font-semibold text-gray-900 mb-1">{subject.name}</h3>
                     <p className="text-sm text-gray-500">Browse {subject.name} doubts</p>
                   </div>
@@ -105,7 +101,7 @@ export default function DoubtPage() {
             {/* Recent Doubts */}
             <div className="mt-12">
               <div className="flex items-center gap-2 mb-6">
-                <TrendingUp className="w-6 h-6 text-blue-600" />
+                <BootstrapIcon name="graph-up" className="text-2xl text-blue-600" />
                 <h2 className="text-2xl font-bold text-gray-900">Recent Questions</h2>
               </div>
               
@@ -135,11 +131,11 @@ export default function DoubtPage() {
         {activeTab === 'myDoubts' && (
           <div className="space-y-6">
             <div className="text-center py-12 bg-gray-50 rounded-xl">
-              <MessageCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <BootstrapIcon name="chat-dots" className="block mx-auto mb-4 text-6xl text-gray-300" />
               <p className="text-gray-600 text-lg">No doubts yet</p>
               <p className="text-gray-500 text-sm mt-2">Start by asking your first doubt</p>
               <Link href="/doubt/ask" className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg mt-4 hover:bg-blue-700">
-                <Plus className="w-4 h-4" />
+                <BootstrapIcon name="plus" className="text-lg" />
                 Ask Now
               </Link>
             </div>
