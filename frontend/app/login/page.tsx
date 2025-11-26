@@ -5,9 +5,11 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import LoadingButton from '@/components/LoadingButton'
+import { useSkeleton } from '@/context/SkeletonContext'
 import { Mail, Lock, Eye, EyeOff, CheckCircle } from 'lucide-react'
 
 export default function LoginPage() {
+  const { setIsLoading } = useSkeleton()
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -38,6 +40,7 @@ export default function LoginPage() {
       const data = await response.json()
 
       if (response.ok) {
+        setIsLoading(true)
         window.location.href = '/dashboard'
       } else {
         setError(data.message || data.error || 'Invalid email or password')

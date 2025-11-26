@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import { useSkeleton } from '@/context/SkeletonContext'
 import { Clock, BookOpen, Zap, TrendingUp, Award, Target, Play } from 'lucide-react'
 
 export default function DashboardPage() {
   const router = useRouter()
+  const { setIsLoading } = useSkeleton()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [studentData, setStudentData] = useState<any>(null)
@@ -29,19 +31,22 @@ export default function DashboardPage() {
           setStudentData(data.user)
           setEnrollments(data.enrollments)
           setAchievements(data.achievements)
+          setIsLoading(false)
         } else {
           setError('Failed to load dashboard')
+          setIsLoading(false)
         }
       } catch (err) {
         setError('Unable to load dashboard data')
         console.error(err)
+        setIsLoading(false)
       } finally {
         setLoading(false)
       }
     }
 
     fetchDashboardData()
-  }, [])
+  }, [setIsLoading])
 
   if (loading) {
     return (
