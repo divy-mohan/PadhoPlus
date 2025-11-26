@@ -1,77 +1,150 @@
+'use client'
+
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
-import { Lightbulb, Target, Users, Award } from 'lucide-react'
+import { Target, Globe, Zap, Users, BookOpen, TrendingUp, Brain, Award, Lightbulb, CheckCircle } from 'lucide-react'
 
 export default function AboutPage() {
+  const values = [
+    { icon: Users, title: 'Access for All', desc: 'Education should never depend on money' },
+    { icon: Award, title: 'Quality First', desc: 'Expert teachers, top-tier content & structured learning' },
+    { icon: Target, title: 'Student-Centric', desc: 'Every feature is designed for your success' },
+    { icon: Lightbulb, title: 'Technology-Driven', desc: 'Smart analytics & innovation for better learning' },
+    { icon: CheckCircle, title: 'Honest & Transparent', desc: 'No overpriced plans. No false promises. Only results.' },
+  ]
+
+  const advantages = [
+    { icon: BookOpen, title: 'Live + Recorded Classes', desc: 'Learn at your own pace' },
+    { icon: Brain, title: 'Notes, PYQs, + DPPs', desc: 'Comprehensive study materials' },
+    { icon: Users, title: 'Doubt Support', desc: 'From skilled mentors anytime' },
+    { icon: TrendingUp, title: 'Performance Analytics', desc: 'Track your progress real-time' },
+    { icon: Target, title: 'Smart Test Planning', desc: 'Customized exam preparation' },
+    { icon: Lightbulb, title: 'Personalized Recommendations', desc: 'AI-driven learning paths' },
+  ]
+
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen">
       <Navbar />
+      <Breadcrumb items={[{ label: 'About', href: '/about' }]} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <Breadcrumb items={[{ label: 'About' }]} />
-      </div>
+      <main className="max-w-7xl mx-auto px-4 py-12">
+        {/* Hero Section */}
+        <section className="text-center mb-16 animate-fade-in">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">Empowering Every Student. Everywhere.</h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            PadhoPlus was built with a simple belief — every student deserves access to high-quality education, regardless of money, location, or background.
+          </p>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mt-4">
+            We are transforming learning by offering premium exam preparation at a price every family can afford — and often, completely free.
+          </p>
+        </section>
 
-      <section className="px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">About PadhoPlus</h1>
-            <p className="text-xl text-gray-600">Making quality education accessible to everyone</p>
-          </div>
-
-          <div className="prose prose-lg max-w-none text-gray-700">
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Our Mission</h2>
-            <p>
-              PadhoPlus is on a mission to democratize education. We believe that quality preparation for competitive exams like JEE and NEET should not be limited by geography or financial constraints.
+        {/* Mission & Vision */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+          {/* Mission */}
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 border border-blue-200">
+            <div className="flex items-center gap-3 mb-4">
+              <Target className="w-8 h-8 text-blue-600" />
+              <h2 className="text-2xl font-bold text-gray-900">Our Mission</h2>
+            </div>
+            <p className="text-gray-700 text-lg font-semibold mb-3">Make India future-ready by making education accessible, affordable, and achievable for all.</p>
+            <p className="text-gray-600 leading-relaxed">
+              We are here to eliminate the barriers that stop students from reaching their true potential — whether it's expensive coaching, lack of guidance, or distance from big cities.
             </p>
+          </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Why We Started</h2>
-            <p>
-              We saw brilliant students unable to access good coaching due to costs. We started PadhoPlus to provide structured, high-quality content at the lowest possible cost or completely free.
+          {/* Vision */}
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 border border-purple-200">
+            <div className="flex items-center gap-3 mb-4">
+              <Globe className="w-8 h-8 text-purple-600" />
+              <h2 className="text-2xl font-bold text-gray-900">Our Vision</h2>
+            </div>
+            <p className="text-gray-700 text-lg font-semibold mb-3">A country where every student has the opportunity and confidence to crack the toughest exams.</p>
+            <p className="text-gray-600 leading-relaxed">
+              PadhoPlus aims to become India's most trusted learning platform, empowering future innovators, doctors, engineers, and leaders.
             </p>
+          </div>
+        </section>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Our Approach</h2>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>Structured curriculum designed by IIT/AIIMS toppers</li>
-              <li>Live and recorded classes for flexibility</li>
-              <li>24/7 doubt support from experienced educators</li>
-              <li>Real-time progress analytics to track improvement</li>
-              <li>Community learning with peer interaction</li>
-            </ul>
+        {/* Core Values */}
+        <section className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">What We Stand For</h2>
+            <p className="text-gray-600 text-lg">Our core values guide everything we do</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {values.map((value, idx) => {
+              const ValueIcon = value.icon
+              return (
+                <div key={idx} className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg flex items-center justify-center mb-4">
+                    <ValueIcon className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">{value.title}</h3>
+                  <p className="text-sm text-gray-600">{value.desc}</p>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+
+        {/* Learning Advantage */}
+        <section className="mb-16 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl p-12">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-3">The PadhoPlus Learning Advantage</h2>
+            <p className="text-blue-100 text-lg">All in one platform — designed to help you score higher</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {advantages.map((adv, idx) => {
+              const AdvIcon = adv.icon
+              return (
+                <div key={idx} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all">
+                  <div className="flex items-center gap-3 mb-3">
+                    <AdvIcon className="w-6 h-6 text-white" />
+                    <h3 className="font-semibold">{adv.title}</h3>
+                  </div>
+                  <p className="text-blue-100">{adv.desc}</p>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+
+        {/* Educators Section */}
+        <section className="mb-16 text-center">
+          <Award className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet the Educators</h2>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto mb-4 leading-relaxed">
+            A passionate team of experienced teachers, IITians, NEET experts, and mentors who have already helped thousands of students achieve their dreams.
+          </p>
+          <p className="text-gray-700 text-xl font-semibold italic">We don't just teach… We guide. We support. We believe in you.</p>
+        </section>
+
+        {/* Call to Action Section */}
+        <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-12 text-center border border-blue-200">
+          <Zap className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">The Future of Learning is Here</h2>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto mb-3 leading-relaxed">
+            PadhoPlus is not just a platform — it's a movement for educational equality.
+          </p>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto mb-8 leading-relaxed">
+            Together, we can ensure that every child with a dream has the tools to make it real.
+          </p>
+          
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Dream. Learn. Achieve.</h3>
+            <p className="text-gray-600 text-lg">Because your success story starts here.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-16">
-            <div className="card text-center">
-              <div className="flex justify-center mb-4 text-blue-600">
-                <Users className="w-8 h-8" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900">10K+</div>
-              <p className="text-sm text-gray-600">Active Students</p>
-            </div>
-            <div className="card text-center">
-              <div className="flex justify-center mb-4 text-blue-600">
-                <Target className="w-8 h-8" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900">500+</div>
-              <p className="text-sm text-gray-600">Lectures</p>
-            </div>
-            <div className="card text-center">
-              <div className="flex justify-center mb-4 text-blue-600">
-                <Award className="w-8 h-8" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900">95%</div>
-              <p className="text-sm text-gray-600">Success Rate</p>
-            </div>
-            <div className="card text-center">
-              <div className="flex justify-center mb-4 text-blue-600">
-                <Lightbulb className="w-8 h-8" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900">2+</div>
-              <p className="text-sm text-gray-600">Years Experience</p>
-            </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="btn btn-primary text-base">Join PadhoPlus Now</button>
+            <button className="btn btn-outline text-base">Explore Batches</button>
           </div>
-        </div>
-      </section>
+
+          <p className="text-gray-600 mt-8 font-semibold">Let's build a smarter India together.</p>
+        </section>
+      </main>
 
       <Footer />
     </div>
