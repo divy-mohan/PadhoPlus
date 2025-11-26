@@ -57,7 +57,6 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
       })
 
       if (response.ok) {
-        const data = await response.json()
         alert('Successfully enrolled in batch')
         router.push('/dashboard')
       } else if (response.status === 400) {
