@@ -113,7 +113,7 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-14 animate-fade-in">
+          <div className="text-center mb-14 scroll-fade-up">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Why Choose PadhoPlus?</h2>
             <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">Everything you need to ace your exams, at a fraction of the cost</p>
           </div>
@@ -122,7 +122,7 @@ export default function Home() {
             {features.map((feature, idx) => {
               const FeatureIcon = feature.icon;
               return (
-                <div key={idx} className={`animate-fade-in fade-in-delay-${(idx % 4) + 1} bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-300`}>
+                <div key={idx} className={`scroll-zoom-in bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-300`} style={{ animationDelay: `${idx * 100}ms` }}>
                   <div className="flex justify-center mb-4 p-3 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg w-fit mx-auto">
                     <FeatureIcon className="w-6 h-6 text-blue-600" />
                   </div>
@@ -213,8 +213,8 @@ export default function Home() {
       {/* Benefits Section */}
       <section className="py-20 px-4 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4 animate-fade-in">What You Get in Every Batch</h2>
-          <p className="text-blue-100 mb-12 animate-fade-in">Complete preparation with everything you need to succeed</p>
+          <h2 className="text-3xl font-bold mb-4 scroll-fade-up">What You Get in Every Batch</h2>
+          <p className="text-blue-100 mb-12 scroll-fade-up">Complete preparation with everything you need to succeed</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {benefits.map((benefit, idx) => {
