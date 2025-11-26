@@ -1,11 +1,11 @@
-modules = ["python-3.11", "nodejs-22"]
+modules = ["python-3.11", "nodejs-20", "web"]
 [agent]
 expertMode = true
 integrations = ["python_log_in_with_replit:1.0.0", "python_database:1.0.0", "stripe:1.0.0"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "tcl", "tk", "zlib"]
+packages = ["freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "postgresql", "tcl", "tk", "zlib"]
 
 [workflows]
 runButton = "Project"
@@ -66,3 +66,7 @@ externalPort = 3001
 [[ports]]
 localPort = 42379
 externalPort = 3000
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
