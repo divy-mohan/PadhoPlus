@@ -1,0 +1,43 @@
+# PadhoPlus Backend - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Django & REST Framework
+Django==5.2.8
+djangorestframework==3.16.1
+django-cors-headers==4.9.0
+
+# Database
+psycopg2-binary==2.9.11
+dj-database-url==2.1.0
+
+# Authentication & Security
+PyJWT==2.8.1
+oauthlib==3.3.1
+requests-oauthlib==2.0.0
+
+# Flask (for OAuth integration)
+flask-login==0.6.3
+flask-dance==7.1.0
+
+# Environment & Configuration
+python-dotenv==1.2.1
+
+# Production Server
+gunicorn==23.0.0
+
+# Image Processing
+Pillow==12.0.0
+
+# API & HTTP
+requests==2.31.0
+
+# Development Tools (Optional - uncomment for development)
+# black==23.12.1          # Code formatter
+# flake8==6.1.0           # Linter
+# pytest==7.4.3           # Testing
+# pytest-django==4.7.0    # Django testing
+# django-debug-toolbar==4.2.0  # Debugging
+
+# Production Settings (Optional - uncomment for production)
+# whitenoise==6.6.0       # Static file serving
+# sentry-sdk==1.39.2      # Error tracking

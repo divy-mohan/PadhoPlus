@@ -30,6 +30,15 @@ Complete guide to setup and run both Backend (Django API) and Frontend (Next.js)
 - **Postman** or **Thunder Client** for API testing
 - **Git Bash** (Windows) or Terminal (Mac/Linux)
 
+### Check Your Versions
+```bash
+python --version        # Should be 3.10+
+python3 --version       # Alternative for Mac/Linux
+node --version          # Should be 18.0+
+npm --version           # Should be 9.0+
+git --version           # Any recent version
+```
+
 ---
 
 ## Initial Setup
@@ -77,8 +86,26 @@ source venv/bin/activate
 ```
 
 ### Step 3: Install Python Dependencies
+
+We have a `requirements.txt` file with all Python dependencies. Install them using:
+
 ```bash
 pip install -r requirements.txt
+```
+
+**Backend Dependencies Include:**
+- Django 5.2.8 - Web framework
+- Django REST Framework 3.16.1 - REST API builder
+- PostgreSQL client (psycopg2-binary) - Database connection
+- Stripe payment integration
+- CORS support for frontend
+- Authentication & OAuth libraries
+
+For detailed list, see `requirements.txt` in project root.
+
+**For Development (Optional):**
+```bash
+pip install black flake8 pytest pytest-django
 ```
 
 ### Step 4: Database Setup
@@ -118,7 +145,28 @@ cd frontend
 ```
 
 ### Step 2: Install Node Dependencies
+
+We have all required frontend dependencies in `frontend/package.json`. Install them using:
+
 ```bash
+npm install
+```
+
+**Frontend Dependencies Include:**
+- Next.js 16.0.4 - React framework
+- React 19.2.0 - UI library
+- Tailwind CSS 4.1.17 - Styling
+- Lucide React - Icon library
+- Axios - HTTP client
+- TypeScript - Type safety
+
+For detailed dependency information, see `FRONTEND_DEPENDENCIES.md` in project root.
+
+**If You Have Dependency Issues:**
+```bash
+npm install --legacy-peer-deps
+# or
+rm -rf node_modules package-lock.json
 npm install
 ```
 
@@ -402,6 +450,41 @@ npm run lint                        # Run ESLint
 npm run format                      # Format code with Prettier
 npm run build                       # Build for production
 npm start                           # Start production server
+```
+
+---
+
+## Dependency Files
+
+### Backend Dependencies (Python)
+**File**: `requirements.txt`
+- Contains all Python packages needed for Django backend
+- Install with: `pip install -r requirements.txt`
+- To add new packages: `pip install package-name && pip freeze > requirements.txt`
+
+**Key Packages:**
+```
+Django==5.2.8
+djangorestframework==3.16.1
+psycopg2-binary==2.9.11
+gunicorn==23.0.0
+```
+
+### Frontend Dependencies (Next.js)
+**File**: `frontend/package.json`
+- Contains all npm packages needed for Next.js frontend
+- Install with: `npm install` (auto-reads package.json)
+- To add new packages: `npm install package-name`
+
+**Documentation**: See `FRONTEND_DEPENDENCIES.md` for complete list
+
+**Key Packages:**
+```
+next@^16.0.4
+react@^19.2.0
+tailwindcss@^4.1.17
+lucide-react@^0.554.0
+axios@^1.13.2
 ```
 
 ---
