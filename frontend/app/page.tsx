@@ -339,27 +339,76 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
-        <div className="max-w-4xl mx-auto">
+      <section className="py-24 px-4 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 relative overflow-hidden">
+        {/* Animated background blobs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-20 w-80 h-80 bg-blue-600/15 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-10 right-20 w-80 h-80 bg-purple-600/15 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+          <div className="absolute top-1/2 left-1/3 w-60 h-60 bg-cyan-600/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '0.75s' }}></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
           <ScrollAnimation type="fade-up">
-            <h2 className="text-3xl font-bold mb-4">What You Get in Every Batch</h2>
-            <p className="text-blue-100 mb-12">Complete preparation with everything you need to succeed</p>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-white mb-3">What You Get in Every Batch</h2>
+              <p className="text-blue-200 text-lg">Complete preparation with everything you need to succeed</p>
+            </div>
           </ScrollAnimation>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {benefits.map((benefit, idx) => {
-              const BenefitIcon = benefit.icon;
+              const BenefitIcon = benefit.icon
+              const colors = [
+                'from-blue-500 to-cyan-500',
+                'from-purple-500 to-pink-500',
+                'from-orange-500 to-red-500',
+                'from-green-500 to-emerald-500',
+                'from-indigo-500 to-blue-500',
+                'from-rose-500 to-pink-500'
+              ]
+              const color = colors[idx % colors.length]
+              
               return (
-                <div key={idx} className={`flex items-start gap-4 fade-in-delay-${(idx % 4) + 1}`}>
-                  <div className="p-2 bg-blue-300 rounded-lg flex-shrink-0">
-                    <BenefitIcon className="w-5 h-5 text-white" />
+                <ScrollAnimation key={idx} type="zoom-in" delay={idx * 100}>
+                  <div className="group relative h-full">
+                    {/* Glow effect */}
+                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${color} rounded-2xl opacity-0 group-hover:opacity-75 blur transition-all duration-500`}></div>
+
+                    {/* Card */}
+                    <div className="relative h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 group-hover:border-slate-600 transition-all duration-300 flex flex-col">
+                      {/* Shine effect */}
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                      {/* Content */}
+                      <div className="relative z-10 flex-1">
+                        {/* Icon container with animation */}
+                        <div className={`inline-flex items-center justify-center mb-4 p-3 bg-gradient-to-br ${color} rounded-xl relative group/icon`}>
+                          <div className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300"></div>
+                          <BenefitIcon className="w-6 h-6 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
+                        </div>
+
+                        {/* Title */}
+                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-blue-200 group-hover:bg-clip-text transition-all duration-300">
+                          {benefit.title}
+                        </h3>
+
+                        {/* Description */}
+                        <p className="text-slate-300 text-sm leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+                          {benefit.desc}
+                        </p>
+                      </div>
+
+                      {/* Bottom accent bar */}
+                      <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-2xl`}></div>
+
+                      {/* Arrow icon on hover */}
+                      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <ArrowRight className="w-5 h-5 text-white/60 group-hover:translate-x-1 transition-transform duration-300" />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-white mb-1">{benefit.title}</h4>
-                    <p className="text-blue-100 text-sm">{benefit.desc}</p>
-                  </div>
-                </div>
-              );
+                </ScrollAnimation>
+              )
             })}
           </div>
         </div>
