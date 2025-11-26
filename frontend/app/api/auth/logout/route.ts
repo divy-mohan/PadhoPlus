@@ -4,7 +4,7 @@ export async function POST() {
   try {
     const backendUrl = 'http://localhost:8000'
     
-    const response = await fetch(`${backendUrl}/api/auth/logout/`, {
+    await fetch(`${backendUrl}/api/auth/logout/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -12,12 +12,10 @@ export async function POST() {
       credentials: 'include',
     })
 
-    const result = NextResponse.json(
+    return NextResponse.json(
       { message: 'Logged out successfully' },
       { status: 200 }
     )
-
-    return result
   } catch (error) {
     console.error('Logout error:', error)
     return NextResponse.json(

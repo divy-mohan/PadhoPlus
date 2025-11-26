@@ -4,7 +4,7 @@ export async function GET() {
   try {
     const backendUrl = 'http://localhost:8000'
     
-    const response = await fetch(`${backendUrl}/api/auth/me/`, {
+    const response = await fetch(`${backendUrl}/api/auth/check/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -12,9 +12,10 @@ export async function GET() {
       credentials: 'include',
     })
 
-    if (response.ok) {
-      const data = await response.json()
-      return NextResponse.json(data, { status: 200 })
+    const data = await response.json()
+    
+    if (data.authenticated) {
+      return NextResponse.json({ user: data.user }, { status: 200 })
     } else {
       return NextResponse.json(
         { error: 'Not authenticated' },
