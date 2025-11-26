@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, use } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import LoadingButton from '@/components/LoadingButton'
+import LoadingSpinner from '@/components/LoadingSpinner'
 import { Star, Users, CheckCircle, GraduationCap, Calendar, BookOpen, Zap } from 'lucide-react'
 import Link from 'next/link'
 
@@ -12,49 +14,63 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   const [activeTab, setActiveTab] = useState('overview')
   const [enrollLoading, setEnrollLoading] = useState(false)
   const [demoLoading, setDemoLoading] = useState(false)
-  const resolvedParams = use(params)
+  const [batch, setBatch] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
-  const batch = {
-    id: '1',
-    name: 'NEET 2025 - Lakshya',
-    exam: 'NEET',
-    slug: resolvedParams.slug,
-    price: 4999,
-    isFree: false,
-    language: 'Hindi',
-    startDate: 'Jan 15, 2025',
-    duration: '12 months',
-    rating: 4.8,
-    reviews: 324,
-    enrolledCount: 2450,
-    description: 'Comprehensive NEET preparation course with live classes, recorded lectures, daily practice problems, and doubt support.',
-    highlights: [
-      'Live Classes: 5 days a week',
-      'Recorded Lectures: Access anytime',
-      'Daily Practice Problems',
-      'Weekly Mock Tests',
-      'Doubt Support: 24/7',
-      'Study Materials: Notes + PDFs',
-      'Performance Analytics'
-    ],
-    faculty: [
-      { name: 'Dr. Sharma', subject: 'Biology', experience: '12 years' },
-      { name: 'Prof. Verma', subject: 'Chemistry', experience: '10 years' }
-    ],
-    syllabus: [
-      { subject: 'Physics', topics: ['Mechanics', 'Optics', 'Modern Physics'] },
-      { subject: 'Chemistry', topics: ['Organic', 'Inorganic', 'Physical'] },
-      { subject: 'Biology', topics: ['Botany', 'Zoology', 'Genetics'] }
-    ]
-  }
+  useEffect(() => {
+    const fetchBatch = async () => {
+      try {
+        const resolvedParams = await params
+        const response = await fetch(`http://localhost:8000/api/batches/${resolvedParams.slug}/`, {
+          credentials: 'include'
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          setBatch(data)
+        } else {
+          setError('Batch not found')
+        }
+      } catch (err) {
+        console.error('Error fetching batch:', err)
+        setError('Failed to load batch details')
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  const tabs = ['overview', 'schedule', 'syllabus', 'faculty', 'reviews', 'faq']
+    fetchBatch()
+  }, [params])
 
   const handleEnroll = async () => {
     setEnrollLoading(true)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      console.log('Enroll in:', batch.name)
+      const response = await fetch(`http://localhost:8000/api/batches/${batch.slug}/enroll/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({})
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        alert('Successfully enrolled in batch')
+        router.push('/dashboard')
+      } else if (response.status === 400) {
+        const data = await response.json()
+        alert(data.error || 'Already enrolled in this batch')
+      } else if (response.status === 403) {
+        alert('Only students can enroll in batches')
+      } else {
+        alert('Failed to enroll in batch')
+      }
+    } catch (err) {
+      console.error('Enrollment error:', err)
+      alert('Unable to enroll in batch')
     } finally {
       setEnrollLoading(false)
     }
@@ -63,12 +79,51 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   const handleDemo = async () => {
     setDemoLoading(true)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      console.log('Demo for:', batch.name)
+      const response = await fetch(`http://localhost:8000/api/batches/${batch.slug}/demo_lectures/`, {
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        if (data.length > 0) {
+          router.push(`/batch/${batch.slug}?demo=true`)
+        } else {
+          alert('No demo lectures available for this batch')
+        }
+      }
+    } catch (err) {
+      console.error('Demo error:', err)
+      alert('Failed to load demo lectures')
     } finally {
       setDemoLoading(false)
     }
   }
+
+  if (loading) {
+    return <LoadingSpinner />
+  }
+
+  if (error || !batch) {
+    return (
+      <div className="bg-white min-h-screen">
+        <Navbar />
+        <main className="max-w-7xl mx-auto px-4 py-12 text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Error</h1>
+          <p className="text-gray-600 mb-6">{error || 'Batch not found'}</p>
+          <Link href="/batches" className="btn btn-primary">
+            Back to Batches
+          </Link>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
+  const tabs = ['overview', 'schedule', 'syllabus', 'faculty', 'reviews', 'faq']
+  const enrolledCount = batch.enrollments?.filter((e: any) => e.status === 'active').length || 0
+  const avgRating = batch.reviews?.length > 0 
+    ? (batch.reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / batch.reviews.length).toFixed(1)
+    : 0
 
   return (
     <div className="bg-white">
@@ -77,20 +132,19 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-fade-in">
         <Breadcrumb items={[
           { label: 'Batches', href: '/batches' },
-          { label: batch.exam },
+          { label: batch.get_target_exam_display || batch.target_exam },
           { label: batch.name }
         ]} />
       </div>
 
       <section className="px-4 py-8">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 animate-fade-in">
             <div className="lg:col-span-2">
               <div className="flex gap-3 mb-4">
                 <span className="badge badge-primary">
                   <GraduationCap className="w-4 h-4" />
-                  {batch.exam}
+                  {batch.get_target_exam_display || batch.target_exam}
                 </span>
                 <span className="badge bg-purple-100 text-purple-700">
                   {batch.language}
@@ -100,26 +154,25 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
               <div className="flex items-center gap-8 text-sm text-gray-600 mb-6 flex-wrap">
                 <div className="flex items-center gap-2">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="font-semibold text-gray-900">{batch.rating}</span>
-                  <span className="text-gray-500">({batch.reviews} reviews)</span>
+                  <span className="font-semibold text-gray-900">{avgRating}</span>
+                  <span className="text-gray-500">({batch.reviews?.length || 0} reviews)</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-gray-400" />
-                  <span>{batch.enrolledCount.toLocaleString()} enrolled</span>
+                  <span>{enrolledCount} enrolled</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-gray-400" />
-                  <span>Starts {batch.startDate}</span>
+                  <span>Starts {new Date(batch.start_date).toLocaleDateString()}</span>
                 </div>
               </div>
               <p className="text-gray-700 text-lg leading-relaxed">{batch.description}</p>
             </div>
 
-            {/* Enroll Card */}
             <div className="lg:col-span-1 h-fit sticky top-24 animate-fade-in fade-in-delay-1">
               <div className="card border-2 border-gradient-to-br from-blue-200 to-blue-100">
                 <div className="mb-6">
-                  {batch.isFree ? (
+                  {batch.is_free ? (
                     <div>
                       <span className="text-4xl font-bold text-gradient">FREE</span>
                       <p className="text-sm text-gray-600 mt-1">Start learning today</p>
@@ -127,6 +180,9 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
                   ) : (
                     <div>
                       <span className="text-4xl font-bold text-gray-900">₹{batch.price}</span>
+                      {batch.discounted_price && batch.discounted_price < batch.price && (
+                        <p className="text-sm text-red-600 mt-1">Save ₹{(batch.price - batch.discounted_price).toFixed(0)}</p>
+                      )}
                       <p className="text-sm text-gray-600 mt-1">One-time payment • Lifetime access</p>
                     </div>
                   )}
@@ -150,10 +206,10 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
                 </LoadingButton>
 
                 <div className="space-y-3 text-sm">
-                  {batch.highlights.slice(0, 4).map((highlight, idx) => (
+                  {(batch.includes || ['Live Classes', 'Study Materials', 'Doubt Support', 'Performance Analytics']).slice(0, 4).map((item: string, idx: number) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">{highlight}</span>
+                      <span className="text-gray-700">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -161,7 +217,6 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
             </div>
           </div>
 
-          {/* Tabs */}
           <div className="border-b border-gray-200 mb-8 overflow-x-auto">
             <div className="flex gap-8">
               {tabs.map((tab) => (
@@ -180,38 +235,35 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
             </div>
           </div>
 
-          {/* Tab Content */}
           <div className="mb-12 animate-fade-in">
             {activeTab === 'overview' && (
               <div>
                 <h2 className="text-2xl font-bold mb-6 text-gray-900">What You'll Get</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {batch.highlights.map((highlight, idx) => (
+                  {(batch.includes || batch.features || []).map((item: string, idx: number) => (
                     <div key={idx} className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 hover-lift">
                       <Zap className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 font-medium">{highlight}</span>
+                      <span className="text-gray-700 font-medium">{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {activeTab === 'syllabus' && (
+            {activeTab === 'schedule' && batch.schedules && batch.schedules.length > 0 && (
               <div>
-                <h2 className="text-2xl font-bold mb-6 text-gray-900">Complete Syllabus</h2>
+                <h2 className="text-2xl font-bold mb-6 text-gray-900">Class Schedule</h2>
                 <div className="space-y-4">
-                  {batch.syllabus.map((item, idx) => (
+                  {batch.schedules.map((schedule: any, idx: number) => (
                     <div key={idx} className="card hover-lift">
-                      <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                        <BookOpen className="w-5 h-5 text-blue-600" />
-                        {item.subject}
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {item.topics.map((topic, i) => (
-                          <span key={i} className="bg-blue-100 text-blue-700 text-xs px-3 py-1.5 rounded-full font-medium">
-                            {topic}
-                          </span>
-                        ))}
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h3 className="font-semibold text-gray-900">{schedule.subject}</h3>
+                          <p className="text-sm text-gray-600">{schedule.day} • {schedule.start_time} - {schedule.end_time}</p>
+                        </div>
+                        {schedule.is_live && (
+                          <span className="badge bg-red-100 text-red-700">Live</span>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -219,34 +271,67 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
               </div>
             )}
 
-            {activeTab === 'faculty' && (
+            {activeTab === 'faculty' && batch.faculty && batch.faculty.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold mb-6 text-gray-900">Meet Your Instructors</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {batch.faculty.map((prof, idx) => (
+                  {batch.faculty.map((prof: any, idx: number) => (
                     <div key={idx} className="card hover-lift">
                       <div className="flex items-center gap-4 mb-4">
                         <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                          {prof.name.charAt(0)}
+                          {prof.first_name?.[0]}{prof.last_name?.[0]}
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900 text-lg">{prof.name}</h3>
-                          <p className="text-sm text-blue-600 font-medium">{prof.subject}</p>
+                          <h3 className="font-semibold text-gray-900 text-lg">{prof.first_name} {prof.last_name}</h3>
+                          <p className="text-sm text-blue-600 font-medium">{prof.email}</p>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-600">{prof.experience} years of teaching experience</p>
+                      {prof.bio && <p className="text-sm text-gray-600">{prof.bio}</p>}
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {activeTab !== 'overview' && activeTab !== 'syllabus' && activeTab !== 'faculty' && (
-              <div className="text-center py-16">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <BookOpen className="w-8 h-8 text-gray-400" />
+            {activeTab === 'faq' && batch.faqs && batch.faqs.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6 text-gray-900">Frequently Asked Questions</h2>
+                <div className="space-y-4">
+                  {batch.faqs.map((faq: any, idx: number) => (
+                    <div key={idx} className="card">
+                      <h3 className="font-semibold text-gray-900 mb-2">{faq.question}</h3>
+                      <p className="text-gray-600 text-sm">{faq.answer}</p>
+                    </div>
+                  ))}
                 </div>
-                <p className="text-gray-600 text-lg">Coming soon...</p>
+              </div>
+            )}
+
+            {activeTab === 'reviews' && batch.reviews && batch.reviews.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6 text-gray-900">Student Reviews</h2>
+                <div className="space-y-4">
+                  {batch.reviews.map((review: any, idx: number) => (
+                    <div key={idx} className="card">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-gray-900">{review.student_name}</h3>
+                        <div className="flex gap-1">
+                          {[...Array(review.rating)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          ))}
+                        </div>
+                      </div>
+                      {review.review && <p className="text-gray-600 text-sm">{review.review}</p>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab !== 'overview' && activeTab !== 'faculty' && activeTab !== 'faq' && activeTab !== 'reviews' && (
+              <div className="text-center py-16">
+                <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-600 text-lg">Content coming soon...</p>
               </div>
             )}
           </div>
