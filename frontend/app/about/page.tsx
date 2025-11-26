@@ -3,6 +3,7 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
+import ScrollAnimation from '@/components/ScrollAnimation'
 import { Target, Globe, Zap, Users, BookOpen, TrendingUp, Brain, Award, Lightbulb, CheckCircle } from 'lucide-react'
 
 export default function AboutPage() {
@@ -30,20 +31,23 @@ export default function AboutPage() {
 
       <main className="max-w-7xl mx-auto px-4 py-12">
         {/* Hero Section */}
-        <section className="text-center mb-16 scroll-fade-up">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">Empowering Every Student. Everywhere.</h1>
+        <ScrollAnimation type="fade-up">
+          <section className="text-center mb-16">
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">Empowering Every Student. Everywhere.</h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
             PadhoPlus was built with a simple belief — every student deserves access to high-quality education, regardless of money, location, or background.
           </p>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mt-4">
             We are transforming learning by offering premium exam preparation at a price every family can afford — and often, completely free.
           </p>
-        </section>
+          </section>
+        </ScrollAnimation>
 
         {/* Mission & Vision */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
           {/* Mission */}
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 border border-blue-200 scroll-slide-left" style={{ animationDelay: '0ms' }}>
+          <ScrollAnimation type="slide-left">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 border border-blue-200">
             <div className="flex items-center gap-3 mb-4">
               <Target className="w-8 h-8 text-blue-600" />
               <h2 className="text-2xl font-bold text-gray-900">Our Mission</h2>
@@ -52,10 +56,12 @@ export default function AboutPage() {
             <p className="text-gray-600 leading-relaxed">
               We are here to eliminate the barriers that stop students from reaching their true potential — whether it's expensive coaching, lack of guidance, or distance from big cities.
             </p>
-          </div>
+            </div>
+          </ScrollAnimation>
 
           {/* Vision */}
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 border border-purple-200 scroll-slide-right" style={{ animationDelay: '100ms' }}>
+          <ScrollAnimation type="slide-right" delay={100}>
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 border border-purple-200">
             <div className="flex items-center gap-3 mb-4">
               <Globe className="w-8 h-8 text-purple-600" />
               <h2 className="text-2xl font-bold text-gray-900">Our Vision</h2>
@@ -64,7 +70,8 @@ export default function AboutPage() {
             <p className="text-gray-600 leading-relaxed">
               PadhoPlus aims to become India's most trusted learning platform, empowering future innovators, doctors, engineers, and leaders.
             </p>
-          </div>
+            </div>
+          </ScrollAnimation>
         </section>
 
         {/* Core Values */}
@@ -77,13 +84,15 @@ export default function AboutPage() {
             {values.map((value, idx) => {
               const ValueIcon = value.icon
               return (
-                <div key={idx} className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all scroll-rotate-in" style={{ animationDelay: `${idx * 80}ms` }}>
+                <ScrollAnimation key={idx} type="rotate-in" delay={idx * 80}>
+                  <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg flex items-center justify-center mb-4">
                     <ValueIcon className="w-6 h-6 text-blue-600" />
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2">{value.title}</h3>
                   <p className="text-sm text-gray-600">{value.desc}</p>
-                </div>
+                  </div>
+                </ScrollAnimation>
               )
             })}
           </div>
@@ -107,7 +116,8 @@ export default function AboutPage() {
                 'from-indigo-500 to-indigo-600',
               ]
               return (
-                <div key={idx} className={`group relative overflow-hidden rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer scroll-zoom-in`} style={{ animationDelay: `${idx * 100}ms` }}>
+                <ScrollAnimation key={idx} type="zoom-in" delay={idx * 100}>
+                  <div className={`group relative overflow-hidden rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer`}>
                   {/* Gradient background */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${colors[idx % colors.length]} opacity-100`}></div>
                   
@@ -129,7 +139,8 @@ export default function AboutPage() {
 
                   {/* Decorative bottom accent */}
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 group-hover:h-1.5 transition-all duration-300"></div>
-                </div>
+                  </div>
+                </ScrollAnimation>
               )
             })}
           </div>

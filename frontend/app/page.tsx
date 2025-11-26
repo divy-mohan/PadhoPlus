@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
 import FeatureCard from '@/components/FeatureCard'
-import AnimatedEducationCard from '@/components/AnimatedEducationCard'
+import ScrollAnimation from '@/components/ScrollAnimation'
 import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck } from 'lucide-react'
 import Link from 'next/link'
 
@@ -113,22 +113,26 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-14 scroll-fade-up">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Why Choose PadhoPlus?</h2>
-            <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">Everything you need to ace your exams, at a fraction of the cost</p>
-          </div>
+          <ScrollAnimation type="fade-up">
+            <div className="text-center mb-14">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Why Choose PadhoPlus?</h2>
+              <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">Everything you need to ace your exams, at a fraction of the cost</p>
+            </div>
+          </ScrollAnimation>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, idx) => {
               const FeatureIcon = feature.icon;
               return (
-                <div key={idx} className={`scroll-zoom-in bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-300`} style={{ animationDelay: `${idx * 100}ms` }}>
-                  <div className="flex justify-center mb-4 p-3 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg w-fit mx-auto">
-                    <FeatureIcon className="w-6 h-6 text-blue-600" />
+                <ScrollAnimation key={idx} type="zoom-in" delay={idx * 100}>
+                  <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
+                    <div className="flex justify-center mb-4 p-3 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg w-fit mx-auto">
+                      <FeatureIcon className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2 text-center text-lg">{feature.title}</h3>
+                    <p className="text-sm text-gray-600 text-center leading-relaxed">{feature.description}</p>
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2 text-center text-lg">{feature.title}</h3>
-                  <p className="text-sm text-gray-600 text-center leading-relaxed">{feature.description}</p>
-                </div>
+                </ScrollAnimation>
               );
             })}
           </div>
@@ -213,8 +217,10 @@ export default function Home() {
       {/* Benefits Section */}
       <section className="py-20 px-4 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4 scroll-fade-up">What You Get in Every Batch</h2>
-          <p className="text-blue-100 mb-12 scroll-fade-up">Complete preparation with everything you need to succeed</p>
+          <ScrollAnimation type="fade-up">
+            <h2 className="text-3xl font-bold mb-4">What You Get in Every Batch</h2>
+            <p className="text-blue-100 mb-12">Complete preparation with everything you need to succeed</p>
+          </ScrollAnimation>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {benefits.map((benefit, idx) => {
