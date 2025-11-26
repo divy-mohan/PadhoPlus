@@ -3,6 +3,7 @@ import './globals.css'
 import PageProgressBar from '@/components/PageProgressBar'
 import SkeletonLoader from '@/components/SkeletonLoader'
 import { SkeletonProvider } from '@/context/SkeletonContext'
+import { AuthProvider } from '@/context/AuthContext'
 
 export const metadata: Metadata = {
   title: 'PadhoPlus - Online Education for JEE/NEET',
@@ -17,11 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SkeletonProvider>
-          <PageProgressBar />
-          <SkeletonLoader />
-          {children}
-        </SkeletonProvider>
+        <AuthProvider>
+          <SkeletonProvider>
+            <PageProgressBar />
+            <SkeletonLoader />
+            {children}
+          </SkeletonProvider>
+        </AuthProvider>
       </body>
     </html>
   )
