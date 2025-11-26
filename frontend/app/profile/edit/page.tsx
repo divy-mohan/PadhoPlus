@@ -24,7 +24,7 @@ export default function EditProfilePage() {
     school_college: ''
   })
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
@@ -35,17 +35,37 @@ export default function EditProfilePage() {
     }
 
     if (isAuthenticated && user) {
-      setFormData({
-        first_name: user.first_name || '',
-        last_name: user.last_name || '',
-        email: user.email || '',
-        phone: (user as any).phone || '',
-        bio: (user as any).bio || '',
-        target_exam: (user as any).target_exam || '',
-        school_college: (user as any).school_college || ''
-      })
+      fetchProfileData()
     }
-  }, [isAuthenticated, user, authLoading])
+  }, [isAuthenticated, user, authLoading, router])
+
+  const fetchProfileData = async () => {
+    try {
+      const response = await fetch('/api/auth/profile', {
+        credentials: 'include'
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setFormData({
+          first_name: data.first_name || '',
+          last_name: data.last_name || '',
+          email: data.email || '',
+          phone: data.phone || '',
+          bio: data.bio || '',
+          target_exam: data.target_exam || '',
+          school_college: data.school_college || ''
+        })
+      } else {
+        setError('Unable to load profile data')
+      }
+    } catch (err) {
+      console.error('Error fetching profile:', err)
+      setError('Unable to load profile data')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -55,7 +75,6 @@ export default function EditProfilePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
     setError(null)
     setSuccess(false)
 
@@ -81,12 +100,10 @@ export default function EditProfilePage() {
     } catch (err) {
       setError('Unable to update profile. Please try again.')
       console.error('Update error:', err)
-    } finally {
-      setLoading(false)
     }
   }
 
-  if (isLoading || authLoading) {
+  if (isLoading || authLoading || loading) {
     return <LoadingSpinner />
   }
 
@@ -99,7 +116,6 @@ export default function EditProfilePage() {
       <Navbar />
 
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => router.back()}
@@ -112,9 +128,7 @@ export default function EditProfilePage() {
           <p className="text-gray-500 mt-2">Update your personal information</p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-8 border border-slate-200">
-          
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-700 text-sm font-medium">{error}</p>
@@ -127,7 +141,6 @@ export default function EditProfilePage() {
             </div>
           )}
 
-          {/* Name Fields */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="block text-sm font-semibold text-slate-900 mb-2">First Name</label>
@@ -153,7 +166,6 @@ export default function EditProfilePage() {
             </div>
           </div>
 
-          {/* Email */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-slate-900 mb-2">Email</label>
             <input
@@ -168,7 +180,6 @@ export default function EditProfilePage() {
             <p className="text-xs text-slate-500 mt-2">Email cannot be changed</p>
           </div>
 
-          {/* Phone */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-slate-900 mb-2">Phone Number</label>
             <input
@@ -181,7 +192,6 @@ export default function EditProfilePage() {
             />
           </div>
 
-          {/* Target Exam */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-slate-900 mb-2">Target Exam</label>
             <select
@@ -199,7 +209,6 @@ export default function EditProfilePage() {
             </select>
           </div>
 
-          {/* School/College */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-slate-900 mb-2">School/College</label>
             <input
@@ -212,7 +221,6 @@ export default function EditProfilePage() {
             />
           </div>
 
-          {/* Bio */}
           <div className="mb-8">
             <label className="block text-sm font-semibold text-slate-900 mb-2">Bio</label>
             <textarea
@@ -226,14 +234,12 @@ export default function EditProfilePage() {
             <p className="text-xs text-slate-500 mt-2">{formData.bio.length}/500 characters</p>
           </div>
 
-          {/* Buttons */}
           <div className="flex gap-4">
             <button
               type="submit"
-              disabled={loading}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300"
             >
-              {loading ? 'Saving...' : 'Save Changes'}
+              Save Changes
             </button>
             <button
               type="button"
