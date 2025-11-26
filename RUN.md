@@ -269,8 +269,13 @@ CORS_ALLOWED_ORIGINS=http://localhost:5000,http://localhost:3000
 
 ### Frontend (.env.local)
 ```bash
+# For Local Development
 NEXT_PUBLIC_API_URL=http://localhost:8000/api
 NEXT_PUBLIC_DOMAIN=http://localhost:5000
+
+# For Replit Deployment
+# NEXT_PUBLIC_API_URL=https://your-replit-domain:8000/api
+# NEXT_PUBLIC_DOMAIN=https://your-replit-domain:5000
 ```
 
 ---
