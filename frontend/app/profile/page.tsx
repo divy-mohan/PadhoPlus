@@ -71,13 +71,9 @@ export default function ProfilePage() {
                 <User className="w-10 h-10 text-white" />
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">{user.first_name} {user.last_name}</h2>
-              <p className="text-sm text-slate-600 mb-6">{user.email}</p>
-              
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm text-slate-600">
-                  <Mail className="w-4 h-4" />
-                  <span>{user.email}</span>
-                </div>
+              <div className="flex items-center gap-2 text-sm text-slate-600 justify-center mb-6">
+                <Mail className="w-4 h-4" />
+                <span>{user.email}</span>
               </div>
             </div>
           </div>
