@@ -7,4 +7,5 @@ export const apiEndpoints = {
   batchDemo: (slug: string) => `${API_BASE}/batches/${slug}/demo_lectures/`,
   faculty: () => `${API_BASE}/users/faculty/`,
   notes: () => `${API_BASE}/notes/?is_active=true`,
+  doubts: () => `${API_BASE}/doubts/`,
 }
