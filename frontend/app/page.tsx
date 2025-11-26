@@ -6,7 +6,7 @@ import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
 import FeatureCard from '@/components/FeatureCard'
 import ScrollAnimation from '@/components/ScrollAnimation'
-import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck } from 'lucide-react'
+import { Zap, Users, TrendingUp, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift } from 'lucide-react'
 import Link from 'next/link'
 
 const featuredBatches = [
@@ -115,7 +115,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <ScrollAnimation type="fade-up">
             <div className="text-center mb-14">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Why Choose PadhoPlus?</h2>
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <Sparkles className="w-8 h-8 text-blue-600 animate-pulse" />
+                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Why Choose PadhoPlus?</h2>
+                <Sparkles className="w-8 h-8 text-blue-600 animate-pulse" />
+              </div>
               <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">Everything you need to ace your exams, at a fraction of the cost</p>
             </div>
           </ScrollAnimation>
@@ -144,7 +148,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <ScrollAnimation type="fade-up">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-3">How It Works</h2>
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <Layers className="w-8 h-8 text-purple-600" />
+                <h2 className="text-4xl font-bold text-gray-900">How It Works</h2>
+                <Layers className="w-8 h-8 text-purple-600" />
+              </div>
               <p className="text-gray-600 text-lg">Your journey to success in 4 simple steps</p>
             </div>
           </ScrollAnimation>
@@ -233,7 +241,10 @@ export default function Home() {
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12 animate-fade-in">
-            <h2 className="text-3xl font-bold text-gray-900 mb-3">Popular Batches</h2>
+            <div className="flex items-center justify-center gap-3 mb-3 sm:mb-0 sm:justify-start">
+              <Star className="w-8 h-8 text-yellow-500" />
+              <h2 className="text-3xl font-bold text-gray-900">Popular Batches</h2>
+            </div>
             <p className="text-gray-600">Start your preparation with our most loved programs</p>
           </div>
 
@@ -265,7 +276,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto relative z-10">
           <ScrollAnimation type="fade-up">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-3">Why Students Choose Us</h2>
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <Award className="w-8 h-8 text-blue-600" />
+                <h2 className="text-4xl font-bold text-gray-900">Why Students Choose Us</h2>
+                <Award className="w-8 h-8 text-blue-600" />
+              </div>
               <p className="text-blue-600 text-lg">Join thousands of successful learners</p>
             </div>
           </ScrollAnimation>
@@ -350,7 +365,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto relative z-10">
           <ScrollAnimation type="fade-up">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-3">What You Get in Every Batch</h2>
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <Gift className="w-8 h-8 text-green-600" />
+                <h2 className="text-4xl font-bold text-gray-900">What You Get in Every Batch</h2>
+                <Gift className="w-8 h-8 text-green-600" />
+              </div>
               <p className="text-blue-700 text-lg">Complete preparation with everything you need to succeed</p>
             </div>
           </ScrollAnimation>
@@ -417,7 +436,11 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-20 px-4">
         <div className="max-w-3xl mx-auto text-center bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-12 border border-blue-200 animate-fade-in">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Start Learning?</h2>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Lightbulb className="w-8 h-8 text-orange-500" />
+            <h2 className="text-3xl font-bold text-gray-900">Ready to Start Learning?</h2>
+            <Lightbulb className="w-8 h-8 text-orange-500" />
+          </div>
           <p className="text-gray-600 mb-8 text-lg">Join thousands of students preparing for their exams. Start for free today.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/register" className="btn btn-primary text-base">
