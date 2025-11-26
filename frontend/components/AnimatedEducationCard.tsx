@@ -29,11 +29,11 @@ export default function AnimatedEducationCard({
     >
       <div className="relative group">
         {/* Gradient Border Animation */}
-        <div className={`absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 blur-md group-hover:blur-lg transition-all duration-500 rounded-xl ${variantClasses[variant]}`}></div>
+        <div className={`absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 blur-md group-hover:blur-lg transition-all duration-500 rounded-xl pointer-events-none ${variantClasses[variant]}`}></div>
         
         {/* Card Content */}
-        <div className="relative bg-white rounded-xl transform group-hover:scale-105 transition-transform duration-300 z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+        <div className="relative bg-white border border-gray-200 rounded-xl transform group-hover:scale-105 transition-transform duration-300 z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
           <div className="relative z-20">
             {children}
           </div>

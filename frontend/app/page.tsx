@@ -118,12 +118,19 @@ export default function Home() {
             <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">Everything you need to ace your exams, at a fraction of the cost</p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
-            {features.map((feature, idx) => (
-              <AnimatedEducationCard key={idx} delay={idx * 100} variant={['primary', 'success', 'warning', 'info'][idx % 4] as any}>
-                <FeatureCard {...feature} delay={`fade-in-delay-${(idx % 4) + 1}`} />
-              </AnimatedEducationCard>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, idx) => {
+              const FeatureIcon = feature.icon;
+              return (
+                <div key={idx} className={`animate-fade-in fade-in-delay-${(idx % 4) + 1} bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-300`}>
+                  <div className="flex justify-center mb-4 p-3 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg w-fit mx-auto">
+                    <FeatureIcon className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2 text-center text-lg">{feature.title}</h3>
+                  <p className="text-sm text-gray-600 text-center leading-relaxed">{feature.description}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
