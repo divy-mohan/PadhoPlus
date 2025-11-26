@@ -44,7 +44,7 @@ export default function StreakCalendar({ days }: StreakCalendarProps) {
         ))}
       </div>
 
-      <p className="text-xs text-slate-500 mt-4">Keep it going! 🔥</p>
+      <p className="text-xs text-slate-500 mt-4">Keep going!</p>
     </div>
   )
 }

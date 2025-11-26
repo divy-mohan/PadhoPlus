@@ -37,7 +37,7 @@ export default function AchievementCard({ achievements }: AchievementCardProps) 
           )}
         </div>
       ) : (
-        <p className="text-sm text-slate-500 text-center py-4">No achievements yet. Start learning! 🚀</p>
+        <p className="text-sm text-slate-500 text-center py-4">No achievements yet. Start learning!</p>
       )}
     </div>
   )
