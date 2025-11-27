@@ -7,7 +7,7 @@ from .models import User, Faculty, Testimonial, Result
 class UserAdmin(BaseUserAdmin):
     list_display = ['username', 'email', 'first_name', 'last_name', 'role', 'is_active', 'date_joined']
     list_filter = ['role', 'is_active', 'is_staff', 'date_joined']
-    search_fields = ['username', 'email', 'first_name', 'last_name', 'phone_number', 'phone']
+    search_fields = ['username', 'email', 'first_name', 'last_name', 'phone']
     ordering = ['-date_joined']
     readonly_fields = ['profile_preview']
     
@@ -19,10 +19,10 @@ class UserAdmin(BaseUserAdmin):
     
     fieldsets = BaseUserAdmin.fieldsets + (
         ('Profile', {
-            'fields': ('role', 'phone_number', 'phone', 'profile_image', 'profile_picture', 'profile_preview', 'bio', 'date_of_birth')
+            'fields': ('role', 'phone', 'profile_image', 'profile_preview', 'bio')
         }),
         ('Student Info', {
-            'fields': ('target_exam', 'class_level', 'school_name'),
+            'fields': ('target_exam', 'target_year', 'current_class', 'school_college', 'language_preference'),
             'classes': ('collapse',)
         }),
         ('Teacher Info', {
@@ -37,7 +37,7 @@ class UserAdmin(BaseUserAdmin):
     
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         ('Profile', {
-            'fields': ('role', 'email', 'first_name', 'last_name', 'phone_number')
+            'fields': ('role', 'email', 'first_name', 'last_name', 'phone')
         }),
     )
 
