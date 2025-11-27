@@ -221,77 +221,97 @@ export default function HowItWorksAnimated() {
           </div>
         </div>
 
-        {/* Mobile view */}
-        <div className="md:hidden space-y-6">
-          {steps.map((item: any, idx: number) => {
-            const IconComponent = item.icon
-            const isCardActive = getActiveCard(idx)
+        {/* Mobile view - All 4 steps in horizontal line */}
+        <div className="md:hidden">
+          <div className="relative">
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 px-2">
+              {steps.map((item: any, idx: number) => {
+                const IconComponent = item.icon
+                const isCardActive = getActiveCard(idx)
+                const isArrowActive = getActiveArrow(idx)
 
-            return (
-              <ScrollAnimation key={idx} type="fade-up" delay={idx * 100}>
-                <div className={`relative transition-all duration-700 ease-in-out ${
-                  isCardActive ? 'scale-105' : 'scale-100'
-                }`}>
-                  {isCardActive && (
-                    <div className="absolute -inset-2 bg-gradient-to-r from-blue-200 to-purple-200 rounded-2xl opacity-100 blur-lg animate-pulse"></div>
-                  )}
+                return (
+                  <ScrollAnimation key={idx} type="zoom-in" delay={idx * 150}>
+                    <div className="relative">
+                      {/* Compact horizontal connector */}
+                      {idx < steps.length - 1 && (
+                        <div className="absolute top-8 left-full w-3 h-1 bg-gray-300 rounded-full overflow-hidden">
+                          <div
+                            className={`absolute h-full w-full flex items-center justify-center text-xs font-bold transition-all duration-700 ease-in-out ${
+                              isArrowActive
+                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white opacity-100 shadow-lg'
+                                : 'bg-gray-300 text-gray-400 opacity-40'
+                            }`}
+                          >
+                            ➜
+                          </div>
+                        </div>
+                      )}
 
-                  <div
-                    className={`relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-700 ease-in-out border-2 ${
-                      isCardActive
-                        ? 'border-blue-500 shadow-2xl'
-                        : 'border-gray-100'
-                    }`}
-                  >
-                    {/* Icon for mobile */}
-                    <div className={`mb-4 flex justify-center`}>
+                      {/* Compact step card */}
                       <div
-                        className={`p-3 rounded-full transition-all duration-700 ease-in-out ${
-                          isCardActive
-                            ? `bg-gradient-to-br ${item.color} scale-110 shadow-lg`
-                            : `bg-gradient-to-br ${item.bgGlow}`
+                        className={`relative group transition-all duration-700 ease-in-out ${
+                          isCardActive ? 'scale-105' : 'scale-100'
                         }`}
                       >
-                        <IconComponent
-                          className={`w-6 h-6 transition-all duration-700 ease-in-out ${
-                            isCardActive ? 'text-white' : 'text-gray-700'
+                        {/* Glow effect when active */}
+                        {isCardActive && (
+                          <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-200 to-purple-200 rounded-lg opacity-100 blur-md animate-pulse"></div>
+                        )}
+
+                        {/* Card */}
+                        <div
+                          className={`relative bg-white rounded-lg p-2 shadow-md transition-all duration-700 ease-in-out border-2 overflow-hidden ${
+                            isCardActive
+                              ? 'border-blue-500 shadow-lg'
+                              : 'border-gray-100 group-hover:border-blue-300'
                           }`}
-                        />
+                        >
+                          {/* Step number - compact */}
+                          <div
+                            className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm mx-auto mb-1.5 shadow-md transition-all duration-700 ease-in-out relative overflow-hidden ${
+                              isCardActive
+                                ? `bg-gradient-to-br ${item.color} scale-110 shadow-lg`
+                                : `bg-gradient-to-br ${item.color} group-hover:scale-110 group-hover:shadow-lg`
+                            }`}
+                          >
+                            <span className={`relative z-10 transition-transform duration-700 ease-in-out ${
+                              isCardActive ? 'scale-110' : 'group-hover:scale-110'
+                            }`}>
+                              {item.step}
+                            </span>
+                          </div>
+
+                          {/* Step content - compact */}
+                          <div className="text-center relative z-10">
+                            <h3 className={`font-bold mb-0.5 text-[10px] transition-colors duration-700 ease-in-out leading-tight ${
+                              isCardActive
+                                ? 'text-blue-600'
+                                : 'text-gray-900 group-hover:text-blue-600'
+                            }`}>
+                              {item.title}
+                            </h3>
+                            <p className={`text-[8px] transition-colors duration-700 ease-in-out leading-tight hidden sm:block ${
+                              isCardActive
+                                ? 'text-gray-700 font-medium'
+                                : 'text-gray-600 group-hover:text-gray-700'
+                            }`}>
+                              {item.desc}
+                            </p>
+                          </div>
+
+                          {/* Animated bottom accent */}
+                          <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent transition-all duration-700 ease-in-out ${
+                            isCardActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                          }`}></div>
+                        </div>
                       </div>
                     </div>
-
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg transition-all duration-700 ease-in-out bg-gradient-to-br ${
-                      isCardActive ? item.color + ' scale-110' : item.color
-                    }`}>
-                      {item.step}
-                    </div>
-
-                    <h3 className={`font-bold mb-2 text-lg transition-colors duration-700 ease-in-out ${
-                      isCardActive ? 'text-blue-600' : 'text-gray-900'
-                    }`}>
-                      {item.title}
-                    </h3>
-                    <p className={`text-sm transition-colors duration-700 ease-in-out ${
-                      isCardActive ? 'text-gray-700 font-medium' : 'text-gray-600'
-                    }`}>
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  {/* Vertical connector for mobile */}
-                  {idx < steps.length - 1 && (
-                    <div className="flex justify-center my-4">
-                      <div className={`w-1 h-8 rounded-full transition-all duration-700 ease-in-out ${
-                        getActiveArrow(idx)
-                          ? 'bg-gradient-to-b from-blue-600 to-purple-600 shadow-lg'
-                          : 'bg-gray-300'
-                      }`}></div>
-                    </div>
-                  )}
-                </div>
-              </ScrollAnimation>
-            )
-          })}
+                  </ScrollAnimation>
+                )
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Progress indicator dots */}
