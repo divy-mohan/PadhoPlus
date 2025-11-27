@@ -15,7 +15,7 @@ def test_user_model_fields():
     print("\n✓ Testing User model fields...")
     
     # Check fields exist
-    fields = ['role', 'phone', 'profile_image', 'bio', 'target_exam', 'target_year', 
+    fields = ['role', 'phone', 'profile_image', 'bio', 'target_exam', 'target_year',
               'current_class', 'school_college', 'language_preference', 'qualifications',
               'experience_years', 'specialization', 'referral_code', 'referred_by']
     
