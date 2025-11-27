@@ -30,10 +30,6 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('experience_years', 'specialization'),
             'classes': ('collapse',)
         }),
-        ('Referral', {
-            'fields': ('referral_code', 'referred_by'),
-            'classes': ('collapse',)
-        }),
     )
     
     add_fieldsets = BaseUserAdmin.add_fieldsets + (

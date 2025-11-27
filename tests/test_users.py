@@ -17,7 +17,7 @@ def test_user_model_fields():
     # Check fields exist (matching actual database schema)
     fields = ['role', 'phone_number', 'profile_picture', 'date_of_birth', 'bio', 'target_exam', 
               'class_level', 'school_name', 'experience_years', 'specialization', 
-              'referral_code', 'referred_by', 'phone', 'profile_image']
+              'phone', 'profile_image']
     
     for field in fields:
         if hasattr(User, field):

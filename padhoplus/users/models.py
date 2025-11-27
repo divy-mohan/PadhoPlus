@@ -30,14 +30,6 @@ class User(AbstractUser):
     # Additional alias fields for backward compatibility
     phone = models.CharField(max_length=15, blank=True, null=True)
     profile_image = models.CharField(max_length=100, blank=True, null=True)
-    referral_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
-    referred_by = models.ForeignKey(
-        'self', 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True,
-        related_name='referrals'
-    )
     
     class Meta:
         db_table = 'users'
