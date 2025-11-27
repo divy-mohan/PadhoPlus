@@ -252,17 +252,17 @@ export default function Home() {
             </div>
           </ScrollAnimation>
           
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-6">
             {features.map((feature, idx) => {
               const FeatureIcon = feature.icon;
               return (
                 <ScrollAnimation key={idx} type="zoom-in" delay={idx * 100}>
-                  <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-300 h-full flex flex-col">
-                    <div className="flex justify-center mb-3 sm:mb-4 p-2 sm:p-3 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg w-fit mx-auto">
-                      <FeatureIcon className="w-5 sm:w-6 h-5 sm:h-6 text-blue-600" />
+                  <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-3 sm:p-4 lg:p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-300 h-full flex flex-col">
+                    <div className="flex justify-center mb-2 sm:mb-3 lg:mb-4 p-1.5 sm:p-2 lg:p-3 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg w-fit mx-auto">
+                      <FeatureIcon className="w-4 sm:w-5 lg:w-6 h-4 sm:h-5 lg:h-6 text-blue-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2 text-center text-xs sm:text-sm md:text-lg leading-tight">{feature.title}</h3>
-                    <p className="text-xs sm:text-sm text-gray-600 text-center leading-relaxed flex-1">{feature.description}</p>
+                    <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-center text-xs sm:text-sm lg:text-lg leading-tight">{feature.title}</h3>
+                    <p className="text-xs sm:text-sm text-gray-600 text-center leading-relaxed flex-1 hidden sm:block">{feature.description}</p>
                   </div>
                 </ScrollAnimation>
               );
