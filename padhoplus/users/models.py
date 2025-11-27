@@ -15,22 +15,21 @@ class User(AbstractUser):
         ('hinglish', 'Hinglish'),
     ]
     
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student', blank=True, null=True)
-    phone = models.CharField(max_length=15, blank=True, null=True)
-    profile_image = models.CharField(max_length=255, blank=True, null=True)  # Changed from ImageField to CharField to match DB
-    bio = models.TextField(blank=True, null=True)
-    
+    role = models.CharField(max_length=10, blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    profile_picture = models.CharField(max_length=100, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
     target_exam = models.CharField(max_length=50, blank=True, null=True)
-    target_year = models.IntegerField(blank=True, null=True)
-    current_class = models.CharField(max_length=20, blank=True, null=True)
-    school_college = models.CharField(max_length=200, blank=True, null=True)
-    
-    language_preference = models.CharField(max_length=20, choices=LANGUAGE_CHOICES, default='en', blank=True, null=True)
-    
-    qualifications = models.TextField(blank=True, null=True)
+    class_level = models.CharField(max_length=20, blank=True, null=True)
+    school_name = models.CharField(max_length=200, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
     experience_years = models.IntegerField(blank=True, null=True)
-    specialization = models.CharField(max_length=200, blank=True, null=True)
+    specialization = models.CharField(max_length=100, blank=True, null=True)
     
+    # Additional fields for compatibility
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    profile_image = models.CharField(max_length=100, blank=True, null=True)
+    qualifications = models.TextField(blank=True, null=True)
     referral_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
     referred_by = models.ForeignKey(
         'self', 
@@ -39,9 +38,6 @@ class User(AbstractUser):
         blank=True,
         related_name='referrals'
     )
-    
-    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     
     class Meta:
         db_table = 'users'
