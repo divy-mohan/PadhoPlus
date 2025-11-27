@@ -74,8 +74,8 @@ export default function HeroSection() {
           </Link>
         </div>
 
-        {/* Stats with Bootstrap Icons - Responsive */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-3xl mx-auto">
+        {/* Stats with Bootstrap Icons - Responsive - All 3 in one horizontal line */}
+        <div className="grid grid-cols-3 gap-1.5 sm:gap-3 md:gap-4 max-w-4xl mx-auto">
           {[
             { 
               number: '10K+', 
@@ -102,19 +102,19 @@ export default function HeroSection() {
             const IconComponent = stat.icon
             return (
               <div key={idx} className={`${stat.delay} group`}>
-                <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 relative overflow-hidden h-full">
+                <div className="bg-white rounded-lg sm:rounded-xl p-2 sm:p-4 md:p-6 border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 relative overflow-hidden h-full">
                   {/* Icon background */}
-                  <div className={`absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br ${stat.color} opacity-5 rounded-full`}></div>
+                  <div className={`absolute -top-2 -right-2 w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-br ${stat.color} opacity-5 rounded-full`}></div>
                   
                   {/* Icon */}
-                  <div className={`inline-flex items-center justify-center p-2 sm:p-3 bg-gradient-to-br ${stat.color} rounded-lg mb-2 sm:mb-3 relative z-10`}>
-                    <IconComponent className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
+                  <div className={`inline-flex items-center justify-center p-1.5 sm:p-2 md:p-3 bg-gradient-to-br ${stat.color} rounded-lg mb-1.5 sm:mb-2 md:mb-3 relative z-10`}>
+                    <IconComponent className="w-3 sm:w-5 md:w-6 h-3 sm:h-5 md:h-6 text-white" />
                   </div>
                   
                   {/* Content */}
                   <div className="text-left relative z-10">
-                    <div className="text-2xl sm:text-3xl font-bold text-gradient">{stat.number}</div>
-                    <div className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2 line-clamp-2">{stat.label}</div>
+                    <div className="text-base sm:text-2xl md:text-3xl font-bold text-gradient">{stat.number}</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 mt-0.5 sm:mt-1 md:mt-2 line-clamp-2">{stat.label}</div>
                   </div>
                 </div>
               </div>
