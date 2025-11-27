@@ -364,7 +364,7 @@ export default function Home() {
                     </div>
 
                     {/* Mobile Horizontal Scroll */}
-                    <div className="md:hidden w-full overflow-hidden -mx-4 px-4">
+                    <div className="md:hidden w-full overflow-hidden">
                       <HorizontalScroll showArrows={true}>
                         {category.classLevels.map((classLevel) => {
                           const classBatches = categoryBatches[classLevel] || []

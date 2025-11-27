@@ -50,6 +50,15 @@ export default function HorizontalScroll({
 
   return (
     <div className="relative group w-full">
+      {/* Scroll hint indicator - shows on mobile when scrollable */}
+      {canScrollRight && (
+        <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white via-white/50 to-transparent pointer-events-none z-10 sm:hidden flex items-center justify-end pr-2">
+          <div className="animate-pulse">
+            <ChevronRight className="w-4 h-4 text-blue-600" />
+          </div>
+        </div>
+      )}
+
       <div
         ref={scrollRef}
         onScroll={checkScroll}
