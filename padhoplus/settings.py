@@ -123,13 +123,17 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.replit.dev',
+    'https://*.replit.dev:8000',
     'https://*.picard.replit.dev',
+    'https://*.picard.replit.dev:8000',
     'https://*.repl.co',
     'http://localhost:5000',
     'http://localhost:8000',
     'http://127.0.0.1:5000',
     'http://127.0.0.1:8000',
 ]
+
+CSRF_COOKIE_SAMESITE = 'None'
 
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_HTTPONLY = False
