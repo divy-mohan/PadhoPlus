@@ -90,8 +90,8 @@ export default function BatchesPage() {
 
           <div className="mb-12 bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6 border border-gray-200 animate-fade-in fade-in-delay-1">
             <h3 className="font-semibold text-gray-900 mb-4">Filter Results</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
+            <div className="flex flex-wrap items-end gap-3 md:gap-4">
+              <div className="flex-1 min-w-[200px] md:min-w-[180px]">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
                 <div className="relative">
                   <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
@@ -100,17 +100,17 @@ export default function BatchesPage() {
                     placeholder="Search batches..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
                   />
                 </div>
               </div>
 
-              <div>
+              <div className="flex-1 min-w-[150px] md:min-w-[140px]">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Exam</label>
                 <select 
                   value={selectedExam} 
                   onChange={(e) => setSelectedExam(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
                 >
                   <option value="">All Exams</option>
                   <option value="jee_main">JEE Main</option>
@@ -121,12 +121,12 @@ export default function BatchesPage() {
                 </select>
               </div>
 
-              <div>
+              <div className="flex-1 min-w-[150px] md:min-w-[140px]">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Class</label>
                 <select 
                   value={selectedClass} 
                   onChange={(e) => setSelectedClass(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
                 >
                   <option value="">All Classes</option>
                   <option value="Class 9-10">Class 9-10</option>
@@ -137,12 +137,12 @@ export default function BatchesPage() {
                 </select>
               </div>
 
-              <div>
+              <div className="flex-1 min-w-[150px] md:min-w-[140px]">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
                 <select 
                   value={selectedPrice} 
                   onChange={(e) => setSelectedPrice(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
                 >
                   <option value="">All Prices</option>
                   <option value="free">Free</option>
@@ -150,20 +150,17 @@ export default function BatchesPage() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">&nbsp;</label>
-                <button 
-                  onClick={() => {
-                    setSearchTerm('')
-                    setSelectedExam('')
-                    setSelectedClass('')
-                    setSelectedPrice('')
-                  }}
-                  className="btn btn-outline w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-lg py-2 font-semibold"
-                >
-                  Reset
-                </button>
-              </div>
+              <button 
+                onClick={() => {
+                  setSearchTerm('')
+                  setSelectedExam('')
+                  setSelectedClass('')
+                  setSelectedPrice('')
+                }}
+                className="btn btn-outline bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-lg px-6 py-2 font-semibold whitespace-nowrap text-sm"
+              >
+                Reset
+              </button>
             </div>
           </div>
 
