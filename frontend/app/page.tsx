@@ -5,6 +5,7 @@ import Footer from '@/components/Footer'
 import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
 import ScrollAnimation from '@/components/ScrollAnimation'
+import HowItWorksAnimated from '@/components/HowItWorksAnimated'
 import { Zap, Users, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Smile, Clock, MessageCircle, Heart, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -269,99 +270,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-20 px-4 bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="max-w-6xl mx-auto">
-          <ScrollAnimation type="fade-up">
-            <div className="text-center mb-16">
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <Layers className="w-8 h-8 text-purple-600" />
-                <h2 className="text-4xl font-bold text-gray-900">How It Works</h2>
-                <Layers className="w-8 h-8 text-purple-600" />
-              </div>
-              <p className="text-gray-600 text-lg">Your journey to success in 4 simple steps</p>
-            </div>
-          </ScrollAnimation>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-0 relative">
-            {/* Animated connector line - Desktop only */}
-            <div className="hidden md:block absolute top-16 left-12 right-12 h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent">
-              <div className="h-full bg-gradient-to-r from-blue-600 via-purple-500 to-blue-600 rounded-full animate-pulse" style={{
-                backgroundSize: '200% 100%',
-                animation: 'slideFlow 3s ease-in-out infinite'
-              }}></div>
-            </div>
-
-            {/* Arrow indicators */}
-            <div className="hidden md:block absolute top-12 left-1/4 transform -translate-x-1/2 z-20">
-              <div className="text-3xl text-blue-400 animate-bounce-smooth">→</div>
-            </div>
-            <div className="hidden md:block absolute top-12 left-1/2 transform -translate-x-1/2 z-20">
-              <div className="text-3xl text-purple-400 animate-bounce-smooth" style={{ animationDelay: '0.2s' }}>→</div>
-            </div>
-            <div className="hidden md:block absolute top-12 right-1/4 transform -translate-x-1/2 z-20">
-              <div className="text-3xl text-blue-400 animate-bounce-smooth" style={{ animationDelay: '0.4s' }}>→</div>
-            </div>
-
-            {[
-              { step: 1, title: 'Sign Up', desc: 'Create your free account', icon: '✍️', color: 'from-blue-600 to-blue-700' },
-              { step: 2, title: 'Choose Batch', desc: 'Pick your exam & batch', icon: '📚', color: 'from-purple-600 to-purple-700' },
-              { step: 3, title: 'Start Learning', desc: 'Access all resources', icon: '🎓', color: 'from-pink-600 to-pink-700' },
-              { step: 4, title: 'Track Progress', desc: 'Get real-time insights', icon: '📊', color: 'from-green-600 to-green-700' }
-            ].map((item, idx) => (
-              <ScrollAnimation key={idx} type="zoom-in" delay={idx * 150}>
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-purple-200 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
-                  
-                  <div className="relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg group-hover:shadow-2xl transition-all duration-300 border border-gray-100 group-hover:border-blue-300 overflow-hidden">
-                    {/* Shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-shine-once"></div>
-
-                    {/* Step number with animation */}
-                    <div className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4 shadow-lg group-hover:scale-125 group-hover:shadow-2xl transition-all duration-300 relative overflow-hidden`}>
-                      <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      <span className="relative z-10 group-hover:scale-110 transition-transform duration-300">{item.step}</span>
-                    </div>
-
-                    {/* Step content */}
-                    <div className="text-center relative z-10">
-                      <h3 className="font-bold text-gray-900 mb-2 text-lg group-hover:text-blue-600 transition-colors duration-300">{item.title}</h3>
-                      <p className="text-sm text-gray-600 group-hover:text-gray-700 transition-colors duration-300">{item.desc}</p>
-                    </div>
-
-                    {/* Animated border accent */}
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center"></div>
-                  </div>
-                </div>
-              </ScrollAnimation>
-            ))}
-          </div>
-
-          {/* Mobile connector */}
-          <div className="md:hidden mt-12 space-y-4">
-            {[0, 1, 2].map((idx) => (
-              <div key={idx} className="flex items-center justify-center">
-                <div className="w-1 h-8 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full animate-pulse"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* CSS for flow animation */}
-        <style jsx>{`
-          @keyframes slideFlow {
-            0%, 100% { background-position: 0% 0%; }
-            50% { background-position: 100% 0%; }
-          }
-          @keyframes shineOnce {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-          }
-          .animate-shine-once {
-            animation: shineOnce 0.6s ease-in-out;
-          }
-        `}</style>
-      </section>
+      {/* How It Works - Animated */}
+      <HowItWorksAnimated />
 
       {/* Exam Categories Section */}
       <section className="py-24 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
