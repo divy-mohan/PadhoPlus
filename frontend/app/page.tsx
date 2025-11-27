@@ -566,7 +566,7 @@ export default function Home() {
             </div>
           </ScrollAnimation>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
             {benefits.map((benefit, idx) => {
               const BenefitIcon = benefit.icon
               const colors = [
