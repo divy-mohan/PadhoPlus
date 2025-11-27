@@ -197,17 +197,27 @@ npm run dev
 - **Analytics**: UserProgress, DailyActivity, Streak
 
 ## Environment Variables
+
+### External Database Configuration (Currently Active)
 ```
-DATABASE_URL=postgresql://user:password@host/db
-PGHOST=host
-PGPORT=5432
-PGUSER=user
-PGPASSWORD=password
-PGDATABASE=db
+DB_HOST=69.62.78.57
+DB_PORT=5432
+DB_USER=padhoplus_user
+DB_PASSWORD=Mohan123#
+DB_NAME=padhoplus_test
+```
+
+### Other Environment Variables
+```
 SESSION_SECRET=random_secret_key
 STRIPE_PUBLIC_KEY=pk_test_...
 STRIPE_SECRET_KEY=sk_test_...
 ```
+
+### Database Priority
+1. **External PostgreSQL** - If DB_HOST, DB_USER, DB_NAME are set (currently active)
+2. **Replit PostgreSQL** - If DATABASE_URL is set (fallback)
+3. **SQLite** - Local development fallback
 
 ## Design System (Frontend)
 
