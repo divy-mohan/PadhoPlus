@@ -5,24 +5,24 @@ from .models import User, Faculty, Testimonial, Result
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ['username', 'email', 'first_name', 'last_name', 'role', 'is_active', 'created_at']
-    list_filter = ['role', 'is_active', 'is_staff', 'created_at']
-    search_fields = ['username', 'email', 'first_name', 'last_name', 'phone']
-    ordering = ['-created_at']
+    list_display = ['username', 'email', 'first_name', 'last_name', 'role', 'is_active', 'date_joined']
+    list_filter = ['role', 'is_active', 'is_staff', 'date_joined']
+    search_fields = ['username', 'email', 'first_name', 'last_name', 'phone_number', 'phone']
+    ordering = ['-date_joined']
     readonly_fields = ['profile_preview']
     
     def profile_preview(self, obj):
         if obj.profile_image:
-            return f'<img src="{obj.profile_image.url}" width="100" height="100" />'
+            return f'<img src="{obj.profile_image}" width="100" height="100" />'
         return 'No image uploaded'
     profile_preview.allow_tags = True
     
     fieldsets = BaseUserAdmin.fieldsets + (
         ('Profile', {
-            'fields': ('role', 'phone', 'profile_image', 'profile_preview', 'bio')
+            'fields': ('role', 'phone_number', 'phone', 'profile_image', 'profile_picture', 'profile_preview', 'bio', 'date_of_birth')
         }),
         ('Student Info', {
-            'fields': ('target_exam', 'target_year', 'current_class', 'school_college', 'language_preference'),
+            'fields': ('target_exam', 'class_level', 'school_name'),
             'classes': ('collapse',)
         }),
         ('Teacher Info', {
@@ -37,7 +37,7 @@ class UserAdmin(BaseUserAdmin):
     
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         ('Profile', {
-            'fields': ('role', 'email', 'first_name', 'last_name', 'phone')
+            'fields': ('role', 'email', 'first_name', 'last_name', 'phone_number')
         }),
     )
 
