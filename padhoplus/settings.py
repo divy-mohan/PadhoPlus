@@ -59,44 +59,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'padhoplus.wsgi.application'
 
-# Database Configuration - Priority: External DB > DATABASE_URL > SQLite
+# Database Configuration - ONLY External PostgreSQL Database
+# No fallbacks to Replit DB or SQLite
 DB_HOST = os.environ.get('DB_HOST')
 DB_USER = os.environ.get('DB_USER')
 DB_PASSWORD = os.environ.get('DB_PASSWORD')
 DB_NAME = os.environ.get('DB_NAME')
 DB_PORT = os.environ.get('DB_PORT', '5432')
 
-if DB_HOST and DB_USER and DB_NAME:
-    # Use external PostgreSQL database
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': DB_NAME,
-            'USER': DB_USER,
-            'PASSWORD': DB_PASSWORD,
-            'HOST': DB_HOST,
-            'PORT': DB_PORT,
-            'CONN_MAX_AGE': 600,
-            'OPTIONS': {
-                'connect_timeout': 10,
-            }
+# Use ONLY external PostgreSQL database - NO FALLBACKS
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
+        'CONN_MAX_AGE': 600,
+        'OPTIONS': {
+            'connect_timeout': 10,
         }
     }
-else:
-    # Fallback: Try Replit's DATABASE_URL
-    DATABASE_URL = os.environ.get('DATABASE_URL')
-    if DATABASE_URL:
-        DATABASES = {
-            'default': dj_database_url.parse(DATABASE_URL)
-        }
-    else:
-        # Final fallback: SQLite for development
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
