@@ -21,12 +21,16 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
+        source: '/admin/:path*',
+        destination: 'http://localhost:8000/admin/:path*',
+      },
+      {
         source: '/api/:path*',
         destination: 'http://localhost:8000/api/:path*',
       },
       {
-        source: '/backend/:path*',
-        destination: 'http://localhost:8000/:path*',
+        source: '/static/:path*',
+        destination: 'http://localhost:8000/static/:path*',
       },
     ];
   },
