@@ -52,7 +52,7 @@ export default function HowItWorksAnimated() {
   // Phase 6: Card 3 active
   // Total cycle: 7 phases × 314ms = ~2200ms
 
-  const PHASE_DURATION = 314 // ms per phase
+  const PHASE_DURATION = 700 // ms per phase (smooth and slow)
   const TOTAL_PHASES = 7
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function HowItWorksAnimated() {
   }, [])
 
   // Determine which card and arrow are active based on phase
-  const getActiveCard = (idx) => {
+  const getActiveCard = (idx: number): boolean => {
     if (phase === 0) return idx === 0
     if (phase === 1) return idx === 1
     if (phase === 2) return idx === 1
@@ -74,7 +74,7 @@ export default function HowItWorksAnimated() {
     return false
   }
 
-  const getActiveArrow = (idx) => {
+  const getActiveArrow = (idx: number): boolean => {
     if (phase === 1) return idx === 0 // Arrow 0 (after card 0)
     if (phase === 3) return idx === 1 // Arrow 1 (after card 1)
     if (phase === 5) return idx === 2 // Arrow 2 (after card 2)
@@ -100,7 +100,7 @@ export default function HowItWorksAnimated() {
           <div className="relative">
             {/* Container for steps with proper spacing */}
             <div className="grid grid-cols-4 gap-12 px-4">
-              {steps.map((item, idx) => {
+              {steps.map((item: any, idx: number) => {
                 const IconComponent = item.icon
                 const isCardActive = getActiveCard(idx)
                 const isArrowActive = getActiveArrow(idx)
@@ -113,7 +113,7 @@ export default function HowItWorksAnimated() {
                         <div className="absolute top-16 left-full w-12 h-2 bg-gray-300 rounded-full overflow-hidden">
                           {/* Arrow that glows when active */}
                           <div
-                            className={`absolute h-full w-full flex items-center justify-center text-lg font-bold transition-all duration-300 ${
+                            className={`absolute h-full w-full flex items-center justify-center text-lg font-bold transition-all duration-700 ease-in-out ${
                               isArrowActive
                                 ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 text-white opacity-100 shadow-lg'
                                 : 'bg-gray-300 text-gray-400 opacity-40'
@@ -126,7 +126,7 @@ export default function HowItWorksAnimated() {
 
                       {/* Step card */}
                       <div
-                        className={`relative group transition-all duration-300 ${
+                        className={`relative group transition-all duration-700 ease-in-out ${
                           isCardActive ? 'scale-110' : 'scale-100'
                         }`}
                       >
@@ -137,21 +137,21 @@ export default function HowItWorksAnimated() {
 
                         {/* Card */}
                         <div
-                          className={`relative bg-white rounded-xl p-4 shadow-lg transition-all duration-300 border-2 overflow-hidden ${
+                          className={`relative bg-white rounded-xl p-4 shadow-lg transition-all duration-700 ease-in-out border-2 overflow-hidden ${
                             isCardActive
                               ? 'border-blue-500 shadow-2xl'
                               : 'border-gray-100 group-hover:border-blue-300'
                           }`}
                         >
                           {/* Shine effect */}
-                          <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-300 ${
+                          <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-700 ease-in-out ${
                             isCardActive ? 'opacity-100' : 'group-hover:opacity-100'
                           }`}></div>
 
                           {/* Icon container with attractive styling */}
-                          <div className={`mb-3 flex justify-center transition-all duration-300`}>
+                          <div className={`mb-3 flex justify-center transition-all duration-700 ease-in-out`}>
                             <div
-                              className={`relative p-3 rounded-full transition-all duration-300 ${
+                              className={`relative p-3 rounded-full transition-all duration-700 ease-in-out ${
                                 isCardActive
                                   ? `bg-gradient-to-br ${item.color} scale-125 shadow-lg`
                                   : `bg-gradient-to-br ${item.bgGlow} group-hover:scale-125 group-hover:shadow-lg`
@@ -164,7 +164,7 @@ export default function HowItWorksAnimated() {
                               
                               {/* Icon */}
                               <IconComponent
-                                className={`w-8 h-8 transition-all duration-300 relative z-10 ${
+                                className={`w-8 h-8 transition-all duration-700 ease-in-out relative z-10 ${
                                   isCardActive
                                     ? 'text-white scale-110'
                                     : 'text-gray-700 group-hover:text-white'
@@ -175,14 +175,14 @@ export default function HowItWorksAnimated() {
 
                           {/* Step number with animation */}
                           <div
-                            className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg transition-all duration-300 relative overflow-hidden ${
+                            className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg transition-all duration-700 ease-in-out relative overflow-hidden ${
                               isCardActive
                                 ? `bg-gradient-to-br ${item.color} scale-125 shadow-2xl`
                                 : `bg-gradient-to-br ${item.color} group-hover:scale-125 group-hover:shadow-2xl`
                             }`}
                           >
                             <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <span className={`relative z-10 transition-transform duration-300 ${
+                            <span className={`relative z-10 transition-transform duration-700 ease-in-out ${
                               isCardActive ? 'scale-110' : 'group-hover:scale-110'
                             }`}>
                               {item.step}
@@ -191,14 +191,14 @@ export default function HowItWorksAnimated() {
 
                           {/* Step content */}
                           <div className="text-center relative z-10">
-                            <h3 className={`font-bold mb-1 text-base transition-colors duration-300 ${
+                            <h3 className={`font-bold mb-1 text-base transition-colors duration-700 ease-in-out ${
                               isCardActive
                                 ? 'text-blue-600'
                                 : 'text-gray-900 group-hover:text-blue-600'
                             }`}>
                               {item.title}
                             </h3>
-                            <p className={`text-xs transition-colors duration-300 ${
+                            <p className={`text-xs transition-colors duration-700 ease-in-out ${
                               isCardActive
                                 ? 'text-gray-700 font-medium'
                                 : 'text-gray-600 group-hover:text-gray-700'
@@ -208,7 +208,7 @@ export default function HowItWorksAnimated() {
                           </div>
 
                           {/* Animated bottom accent */}
-                          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent transition-all duration-300 ${
+                          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent transition-all duration-700 ease-in-out ${
                             isCardActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                           }`}></div>
                         </div>
@@ -223,13 +223,13 @@ export default function HowItWorksAnimated() {
 
         {/* Mobile view */}
         <div className="md:hidden space-y-6">
-          {steps.map((item, idx) => {
+          {steps.map((item: any, idx: number) => {
             const IconComponent = item.icon
             const isCardActive = getActiveCard(idx)
 
             return (
               <ScrollAnimation key={idx} type="fade-up" delay={idx * 100}>
-                <div className={`relative transition-all duration-300 ${
+                <div className={`relative transition-all duration-700 ease-in-out ${
                   isCardActive ? 'scale-105' : 'scale-100'
                 }`}>
                   {isCardActive && (
@@ -237,7 +237,7 @@ export default function HowItWorksAnimated() {
                   )}
 
                   <div
-                    className={`relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-300 border-2 ${
+                    className={`relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-700 ease-in-out border-2 ${
                       isCardActive
                         ? 'border-blue-500 shadow-2xl'
                         : 'border-gray-100'
@@ -246,32 +246,32 @@ export default function HowItWorksAnimated() {
                     {/* Icon for mobile */}
                     <div className={`mb-4 flex justify-center`}>
                       <div
-                        className={`p-3 rounded-full transition-all duration-300 ${
+                        className={`p-3 rounded-full transition-all duration-700 ease-in-out ${
                           isCardActive
                             ? `bg-gradient-to-br ${item.color} scale-110 shadow-lg`
                             : `bg-gradient-to-br ${item.bgGlow}`
                         }`}
                       >
                         <IconComponent
-                          className={`w-6 h-6 transition-all duration-300 ${
+                          className={`w-6 h-6 transition-all duration-700 ease-in-out ${
                             isCardActive ? 'text-white' : 'text-gray-700'
                           }`}
                         />
                       </div>
                     </div>
 
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg transition-all duration-300 bg-gradient-to-br ${
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg transition-all duration-700 ease-in-out bg-gradient-to-br ${
                       isCardActive ? item.color + ' scale-110' : item.color
                     }`}>
                       {item.step}
                     </div>
 
-                    <h3 className={`font-bold mb-2 text-lg transition-colors duration-300 ${
+                    <h3 className={`font-bold mb-2 text-lg transition-colors duration-700 ease-in-out ${
                       isCardActive ? 'text-blue-600' : 'text-gray-900'
                     }`}>
                       {item.title}
                     </h3>
-                    <p className={`text-sm transition-colors duration-300 ${
+                    <p className={`text-sm transition-colors duration-700 ease-in-out ${
                       isCardActive ? 'text-gray-700 font-medium' : 'text-gray-600'
                     }`}>
                       {item.desc}
@@ -281,7 +281,7 @@ export default function HowItWorksAnimated() {
                   {/* Vertical connector for mobile */}
                   {idx < steps.length - 1 && (
                     <div className="flex justify-center my-4">
-                      <div className={`w-1 h-8 rounded-full transition-all duration-300 ${
+                      <div className={`w-1 h-8 rounded-full transition-all duration-700 ease-in-out ${
                         getActiveArrow(idx)
                           ? 'bg-gradient-to-b from-blue-600 to-purple-600 shadow-lg'
                           : 'bg-gray-300'
@@ -299,7 +299,7 @@ export default function HowItWorksAnimated() {
           {steps.map((_, idx) => (
             <div
               key={idx}
-              className={`h-2 rounded-full transition-all duration-300 ${
+              className={`h-2 rounded-full transition-all duration-700 ease-in-out ${
                 getActiveCard(idx)
                   ? 'w-8 bg-blue-600'
                   : 'w-2 bg-gray-300'
