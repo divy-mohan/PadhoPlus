@@ -469,7 +469,7 @@ export default function Home() {
             </div>
           </ScrollAnimation>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-3 lg:gap-8">
             {[
               { icon: Users, label: '10,000+', text: 'Active Students', color: 'from-blue-500 to-cyan-500' },
               { icon: Award, label: '500+', text: 'Expert Lectures', color: 'from-purple-500 to-pink-500' },
@@ -478,32 +478,32 @@ export default function Home() {
               const StatIcon = stat.icon
               return (
                 <ScrollAnimation key={idx} type="zoom-in" delay={idx * 150}>
-                  <div className="group relative">
+                  <div className="group relative h-full">
                     {/* Glow effect */}
-                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${stat.color} rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500`}></div>
+                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${stat.color} rounded-lg sm:rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500`}></div>
                     
                     {/* Card */}
-                    <div className="relative bg-white rounded-2xl p-8 border border-blue-200 group-hover:border-blue-400 transition-all duration-300 shadow-lg group-hover:shadow-2xl">
+                    <div className="relative bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 md:p-8 border border-blue-200 group-hover:border-blue-400 transition-all duration-300 shadow-lg group-hover:shadow-2xl min-h-[100px] sm:min-h-[130px] md:min-h-[160px] flex flex-col justify-between h-full">
                       {/* Shine effect */}
                       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                       {/* Content */}
                       <div className="relative z-10 text-center">
                         {/* Icon container */}
-                        <div className={`inline-flex items-center justify-center mb-6 p-4 bg-gradient-to-br ${stat.color} rounded-full relative group/icon`}>
+                        <div className={`inline-flex items-center justify-center mb-1.5 sm:mb-3 md:mb-6 p-1 sm:p-2 md:p-4 bg-gradient-to-br ${stat.color} rounded-full relative group/icon`}>
                           <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300"></div>
-                          <StatIcon className="w-8 h-8 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
+                          <StatIcon className="w-4 sm:w-6 md:w-8 h-4 sm:h-6 md:h-8 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
                         </div>
 
                         {/* Animated counter */}
-                        <div className="mb-3">
-                          <h3 className={`text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 inline-block`}>
+                        <div className="mb-1 sm:mb-2 md:mb-3">
+                          <h3 className={`text-2xl sm:text-3xl md:text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 inline-block`}>
                             {stat.label}
                           </h3>
                         </div>
 
                         {/* Text */}
-                        <p className="text-gray-700 font-semibold group-hover:text-gray-900 transition-colors duration-300">
+                        <p className="text-gray-700 font-semibold group-hover:text-gray-900 transition-colors duration-300 text-xs sm:text-sm md:text-base">
                           {stat.text}
                         </p>
                       </div>
@@ -518,7 +518,7 @@ export default function Home() {
           </div>
 
           {/* Floating stats indicators */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mt-8 sm:mt-12 grid grid-cols-3 sm:grid-cols-3 gap-1.5 sm:gap-3 md:gap-4">
             {[
               { number: '98%', label: 'Student Satisfaction', icon: Smile, color: 'text-green-500' },
               { number: '50K+', label: 'Problems Solved', icon: CheckCircle, color: 'text-blue-500' },
@@ -527,13 +527,13 @@ export default function Home() {
               const ItemIcon = item.icon
               return (
                 <ScrollAnimation key={idx} type="blur-fade" delay={idx * 100}>
-                  <div className="bg-blue-100/50 backdrop-blur-sm border border-blue-300 rounded-lg p-4 text-center hover:bg-blue-100 transition-all duration-300 group cursor-pointer flex items-center gap-3">
-                    <ItemIcon className={`w-6 h-6 ${item.color} flex-shrink-0`} />
-                    <div>
-                      <div className="text-xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text group-hover:scale-110 transition-transform duration-300 inline-block">
+                  <div className="bg-blue-100/50 backdrop-blur-sm border border-blue-300 rounded-lg p-2 sm:p-3 md:p-4 text-center hover:bg-blue-100 transition-all duration-300 group cursor-pointer flex flex-col sm:flex-row items-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-auto">
+                    <ItemIcon className={`w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6 ${item.color} flex-shrink-0`} />
+                    <div className="text-center sm:text-left flex-1">
+                      <div className="text-lg sm:text-xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text group-hover:scale-110 transition-transform duration-300 inline-block">
                         {item.number}
                       </div>
-                      <p className="text-blue-700 text-xs mt-0.5 group-hover:text-blue-900 transition-colors duration-300">{item.label}</p>
+                      <p className="text-blue-700 text-[10px] sm:text-xs mt-0.5 group-hover:text-blue-900 transition-colors duration-300">{item.label}</p>
                     </div>
                   </div>
                 </ScrollAnimation>
