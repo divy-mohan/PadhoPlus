@@ -6,6 +6,7 @@ import HeroSection from '@/components/HeroSection'
 import BatchCard from '@/components/BatchCard'
 import ScrollAnimation from '@/components/ScrollAnimation'
 import HowItWorksAnimated from '@/components/HowItWorksAnimated'
+import HorizontalScroll from '@/components/HorizontalScroll'
 import { Zap, Users, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Smile, Clock, MessageCircle, Heart, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -251,17 +252,17 @@ export default function Home() {
             </div>
           </ScrollAnimation>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {features.map((feature, idx) => {
               const FeatureIcon = feature.icon;
               return (
                 <ScrollAnimation key={idx} type="zoom-in" delay={idx * 100}>
-                  <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-                    <div className="flex justify-center mb-4 p-3 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg w-fit mx-auto">
-                      <FeatureIcon className="w-6 h-6 text-blue-600" />
+                  <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 hover:shadow-lg hover:border-blue-300 transition-all duration-300 h-full flex flex-col">
+                    <div className="flex justify-center mb-3 sm:mb-4 p-2 sm:p-3 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg w-fit mx-auto">
+                      <FeatureIcon className="w-5 sm:w-6 h-5 sm:h-6 text-blue-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2 text-center text-lg">{feature.title}</h3>
-                    <p className="text-sm text-gray-600 text-center leading-relaxed">{feature.description}</p>
+                    <h3 className="font-semibold text-gray-900 mb-2 text-center text-xs sm:text-sm md:text-lg leading-tight">{feature.title}</h3>
+                    <p className="text-xs sm:text-sm text-gray-600 text-center leading-relaxed flex-1">{feature.description}</p>
                   </div>
                 </ScrollAnimation>
               );
@@ -309,8 +310,8 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Class Level Groups */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Class Level Groups - Horizontal Scroll on Mobile */}
+                    <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {category.classLevels.map((classLevel) => {
                         const classBatches = categoryBatches[classLevel] || []
                         return (
@@ -358,6 +359,59 @@ export default function Home() {
                           </div>
                         )
                       })}
+                    </div>
+
+                    {/* Mobile Horizontal Scroll */}
+                    <div className="md:hidden">
+                      <HorizontalScroll showArrows={true} className="md:hidden">
+                        {category.classLevels.map((classLevel) => {
+                          const classBatches = categoryBatches[classLevel] || []
+                          return (
+                            <div key={classLevel} className="flex-shrink-0 w-72 sm:w-96 relative">
+                              <div className={`absolute -inset-0.5 bg-gradient-to-r ${category.gradient} rounded-lg opacity-0 group-hover:opacity-30 blur transition-all duration-500`}></div>
+                              
+                              <div className="relative bg-white rounded-lg p-5 border border-gray-200 group-hover:border-blue-300 transition-all duration-300 shadow-sm group-hover:shadow-md h-full flex flex-col">
+                                {/* Class Level Header */}
+                                <div className="mb-4 pb-3 border-b border-gray-100">
+                                  <h4 className={`text-base font-semibold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-blue-600 group-hover:bg-clip-text transition-all duration-300`}>
+                                    {classLevel}
+                                  </h4>
+                                </div>
+
+                                {/* Batches for this Class Level */}
+                                <div className="flex-1 space-y-2 mb-4 overflow-y-auto max-h-32">
+                                  {classBatches.length > 0 ? (
+                                    classBatches.map((batch: any) => (
+                                      <Link
+                                        key={batch.id}
+                                        href={`/batch/${batch.slug}`}
+                                        className="block text-xs sm:text-sm text-gray-700 hover:text-blue-600 hover:font-semibold truncate transition-all"
+                                      >
+                                        <span className="text-xs text-gray-500 mr-1">→</span>
+                                        {batch.name}
+                                      </Link>
+                                    ))
+                                  ) : (
+                                    <p className="text-xs text-gray-400 italic">Coming soon</p>
+                                  )}
+                                </div>
+
+                                {/* Explore Button */}
+                                <Link 
+                                  href={`/batches?exam=${category.id}&class=${classLevel.replace(/[\s-]/g, '_')}`}
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 text-blue-600 font-semibold hover:from-blue-100 hover:to-purple-100 hover:border-blue-400 transition-all duration-300 w-full justify-center"
+                                >
+                                  View All
+                                  <ArrowRight className="w-3 h-3" />
+                                </Link>
+
+                                {/* Bottom accent bar */}
+                                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${category.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-lg`}></div>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </HorizontalScroll>
                     </div>
                   </div>
                 </ScrollAnimation>
@@ -510,7 +564,7 @@ export default function Home() {
             </div>
           </ScrollAnimation>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {benefits.map((benefit, idx) => {
               const BenefitIcon = benefit.icon
               const colors = [
@@ -530,35 +584,35 @@ export default function Home() {
                     <div className={`absolute -inset-0.5 bg-gradient-to-r ${color} rounded-2xl opacity-0 group-hover:opacity-40 blur transition-all duration-500`}></div>
 
                     {/* Card */}
-                    <div className="relative h-full bg-white rounded-2xl p-8 border border-gray-200 group-hover:border-blue-300 transition-all duration-300 flex flex-col shadow-md group-hover:shadow-2xl">
+                    <div className="relative h-full bg-white rounded-lg sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-200 group-hover:border-blue-300 transition-all duration-300 flex flex-col shadow-md group-hover:shadow-2xl">
                       {/* Shine effect */}
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute inset-0 rounded-lg sm:rounded-2xl bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                       {/* Content */}
                       <div className="relative z-10 flex-1">
                         {/* Icon container with animation */}
-                        <div className={`inline-flex items-center justify-center mb-4 p-3 bg-gradient-to-br ${color} rounded-xl relative group/icon`}>
-                          <div className="absolute inset-0 bg-white/30 rounded-xl opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300"></div>
-                          <BenefitIcon className="w-6 h-6 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
+                        <div className={`inline-flex items-center justify-center mb-3 sm:mb-4 p-2 sm:p-3 bg-gradient-to-br ${color} rounded-lg sm:rounded-xl relative group/icon`}>
+                          <div className="absolute inset-0 bg-white/30 rounded-lg sm:rounded-xl opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300"></div>
+                          <BenefitIcon className="w-5 sm:w-6 h-5 sm:h-6 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
                         </div>
 
                         {/* Title */}
-                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-blue-600 group-hover:bg-clip-text transition-all duration-300">
+                        <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-blue-600 group-hover:bg-clip-text transition-all duration-300">
                           {benefit.title}
                         </h3>
 
                         {/* Description */}
-                        <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+                        <p className="text-xs sm:text-sm text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
                           {benefit.desc}
                         </p>
                       </div>
 
                       {/* Bottom accent bar */}
-                      <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-2xl`}></div>
+                      <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-lg sm:rounded-b-2xl`}></div>
 
                       {/* Arrow icon on hover */}
                       <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <ArrowRight className="w-5 h-5 text-blue-600 group-hover:translate-x-1 transition-transform duration-300" />
+                        <ArrowRight className="w-4 sm:w-5 h-4 sm:h-5 text-blue-600 group-hover:translate-x-1 transition-transform duration-300" />
                       </div>
                     </div>
                   </div>
@@ -589,8 +643,8 @@ export default function Home() {
             </div>
           </ScrollAnimation>
 
-          {/* Featured Testimonials Carousel */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Featured Testimonials Carousel - Horizontal Scroll on Mobile */}
+          <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             {testimonials.filter((_, idx) => idx < 3).map((testimonial, idx) => (
               <ScrollAnimation key={testimonial.id} type="zoom-in" delay={idx * 100}>
                 <div className="group relative h-full">
@@ -623,6 +677,44 @@ export default function Home() {
                 </div>
               </ScrollAnimation>
             ))}
+          </div>
+
+          {/* Mobile Horizontal Scroll Testimonials */}
+          <div className="md:hidden mb-8">
+            <HorizontalScroll showArrows={true} className="md:hidden">
+              {testimonials.map((testimonial) => (
+                <div key={testimonial.id} className="flex-shrink-0 w-72 sm:w-96">
+                  <div className="group relative h-full">
+                    {/* Glow */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500"></div>
+
+                    {/* Card */}
+                    <div className="relative h-full bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 group-hover:border-purple-300 transition-all duration-300 shadow-md group-hover:shadow-2xl flex flex-col">
+                      {/* Quote Icon */}
+                      <MessageCircle className="w-5 sm:w-6 h-5 sm:h-6 text-purple-500 mb-3" />
+
+                      {/* Quote */}
+                      <p className="text-gray-700 italic mb-4 flex-1 text-xs sm:text-sm leading-relaxed">
+                        "{testimonial.quote}"
+                      </p>
+
+                      {/* Divider */}
+                      <div className="h-0.5 bg-gradient-to-r from-purple-200 to-pink-200 mb-4"></div>
+
+                      {/* Author */}
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <img src={testimonial.image} alt={testimonial.name} className="w-10 sm:w-12 h-10 sm:h-12 rounded-full object-cover" />
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-bold text-gray-900 text-xs sm:text-sm">{testimonial.name}</h4>
+                          <p className="text-xs text-purple-600 font-semibold">{testimonial.exam} - {testimonial.rank}</p>
+                        </div>
+                        <Star className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </HorizontalScroll>
           </div>
 
           {/* Add Your Testimonial Button */}

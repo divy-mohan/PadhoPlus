@@ -1,0 +1,103 @@
+1. Hero Section (Active Students / Expert Lecture / Free Access Cards)
+
+There are three small cards: Active Students, Expert Lecture, Free Access.
+
+On mobile, I want all three cards to sit side-by-side in a single horizontal row (like 3 columns in one row).
+
+Use proper Bootstrap grid classes (e.g., col-4, col-md-4, etc.) or a flexbox layout so they stay aligned horizontally and look good both on mobile and desktop.
+
+The text inside these cards should not be cut off on mobile. Reduce font-size where needed, allow wrapping, and add appropriate padding so everything is clearly visible.
+
+Add Bootstrap Icons inside each card (e.g., an icon related to users, video/lecture, and unlock/free access). Place the icons nicely aligned with the heading.
+
+2. “Why Choose” Section
+
+This section has multiple cards explaining “Why Choose [Platform]”.
+
+On mobile, I want at least 2 cards per row in one horizontal area.
+
+Use Bootstrap grid (e.g., col-6 on mobile, maybe col-md-4 or col-md-3 on larger screens) so that:
+
+Cards are evenly spaced.
+
+Text remains readable and not squished.
+
+Adjust padding/margins so the section looks clean and balanced on both mobile and desktop.
+
+3. “How It Works” Section
+
+On desktop, all steps are in a single horizontal row.
+
+I want the same order and alignment maintained on mobile, but still fully responsive.
+
+Arrange all steps in one horizontal row with proper alignment and equal spacing. On smaller screens, this can be done either with:
+
+Responsive columns that wrap nicely, or
+
+A horizontal scroll (overflow-x) row that keeps all steps in one line.
+
+Ensure perfect alignment and synchronization (icons, step numbers, step titles, and descriptions should be consistently aligned across all steps).
+
+4. “Exam Category” Section (NEET / IIT-JEE / Foundation)
+
+We have categories like NEET, and under each category we show multiple exams.
+
+I want this list of exams to be horizontally scrollable under each category on mobile:
+
+Use a container with overflow-x: auto; white-space: nowrap; or equivalent.
+
+Each exam card/item should align horizontally and be easy to scroll with a swipe.
+
+Do the same horizontal scroll behavior for:
+
+IIT-JEE
+
+Foundation
+
+Make sure scrollbars look neat or are minimal; the focus is on a smooth horizontal scroll experience for exam cards.
+
+5. “Why Students Choose Us” Section
+
+There are three main (big) cards, and under each big card there are smaller cards related to that big card.
+
+I want:
+
+All three big cards in the same horizontal row (responsive grid).
+
+For each big card, its small cards should be aligned in the same direction:
+
+One big card + one small card in the same horizontal row.
+
+These big+small pairs should be vertically aligned when stacked.
+
+All cards of the same category should line up neatly horizontally.
+
+Use Bootstrap grid or flexbox to:
+
+Keep the layout aligned and consistent on desktop.
+
+Make sure on mobile it’s still clear which small card belongs to which big card, without breaking alignment.
+
+6. “What You Get In Every Batch” Section
+
+This section has multiple feature/benefit cards.
+
+I want either 3 cards per row or at least 2 cards per row on mobile (not one per row unless the screen is extremely small).
+
+Use responsive Bootstrap grid classes (e.g., col-6 on small screens, col-md-4 on medium, etc.) so:
+
+Cards are neatly aligned.
+
+Text and icons are readable and not overflowing.
+
+7. “Success Stories” Section
+
+This section contains success story cards/testimonials.
+
+I want these to be displayed as a horizontal scroll carousel/list on mobile:
+
+Place all success story cards inside a horizontally scrollable container (overflow-x: auto).
+
+Each card should be clearly visible, with some spacing between cards.
+
+Make sure cards don’t get cut off and swiping left/right feels smooth.
