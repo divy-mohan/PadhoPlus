@@ -362,8 +362,8 @@ export default function Home() {
                     </div>
 
                     {/* Mobile Horizontal Scroll */}
-                    <div className="md:hidden">
-                      <HorizontalScroll showArrows={true} className="md:hidden">
+                    <div className="md:hidden w-full overflow-hidden -mx-4 px-4">
+                      <HorizontalScroll showArrows={true}>
                         {category.classLevels.map((classLevel) => {
                           const classBatches = categoryBatches[classLevel] || []
                           return (
@@ -680,8 +680,8 @@ export default function Home() {
           </div>
 
           {/* Mobile Horizontal Scroll Testimonials */}
-          <div className="md:hidden mb-8">
-            <HorizontalScroll showArrows={true} className="md:hidden">
+          <div className="md:hidden mb-8 w-full overflow-hidden -mx-4 px-4">
+            <HorizontalScroll showArrows={true}>
               {testimonials.map((testimonial) => (
                 <div key={testimonial.id} className="flex-shrink-0 w-72 sm:w-96">
                   <div className="group relative h-full">

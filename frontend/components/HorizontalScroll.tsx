@@ -21,8 +21,8 @@ export default function HorizontalScroll({
   const checkScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
-      setCanScrollLeft(scrollLeft > 0)
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20)
+      setCanScrollLeft(scrollLeft > 10)
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 50)
     }
   }
 
@@ -38,23 +38,26 @@ export default function HorizontalScroll({
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const scrollAmount = 300
+      const scrollAmount = 320
       if (direction === 'left') {
         scrollRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' })
       } else {
         scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
       }
-      setTimeout(checkScroll, 500)
+      setTimeout(checkScroll, 600)
     }
   }
 
   return (
-    <div className="relative group">
+    <div className="relative group w-full">
       <div
         ref={scrollRef}
         onScroll={checkScroll}
-        className={`flex overflow-x-auto gap-4 sm:gap-6 pb-2 scrollbar-hide ${className}`}
-        style={{ scrollBehavior: 'smooth' }}
+        className={`flex overflow-x-auto gap-4 sm:gap-6 pb-4 scrollbar-hide w-full ${className}`}
+        style={{ 
+          scrollBehavior: 'smooth',
+          WebkitOverflowScrolling: 'touch'
+        }}
       >
         {children}
       </div>
@@ -62,18 +65,18 @@ export default function HorizontalScroll({
       {showArrows && canScrollLeft && (
         <button
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 hidden sm:flex items-center justify-center border border-gray-200 hover:border-blue-400 -ml-5"
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 hidden sm:flex items-center justify-center border border-gray-200 hover:border-blue-400 hover:bg-blue-50"
         >
-          <ChevronLeft className="w-5 h-5 text-gray-600" />
+          <ChevronLeft className="w-5 h-5 text-gray-700" />
         </button>
       )}
 
       {showArrows && canScrollRight && (
         <button
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 hidden sm:flex items-center justify-center border border-gray-200 hover:border-blue-400 -mr-5"
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 hidden sm:flex items-center justify-center border border-gray-200 hover:border-blue-400 hover:bg-blue-50"
         >
-          <ChevronRight className="w-5 h-5 text-gray-600" />
+          <ChevronRight className="w-5 h-5 text-gray-700" />
         </button>
       )}
     </div>
