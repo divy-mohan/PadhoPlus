@@ -31,12 +31,12 @@ class User(AbstractUser):
     experience_years = models.IntegerField(blank=True, null=True)
     specialization = models.CharField(max_length=200, blank=True, null=True)
     
-    linked_students = models.ManyToManyField(
-        'self', 
-        blank=True, 
-        symmetrical=False,
-        related_name='linked_parents'
-    )
+    # linked_students = models.ManyToManyField(
+    #     'self', 
+    #     blank=True, 
+    #     symmetrical=False,
+    #     related_name='linked_parents'
+    # )
     
     referral_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
     referred_by = models.ForeignKey(
