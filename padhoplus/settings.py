@@ -76,7 +76,7 @@ DATABASES = {
         'PASSWORD': DB_PASSWORD,
         'HOST': DB_HOST,
         'PORT': DB_PORT,
-        'CONN_MAX_AGE': 600,
+        'CONN_MAX_AGE': 0,
         'OPTIONS': {
             'connect_timeout': 10,
         }
