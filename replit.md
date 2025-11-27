@@ -240,6 +240,16 @@ STRIPE_SECRET_KEY=sk_test_...
 - [ ] Teacher portal
 
 ## Recent Changes
+- **2025-11-27**:
+  - Enhanced Doubt Portal with complete backend integration
+  - Created Toast notification component for better UX feedback
+  - Implemented upvote functionality for doubts and responses
+  - Added advanced filtering (by subject, status) and sorting options
+  - Built answer submission form with real-time updates
+  - Added related questions sidebar on answer page
+  - Configured Next.js proxy for seamless API communication
+  - Fixed all API endpoint mappings (doubt-responses, my_doubts)
+
 - **2025-11-26**:
   - Added beautiful YouTube-style page progress bar
   - Implemented 15+ education-themed animations with stagger effects
