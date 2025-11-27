@@ -225,7 +225,9 @@ export default function Home() {
           setBatchesByCategory(grouped)
         }
       } catch (error: unknown) {
-        console.error('Error fetching batches:', error)
+        if (error instanceof Error) {
+          console.error('Error fetching batches:', error.message)
+        }
       }
     }
     fetchBatchesByCategory()
@@ -469,7 +471,7 @@ export default function Home() {
             </div>
           </ScrollAnimation>
 
-          <div className="grid grid-cols-3 gap-1.5 sm:gap-3 lg:gap-8">
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-3 lg:gap-6">
             {[
               { icon: Users, label: '10,000+', text: 'Active Students', color: 'from-blue-500 to-cyan-500' },
               { icon: Award, label: '500+', text: 'Expert Lectures', color: 'from-purple-500 to-pink-500' },
@@ -483,27 +485,27 @@ export default function Home() {
                     <div className={`absolute -inset-0.5 bg-gradient-to-r ${stat.color} rounded-lg sm:rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500`}></div>
                     
                     {/* Card */}
-                    <div className="relative bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 md:p-8 border border-blue-200 group-hover:border-blue-400 transition-all duration-300 shadow-lg group-hover:shadow-2xl min-h-[100px] sm:min-h-[130px] md:min-h-[160px] flex flex-col justify-between h-full">
+                    <div className="relative bg-white rounded-lg sm:rounded-2xl p-2 sm:p-3 md:p-5 border border-blue-200 group-hover:border-blue-400 transition-all duration-300 shadow-lg group-hover:shadow-2xl h-[110px] sm:h-[110px] md:h-[140px] flex flex-col justify-center items-center gap-0.5 sm:gap-1">
                       {/* Shine effect */}
                       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                       {/* Content */}
                       <div className="relative z-10 text-center">
                         {/* Icon container */}
-                        <div className={`inline-flex items-center justify-center mb-1.5 sm:mb-3 md:mb-6 p-1 sm:p-2 md:p-4 bg-gradient-to-br ${stat.color} rounded-full relative group/icon`}>
+                        <div className={`inline-flex items-center justify-center mb-0.5 sm:mb-1 md:mb-2 p-1 sm:p-1.5 md:p-3 bg-gradient-to-br ${stat.color} rounded-full relative group/icon`}>
                           <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300"></div>
-                          <StatIcon className="w-4 sm:w-6 md:w-8 h-4 sm:h-6 md:h-8 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
+                          <StatIcon className="w-3 sm:w-4 md:w-6 h-3 sm:h-4 md:h-6 text-white relative z-10 group-hover/icon:scale-125 group-hover/icon:rotate-12 transition-all duration-300" />
                         </div>
 
                         {/* Animated counter */}
-                        <div className="mb-1 sm:mb-2 md:mb-3">
-                          <h3 className={`text-2xl sm:text-3xl md:text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 inline-block`}>
+                        <div className="mb-0">
+                          <h3 className={`text-base sm:text-xl md:text-2xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 inline-block`}>
                             {stat.label}
                           </h3>
                         </div>
 
                         {/* Text */}
-                        <p className="text-gray-700 font-semibold group-hover:text-gray-900 transition-colors duration-300 text-xs sm:text-sm md:text-base">
+                        <p className="text-gray-700 font-semibold group-hover:text-gray-900 transition-colors duration-300 text-[10px] sm:text-xs md:text-sm line-clamp-2">
                           {stat.text}
                         </p>
                       </div>
