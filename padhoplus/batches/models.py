@@ -10,7 +10,6 @@ class Subject(models.Model):
     icon = models.CharField(max_length=50, blank=True, null=True)
     color = models.CharField(max_length=20, blank=True, null=True)
     order = models.IntegerField(default=0)
-    is_active = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -35,7 +34,6 @@ class Topic(models.Model):
     description = models.TextField(blank=True, null=True)
     chapter_number = models.IntegerField(default=1)
     order = models.IntegerField(default=0)
-    is_active = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -80,43 +78,29 @@ class Batch(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     description = models.TextField()
-    short_description = models.CharField(max_length=500, blank=True, null=True)
-    
-    target_exam = models.CharField(max_length=50, choices=EXAM_CHOICES)
+    target_exam = models.CharField(max_length=50)
     target_class = models.CharField(max_length=50)
-    target_year = models.IntegerField()
-    language = models.CharField(max_length=20, choices=LANGUAGE_CHOICES, default='en')
-    
-    thumbnail = models.ImageField(upload_to='batches/thumbnails/', blank=True, null=True)
-    promo_video_url = models.URLField(blank=True, null=True)
-    
+    language = models.CharField(max_length=20, default='en')
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    is_free = models.BooleanField(default=False)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='upcoming')
-    
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    discounted_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    is_free = models.BooleanField(default=False)
-    emi_available = models.BooleanField(default=False)
-    emi_months = models.IntegerField(blank=True, null=True)
-    
-    subjects = models.ManyToManyField(Subject, related_name='batches')
-    faculty = models.ManyToManyField(User, related_name='teaching_batches', limit_choices_to={'role': 'teacher'})
-    
-    features = models.JSONField(default=list, blank=True)
-    includes = models.JSONField(default=list, blank=True)
-    
+    status = models.CharField(max_length=20, default='upcoming')
+    thumbnail = models.CharField(max_length=255, blank=True, null=True)
+    demo_video_url = models.CharField(max_length=500, blank=True, null=True)
+    has_live_classes = models.BooleanField(default=False)
+    has_recorded_lectures = models.BooleanField(default=False)
+    has_dpp = models.BooleanField(default=False)
+    has_tests = models.BooleanField(default=False)
+    has_doubt_support = models.BooleanField(default=False)
     max_students = models.IntegerField(blank=True, null=True)
-    is_featured = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         db_table = 'batches'
         verbose_name_plural = 'Batches'
-        ordering = ['-is_featured', '-created_at']
+        ordering = ['-created_at']
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -140,7 +124,6 @@ class BatchFAQ(models.Model):
     question = models.CharField(max_length=500)
     answer = models.TextField()
     order = models.IntegerField(default=0)
-    is_active = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -232,7 +215,6 @@ class Announcement(models.Model):
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
     
     is_pinned = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -251,7 +233,6 @@ class BatchReview(models.Model):
     rating = models.IntegerField()
     review = models.TextField(blank=True, null=True)
     is_verified = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
