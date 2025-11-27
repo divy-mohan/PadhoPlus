@@ -7,6 +7,7 @@ import BatchCard from '@/components/BatchCard'
 import ScrollAnimation from '@/components/ScrollAnimation'
 import HowItWorksAnimated from '@/components/HowItWorksAnimated'
 import HorizontalScroll from '@/components/HorizontalScroll'
+import AnimatedCounter from '@/components/AnimatedCounter'
 import { Zap, Users, Shield, BookMarked, MessageSquare, ArrowRight, CheckCircle, Award, Lightbulb, BookOpen, Target, Brain, Play, DollarSign, UserCheck, Sparkles, Layers, Star, Gift, Smile, Clock, MessageCircle, Heart, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -500,7 +501,7 @@ export default function Home() {
                         {/* Animated counter */}
                         <div className="mb-0">
                           <h3 className={`text-base sm:text-xl md:text-2xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 inline-block`}>
-                            {stat.label}
+                            <AnimatedCounter value={stat.label} duration={2500} />
                           </h3>
                         </div>
 
