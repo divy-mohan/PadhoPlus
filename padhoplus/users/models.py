@@ -15,9 +15,9 @@ class User(AbstractUser):
         ('hinglish', 'Hinglish'),
     ]
     
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student', blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
-    profile_image = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    profile_image = models.CharField(max_length=255, blank=True, null=True)  # Changed from ImageField to CharField to match DB
     bio = models.TextField(blank=True, null=True)
     
     target_exam = models.CharField(max_length=50, blank=True, null=True)
@@ -25,18 +25,11 @@ class User(AbstractUser):
     current_class = models.CharField(max_length=20, blank=True, null=True)
     school_college = models.CharField(max_length=200, blank=True, null=True)
     
-    language_preference = models.CharField(max_length=20, choices=LANGUAGE_CHOICES, default='en')
+    language_preference = models.CharField(max_length=20, choices=LANGUAGE_CHOICES, default='en', blank=True, null=True)
     
     qualifications = models.TextField(blank=True, null=True)
     experience_years = models.IntegerField(blank=True, null=True)
     specialization = models.CharField(max_length=200, blank=True, null=True)
-    
-    # linked_students = models.ManyToManyField(
-    #     'self', 
-    #     blank=True, 
-    #     symmetrical=False,
-    #     related_name='linked_parents'
-    # )
     
     referral_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
     referred_by = models.ForeignKey(
@@ -47,8 +40,8 @@ class User(AbstractUser):
         related_name='referrals'
     )
     
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     
     class Meta:
         db_table = 'users'
