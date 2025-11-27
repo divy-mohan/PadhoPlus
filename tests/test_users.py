@@ -14,10 +14,10 @@ def test_user_model_fields():
     """Test that User model has all required fields"""
     print("\n✓ Testing User model fields...")
     
-    # Check fields exist
-    fields = ['role', 'phone', 'profile_image', 'bio', 'target_exam', 'target_year',
-              'current_class', 'school_college', 'language_preference', 'qualifications',
-              'experience_years', 'specialization', 'referral_code', 'referred_by']
+    # Check fields exist (matching actual database schema)
+    fields = ['role', 'phone_number', 'profile_picture', 'date_of_birth', 'bio', 'target_exam', 
+              'class_level', 'school_name', 'experience_years', 'specialization', 
+              'referral_code', 'referred_by', 'phone', 'profile_image']
     
     for field in fields:
         if hasattr(User, field):
@@ -107,10 +107,10 @@ def test_user_table_exists():
     
     from django.db import connection
     
-    required_columns = ['id', 'username', 'email', 'password', 'role', 'phone', 
-                       'profile_image', 'bio', 'target_exam', 'target_year',
-                       'current_class', 'school_college', 'language_preference',
-                       'qualifications', 'experience_years', 'specialization']
+    required_columns = ['id', 'username', 'email', 'password', 'role', 'phone_number', 
+                       'profile_picture', 'date_of_birth', 'target_exam', 'class_level', 
+                       'school_name', 'bio', 'experience_years', 'specialization',
+                       'phone', 'profile_image']
     
     with connection.cursor() as cursor:
         cursor.execute("""
