@@ -224,7 +224,7 @@ export default function Home() {
           })
           setBatchesByCategory(grouped)
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Error fetching batches:', error)
       }
     }

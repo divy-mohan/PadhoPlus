@@ -101,8 +101,8 @@ export default function HeroSection() {
           ].map((stat, idx) => {
             const IconComponent = stat.icon
             return (
-              <div key={idx} className={`${stat.delay} group`}>
-                <div className="bg-white rounded-lg sm:rounded-xl p-2 sm:p-4 md:p-6 border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 relative overflow-hidden h-full">
+              <div key={idx} className={`${stat.delay} group h-full`}>
+                <div className="bg-white rounded-lg sm:rounded-xl p-2 sm:p-4 md:p-6 border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 relative overflow-hidden h-full min-h-[110px] sm:min-h-[140px] md:min-h-[160px] flex flex-col justify-between">
                   {/* Icon background */}
                   <div className={`absolute -top-2 -right-2 w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-br ${stat.color} opacity-5 rounded-full`}></div>
                   

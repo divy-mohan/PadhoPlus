@@ -250,7 +250,7 @@ export default function HowItWorksAnimated() {
 
                       {/* Compact step card */}
                       <div
-                        className={`relative group transition-all duration-700 ease-in-out ${
+                        className={`relative group transition-all duration-700 ease-in-out h-full ${
                           isCardActive ? 'scale-105' : 'scale-100'
                         }`}
                       >
@@ -261,7 +261,7 @@ export default function HowItWorksAnimated() {
 
                         {/* Card */}
                         <div
-                          className={`relative bg-white rounded-lg p-2 shadow-md transition-all duration-700 ease-in-out border-2 overflow-hidden ${
+                          className={`relative bg-white rounded-lg p-2 shadow-md transition-all duration-700 ease-in-out border-2 overflow-hidden min-h-[100px] sm:min-h-[120px] flex flex-col justify-between ${
                             isCardActive
                               ? 'border-blue-500 shadow-lg'
                               : 'border-gray-100 group-hover:border-blue-300'
