@@ -68,7 +68,7 @@ export default function HowItWorksAnimated() {
                         }`}>
                           {/* Moving arrow animation */}
                           <div
-                            className={`absolute h-full transition-all duration-1200 ease-in-out font-bold text-white flex items-center justify-center text-lg ${
+                            className={`absolute h-full transition-all duration-700 ease-in-out font-bold text-white flex items-center justify-center text-lg ${
                               isCompleted ? 'bg-blue-600' : 'bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600'
                             }`}
                             style={{
@@ -84,7 +84,7 @@ export default function HowItWorksAnimated() {
 
                       {/* Step card */}
                       <div
-                        className={`relative group transition-all duration-500 ${
+                        className={`relative group transition-all duration-700 ${
                           isActive ? 'scale-105' : 'scale-100'
                         }`}
                       >
@@ -95,7 +95,7 @@ export default function HowItWorksAnimated() {
 
                         {/* Card */}
                         <div
-                          className={`relative bg-white rounded-xl p-4 shadow-lg transition-all duration-500 border-2 overflow-hidden ${
+                          className={`relative bg-white rounded-xl p-4 shadow-lg transition-all duration-700 border-2 overflow-hidden ${
                             isActive
                               ? 'border-blue-500 shadow-2xl'
                               : isCompleted
@@ -110,7 +110,7 @@ export default function HowItWorksAnimated() {
 
                           {/* Step number with animation */}
                           <div
-                            className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg transition-all duration-500 relative overflow-hidden bg-gradient-to-br ${
+                            className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg transition-all duration-700 relative overflow-hidden bg-gradient-to-br ${
                               item.color
                             } ${
                               isActive ? 'scale-125 shadow-2xl' : isCompleted ? 'scale-110' : 'group-hover:scale-125 group-hover:shadow-2xl'
@@ -126,14 +126,14 @@ export default function HowItWorksAnimated() {
 
                           {/* Icon display */}
                           <div className="flex justify-center mb-2">
-                            <StepIcon className={`w-6 h-6 transition-all duration-500 ${
+                            <StepIcon className={`w-6 h-6 transition-all duration-700 ${
                               isActive || isCompleted ? 'text-blue-600' : 'text-gray-600'
                             }`} />
                           </div>
 
                           {/* Step content */}
                           <div className="text-center relative z-10">
-                            <h3 className={`font-bold mb-1 text-base transition-colors duration-500 ${
+                            <h3 className={`font-bold mb-1 text-base transition-colors duration-700 ${
                               isActive
                                 ? 'text-blue-600'
                                 : isCompleted
@@ -142,7 +142,7 @@ export default function HowItWorksAnimated() {
                             }`}>
                               {item.title}
                             </h3>
-                            <p className={`text-xs transition-colors duration-500 ${
+                            <p className={`text-xs transition-colors duration-700 ${
                               isActive
                                 ? 'text-gray-700 font-medium'
                                 : isCompleted
@@ -154,7 +154,7 @@ export default function HowItWorksAnimated() {
                           </div>
 
                           {/* Animated bottom accent */}
-                          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent transition-all duration-500 ${
+                          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent transition-all duration-700 ${
                             isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                           }`}></div>
                         </div>
@@ -176,7 +176,7 @@ export default function HowItWorksAnimated() {
             
             return (
               <ScrollAnimation key={idx} type="fade-up" delay={idx * 100}>
-                <div className={`relative transition-all duration-500 ${
+                <div className={`relative transition-all duration-700 ${
                   isActive ? 'scale-105' : 'scale-100'
                 }`}>
                   {isActive && (
@@ -184,7 +184,7 @@ export default function HowItWorksAnimated() {
                   )}
 
                   <div
-                    className={`relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-500 border-2 ${
+                    className={`relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-700 border-2 ${
                       isActive
                         ? 'border-blue-500 shadow-2xl'
                         : isCompleted
@@ -192,7 +192,7 @@ export default function HowItWorksAnimated() {
                         : 'border-gray-100'
                     }`}
                   >
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg transition-all duration-500 bg-gradient-to-br ${
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4 shadow-lg transition-all duration-700 bg-gradient-to-br ${
                       item.color
                     } ${isActive ? 'scale-110' : ''}`}>
                       {item.step}
@@ -200,12 +200,12 @@ export default function HowItWorksAnimated() {
 
                     {/* Icon display */}
                     <div className="flex justify-center mb-3">
-                      <StepIcon className={`w-6 h-6 transition-all duration-500 ${
+                      <StepIcon className={`w-6 h-6 transition-all duration-700 ${
                         isActive || isCompleted ? 'text-blue-600' : 'text-gray-600'
                       }`} />
                     </div>
 
-                    <h3 className={`font-bold mb-2 text-lg transition-colors duration-500 ${
+                    <h3 className={`font-bold mb-2 text-lg transition-colors duration-700 ${
                       isActive
                         ? 'text-blue-600'
                         : isCompleted
@@ -214,7 +214,7 @@ export default function HowItWorksAnimated() {
                     }`}>
                       {item.title}
                     </h3>
-                    <p className={`text-sm transition-colors duration-500 ${
+                    <p className={`text-sm transition-colors duration-700 ${
                       isActive
                         ? 'text-gray-700 font-medium'
                         : isCompleted
@@ -244,7 +244,7 @@ export default function HowItWorksAnimated() {
           {steps.map((_, idx) => (
             <div
               key={idx}
-              className={`h-2 rounded-full transition-all duration-500 ${
+              className={`h-2 rounded-full transition-all duration-700 ${
                 activeStep === idx
                   ? 'w-8 bg-blue-600'
                   : completedSteps.includes(idx)
