@@ -18,6 +18,14 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["lucide-react"],
   },
   allowedDevOrigins: ["*.replit.dev", "*.picard.replit.dev", "localhost", "127.0.0.1"],
+  async rewrites() {
+    return [
+      {
+        source: '/backend/:path*',
+        destination: 'http://localhost:8000/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
