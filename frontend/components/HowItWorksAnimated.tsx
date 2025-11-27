@@ -19,7 +19,7 @@ export default function HowItWorksAnimated() {
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length)
       setAnimatingArrow((prev) => (prev + 1) % (steps.length - 1))
-    }, 3000)
+    }, 2200)
     return () => clearInterval(interval)
   }, [])
 
@@ -41,22 +41,24 @@ export default function HowItWorksAnimated() {
         <div className="hidden md:block">
           <div className="relative">
             {/* Container for steps with proper spacing */}
-            <div className="grid grid-cols-4 gap-8 px-8">
+            <div className="grid grid-cols-4 gap-12 px-4">
               {steps.map((item, idx) => (
                 <ScrollAnimation key={idx} type="zoom-in" delay={idx * 150}>
                   <div className="relative">
-                    {/* Animated connector line above */}
+                    {/* Animated connector line with arrow above */}
                     {idx < steps.length - 1 && (
-                      <div className="absolute top-20 left-full w-8 h-1 bg-gray-300 overflow-hidden">
+                      <div className="absolute top-16 left-full w-12 h-2 bg-gray-300 rounded-full overflow-hidden">
                         {/* Moving arrow animation */}
                         <div
-                          className={`absolute h-full bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 transition-all duration-1000 ease-in-out`}
+                          className={`absolute h-full bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 transition-all duration-1200 ease-in-out font-bold text-white flex items-center justify-center text-lg`}
                           style={{
                             width: '100%',
                             left: animatingArrow === idx ? '0%' : '-100%',
-                            opacity: animatingArrow === idx ? 1 : 0.3,
+                            opacity: animatingArrow === idx ? 1 : 0.2,
                           }}
-                        />
+                        >
+                          ➜
+                        </div>
                       </div>
                     )}
 
@@ -73,7 +75,7 @@ export default function HowItWorksAnimated() {
 
                       {/* Card */}
                       <div
-                        className={`relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg transition-all duration-500 border-2 overflow-hidden ${
+                        className={`relative bg-white rounded-xl p-4 shadow-lg transition-all duration-500 border-2 overflow-hidden ${
                           activeStep === idx
                             ? 'border-blue-500 shadow-2xl'
                             : 'border-gray-100 group-hover:border-blue-300'
@@ -86,7 +88,7 @@ export default function HowItWorksAnimated() {
 
                         {/* Step number with animation */}
                         <div
-                          className={`w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4 shadow-lg transition-all duration-500 relative overflow-hidden ${
+                          className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-3 shadow-lg transition-all duration-500 relative overflow-hidden ${
                             activeStep === idx
                               ? `bg-gradient-to-br ${item.color} scale-125 shadow-2xl`
                               : `bg-gradient-to-br ${item.color} group-hover:scale-125 group-hover:shadow-2xl`
@@ -102,14 +104,14 @@ export default function HowItWorksAnimated() {
 
                         {/* Step content */}
                         <div className="text-center relative z-10">
-                          <h3 className={`font-bold mb-2 text-lg transition-colors duration-500 ${
+                          <h3 className={`font-bold mb-1 text-base transition-colors duration-500 ${
                             activeStep === idx
                               ? 'text-blue-600'
                               : 'text-gray-900 group-hover:text-blue-600'
                           }`}>
                             {item.title}
                           </h3>
-                          <p className={`text-sm transition-colors duration-500 ${
+                          <p className={`text-xs transition-colors duration-500 ${
                             activeStep === idx
                               ? 'text-gray-700 font-medium'
                               : 'text-gray-600 group-hover:text-gray-700'
