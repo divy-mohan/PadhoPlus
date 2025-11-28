@@ -87,3 +87,6 @@ DB_USER = "padhoplus_user"
 DB_PASSWORD = "Mohan123#"
 DB_HOST = "69.62.78.57"
 DB_PORT = "5432"
+
+[userenv.development]
+NEXT_PUBLIC_API_URL = "http://localhost:8000"
