@@ -41,11 +41,12 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(Faculty)
 class FacultyAdmin(admin.ModelAdmin):
-    list_display = ['user', 'designation', 'is_featured', 'order']
-    list_filter = ['is_featured']
+    list_display = ['user', 'designation', 'get_subjects', 'is_featured', 'order']
+    list_filter = ['is_featured', 'subjects']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'designation']
     ordering = ['order', 'user__first_name']
     autocomplete_fields = ['user']
+    filter_horizontal = ['subjects']
     fieldsets = (
         ('Faculty Info', {
             'fields': ('user', 'designation', 'title')
@@ -57,6 +58,10 @@ class FacultyAdmin(admin.ModelAdmin):
             'fields': ('is_featured', 'order')
         }),
     )
+    
+    def get_subjects(self, obj):
+        return ', '.join([s.name for s in obj.subjects.all()]) or 'No subjects'
+    get_subjects.short_description = 'Subjects'
 
 
 @admin.register(Testimonial)

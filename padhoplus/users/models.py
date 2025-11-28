@@ -61,7 +61,7 @@ class Faculty(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
     designation = models.CharField(max_length=100, blank=True, null=True)
     intro_video_url = models.URLField(blank=True, null=True)
-    subjects = models.JSONField(default=list, blank=True)
+    subjects = models.ManyToManyField('batches.Subject', related_name='faculty_members', blank=True)
     achievements = models.TextField(blank=True, null=True)
     teaching_style = models.TextField(blank=True, null=True)
     is_featured = models.BooleanField(default=False)

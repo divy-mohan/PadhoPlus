@@ -67,15 +67,29 @@ class LoginSerializer(serializers.Serializer):
 class FacultySerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     user_id = serializers.IntegerField(write_only=True)
+    subjects = serializers.SerializerMethodField()
+    subject_ids = serializers.PrimaryKeyRelatedField(
+        many=True, write_only=True, queryset=None,
+        required=False, source='subjects'
+    )
     
     class Meta:
         model = Faculty
         fields = [
             'id', 'user', 'user_id', 'title', 'designation', 'intro_video_url',
-            'subjects', 'achievements', 'teaching_style', 'is_featured', 'order',
+            'subjects', 'subject_ids', 'achievements', 'teaching_style', 'is_featured', 'order',
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from padhoplus.batches.models import Subject
+        self.fields['subject_ids'].queryset = Subject.objects.all()
+    
+    def get_subjects(self, obj):
+        from padhoplus.batches.serializers import SubjectSerializer
+        return SubjectSerializer(obj.subjects.all(), many=True).data
 
 
 class TestimonialSerializer(serializers.ModelSerializer):
