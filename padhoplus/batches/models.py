@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
-from padhoplus.users.models import User
+from padhoplus.users.models import User, Faculty
 
 
 class Language(models.Model):
@@ -133,6 +133,7 @@ class Batch(models.Model):
     max_students = models.IntegerField(blank=True, null=True)
     is_featured = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    faculty = models.ManyToManyField(Faculty, related_name='batches', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

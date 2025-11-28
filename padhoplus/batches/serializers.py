@@ -3,7 +3,7 @@ from .models import (
     Subject, Topic, Batch, BatchFAQ, Schedule, 
     Enrollment, Announcement, BatchReview
 )
-from padhoplus.users.serializers import UserSerializer
+from padhoplus.users.serializers import UserSerializer, FacultySerializer
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -81,6 +81,9 @@ class BatchDetailSerializer(serializers.ModelSerializer):
     schedules = ScheduleSerializer(many=True, read_only=True)
     faqs = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
+    faculty = FacultySerializer(many=True, read_only=True)
+    subjects = serializers.SerializerMethodField()
+    syllabus = serializers.SerializerMethodField()
     
     target_exam_display = serializers.CharField(source='get_target_exam_display', read_only=True)
     status_display = serializers.CharField(source='get_status_display', read_only=True)
@@ -98,7 +101,7 @@ class BatchDetailSerializer(serializers.ModelSerializer):
             'status', 'status_display', 'price', 'discounted_price', 'effective_price',
             'is_free', 'emi_available', 'emi_months',
             'features', 'includes', 'max_students', 'is_featured', 'enrolled_count',
-            'schedules', 'faqs', 'reviews', 'average_rating',
+            'schedules', 'faqs', 'reviews', 'average_rating', 'faculty', 'subjects', 'syllabus',
             'created_at', 'updated_at'
         ]
     
@@ -115,6 +118,32 @@ class BatchDetailSerializer(serializers.ModelSerializer):
         if reviews.exists():
             return round(sum(r.rating for r in reviews) / reviews.count(), 1)
         return None
+    
+    def get_subjects(self, obj):
+        subjects = Subject.objects.filter(
+            schedules__batch=obj,
+            is_active=True
+        ).distinct()
+        return SubjectSerializer(subjects, many=True).data
+    
+    def get_syllabus(self, obj):
+        subjects = Subject.objects.filter(
+            schedules__batch=obj,
+            is_active=True
+        ).distinct()
+        data = []
+        for subject in subjects:
+            topics = Topic.objects.filter(subject=subject, is_active=True)
+            data.append({
+                'id': subject.id,
+                'name': subject.name,
+                'slug': subject.slug,
+                'description': subject.description,
+                'icon': subject.icon,
+                'color': subject.color,
+                'topics': TopicSerializer(topics, many=True).data
+            })
+        return data
 
 
 class EnrollmentSerializer(serializers.ModelSerializer):

@@ -120,6 +120,15 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   }
 
   const tabs = ['overview', 'schedule', 'syllabus', 'faculty', 'reviews', 'faq']
+  
+  const hasContent = {
+    overview: true,
+    schedule: batch.schedules?.length > 0,
+    syllabus: batch.syllabus?.length > 0,
+    faculty: batch.faculty?.length > 0,
+    reviews: batch.reviews?.length > 0,
+    faq: batch.faqs?.length > 0,
+  }
   const enrolledCount = batch.enrollments?.filter((e: any) => e.status === 'active').length || 0
   const avgRating = batch.reviews?.length > 0 
     ? (batch.reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / batch.reviews.length).toFixed(1)
@@ -258,8 +267,8 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
                     <div key={idx} className="card hover-lift">
                       <div className="flex justify-between items-center">
                         <div>
-                          <h3 className="font-semibold text-gray-900">{schedule.subject}</h3>
-                          <p className="text-sm text-gray-600">{schedule.day} • {schedule.start_time} - {schedule.end_time}</p>
+                          <h3 className="font-semibold text-gray-900">{schedule.subject?.name || schedule.subject}</h3>
+                          <p className="text-sm text-gray-600">{schedule.day_display || schedule.day} • {schedule.start_time} - {schedule.end_time}</p>
                         </div>
                         {schedule.is_live && (
                           <span className="badge bg-red-100 text-red-700">Live</span>
@@ -271,24 +280,53 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
               </div>
             )}
 
+            {activeTab === 'syllabus' && batch.syllabus && batch.syllabus.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6 text-gray-900">Syllabus</h2>
+                <div className="space-y-6">
+                  {batch.syllabus.map((subject: any, idx: number) => (
+                    <div key={idx} className="card">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-4">{subject.name}</h3>
+                      {subject.description && <p className="text-gray-600 text-sm mb-4">{subject.description}</p>}
+                      {subject.topics && subject.topics.length > 0 && (
+                        <div className="pl-4 border-l-4 border-blue-500 space-y-3">
+                          {subject.topics.map((topic: any, t_idx: number) => (
+                            <div key={t_idx}>
+                              <h4 className="font-medium text-gray-900">Chapter {topic.chapter_number}: {topic.name}</h4>
+                              {topic.description && <p className="text-sm text-gray-600 mt-1">{topic.description}</p>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {activeTab === 'faculty' && batch.faculty && batch.faculty.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold mb-6 text-gray-900">Meet Your Instructors</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {batch.faculty.map((prof: any, idx: number) => (
+                  {batch.faculty.map((prof: any, idx: number) => {
+                    const user = prof.user || {};
+                    return (
                     <div key={idx} className="card hover-lift">
                       <div className="flex items-center gap-4 mb-4">
                         <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                          {prof.first_name?.[0]}{prof.last_name?.[0]}
+                          {user.first_name?.[0]}{user.last_name?.[0]}
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900 text-lg">{prof.first_name} {prof.last_name}</h3>
-                          <p className="text-sm text-blue-600 font-medium">{prof.email}</p>
+                          <h3 className="font-semibold text-gray-900 text-lg">{prof.title || `${user.first_name} ${user.last_name}`}</h3>
+                          <p className="text-sm text-blue-600 font-medium">{prof.designation || user.email}</p>
                         </div>
                       </div>
-                      {prof.bio && <p className="text-sm text-gray-600">{prof.bio}</p>}
+                      {prof.achievements && <p className="text-sm text-gray-600 mb-2"><strong>Achievements:</strong> {prof.achievements}</p>}
+                      {user.bio && <p className="text-sm text-gray-600">{user.bio}</p>}
+                      {prof.teaching_style && <p className="text-sm text-gray-600 mt-2"><strong>Teaching Style:</strong> {prof.teaching_style}</p>}
                     </div>
-                  ))}
+                  );
+                  })}
                 </div>
               </div>
             )}
@@ -328,7 +366,7 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
               </div>
             )}
 
-            {activeTab !== 'overview' && activeTab !== 'faculty' && activeTab !== 'faq' && activeTab !== 'reviews' && (
+            {!hasContent[activeTab as keyof typeof hasContent] && (
               <div className="text-center py-16">
                 <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-gray-600 text-lg">Content coming soon...</p>
