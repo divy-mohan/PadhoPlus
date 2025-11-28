@@ -118,7 +118,7 @@ class BatchAdmin(admin.ModelAdmin):
             'fields': ('features', 'includes')
         }),
         ('Settings', {
-            'fields': ('max_students', 'is_featured', 'is_active', 'faculty')
+            'fields': ('max_students', 'is_featured', 'is_active')
         }),
     )
     
