@@ -7,8 +7,8 @@ from .models import (
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'order', 'is_active']
-    list_filter = ['is_active']
+    list_display = ['name', 'slug', 'order']
+    list_filter = []
     search_fields = ['name']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['order', 'name']
@@ -28,8 +28,8 @@ class SubjectAdmin(admin.ModelAdmin):
 
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ['name', 'subject', 'chapter_number', 'order', 'is_active']
-    list_filter = ['subject', 'is_active']
+    list_display = ['name', 'subject', 'chapter_number', 'order']
+    list_filter = ['subject']
     search_fields = ['name', 'subject__name']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['subject', 'chapter_number', 'order']
@@ -95,8 +95,8 @@ class BatchAdmin(admin.ModelAdmin):
 
 @admin.register(BatchFAQ)
 class BatchFAQAdmin(admin.ModelAdmin):
-    list_display = ['batch', 'question', 'order', 'is_active']
-    list_filter = ['batch', 'is_active']
+    list_display = ['batch', 'question', 'order']
+    list_filter = ['batch']
     search_fields = ['question', 'answer', 'batch__name']
     ordering = ['batch', 'order']
     
@@ -147,8 +147,8 @@ class EnrollmentAdmin(admin.ModelAdmin):
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ['title', 'batch', 'author', 'priority', 'is_pinned', 'is_active', 'created_at']
-    list_filter = ['priority', 'is_pinned', 'is_active', 'batch']
+    list_display = ['title', 'batch', 'author', 'priority', 'is_pinned', 'created_at']
+    list_filter = ['priority', 'is_pinned', 'batch']
     search_fields = ['title', 'content', 'batch__name']
     autocomplete_fields = ['batch', 'author']
     date_hierarchy = 'created_at'
@@ -165,8 +165,8 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
 @admin.register(BatchReview)
 class BatchReviewAdmin(admin.ModelAdmin):
-    list_display = ['student', 'batch', 'rating', 'is_verified', 'is_active', 'created_at']
-    list_filter = ['rating', 'is_verified', 'is_active']
+    list_display = ['student', 'batch', 'rating', 'is_verified', 'created_at']
+    list_filter = ['rating', 'is_verified']
     search_fields = ['student__username', 'batch__name', 'review']
     autocomplete_fields = ['student', 'batch']
     readonly_fields = ['rating', 'review', 'student', 'batch', 'created_at']
