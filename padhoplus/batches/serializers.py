@@ -78,9 +78,11 @@ class BatchListSerializer(serializers.ModelSerializer):
 
 
 class BatchDetailSerializer(serializers.ModelSerializer):
+    schedules = ScheduleSerializer(many=True, read_only=True)
     faqs = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
     faculty = serializers.SerializerMethodField()
+    syllabus = serializers.SerializerMethodField()
     
     target_exam_display = serializers.CharField(source='get_target_exam_display', read_only=True)
     language_display = serializers.CharField(source='get_language_display', read_only=True)
@@ -90,68 +92,60 @@ class BatchDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Batch
         fields = [
-            'id', 'name', 'slug', 'description', 'short_description', 'thumbnail',
-            'promo_video_url', 'target_exam', 'target_exam_display', 'target_class',
-            'target_year', 'language', 'language_display', 'start_date', 'end_date',
-            'status', 'status_display', 'price', 'discounted_price', 'effective_price',
-            'is_free', 'emi_available', 'emi_months',
-            'features', 'includes', 'max_students', 'is_featured', 'enrolled_count',
-            'schedules', 'faqs', 'reviews', 'average_rating', 'faculty', 'subjects', 'syllabus',
-            'created_at', 'updated_at'
+            'id', 'name', 'slug', 'description', 'short_description', 'target_exam', 'target_exam_display',
+            'target_class', 'target_year', 'language', 'language_display', 'start_date', 'end_date',
+            'price', 'discounted_price', 'effective_price', 'is_free', 'features', 'includes', 
+            'enrolled_count', 'schedules', 'faqs', 'reviews', 'faculty', 'syllabus'
         ]
     
     def get_faqs(self, obj):
-        faqs = obj.faqs.filter(is_active=True)
-        return BatchFAQSerializer(faqs, many=True).data
+        try:
+            faqs = obj.faqs.filter(is_active=True).order_by('order')
+            return [{
+                'id': faq.id,
+                'question': faq.question,
+                'answer': faq.answer,
+                'order': faq.order
+            } for faq in faqs]
+        except:
+            return []
     
     def get_reviews(self, obj):
         reviews = obj.reviews.filter(is_active=True)
         return BatchReviewSerializer(reviews, many=True).data
     
-    def get_average_rating(self, obj):
-        reviews = obj.reviews.filter(is_active=True)
-        if reviews.exists():
-            return round(sum(r.rating for r in reviews) / reviews.count(), 1)
-        return None
-    
-    def get_subjects(self, obj):
-        subjects = Subject.objects.filter(
-            schedules__batch=obj,
-            is_active=True
-        ).distinct()
-        return SubjectSerializer(subjects, many=True).data
-    
     def get_faculty(self, obj):
-        faculty_relations = obj.batch_subject_faculties.select_related('faculty__user', 'subject').all()
-        faculty_data = []
-        for relation in faculty_relations:
-            faculty_info = FacultySerializer(relation.faculty).data
-            faculty_info['subject'] = {
-                'id': relation.subject.id,
-                'name': relation.subject.name,
-                'slug': relation.subject.slug
-            }
-            faculty_data.append(faculty_info)
-        return faculty_data
+        try:
+            faculty_relations = obj.batch_subject_faculties.select_related('faculty__user', 'subject').all()
+            faculty_data = []
+            for relation in faculty_relations:
+                faculty_info = FacultySerializer(relation.faculty).data
+                faculty_info['subject'] = {
+                    'id': relation.subject.id,
+                    'name': relation.subject.name,
+                    'slug': relation.subject.slug
+                }
+                faculty_data.append(faculty_info)
+            return faculty_data
+        except:
+            return []
     
     def get_syllabus(self, obj):
-        subjects = Subject.objects.filter(
-            schedules__batch=obj,
-            is_active=True
-        ).distinct()
-        data = []
-        for subject in subjects:
-            topics = Topic.objects.filter(subject=subject, is_active=True)
-            data.append({
-                'id': subject.id,
-                'name': subject.name,
-                'slug': subject.slug,
-                'description': subject.description,
-                'icon': subject.icon,
-                'color': subject.color,
-                'topics': TopicSerializer(topics, many=True).data
-            })
-        return data
+        try:
+            subjects = Subject.objects.filter(schedules__batch=obj, is_active=True).distinct()
+            data = []
+            for subject in subjects:
+                topics = Topic.objects.filter(subject=subject, is_active=True)
+                data.append({
+                    'id': subject.id,
+                    'name': subject.name,
+                    'slug': subject.slug,
+                    'description': subject.description,
+                    'topics': TopicSerializer(topics, many=True).data
+                })
+            return data
+        except:
+            return []
 
 
 class EnrollmentSerializer(serializers.ModelSerializer):

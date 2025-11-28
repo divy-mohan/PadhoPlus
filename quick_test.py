@@ -1,52 +1,26 @@
 #!/usr/bin/env python3
-"""
-Quick test for faculty API without database dependency
-"""
+import requests
 
-import os
-import sys
-import django
-from django.test import Client
-from django.http import JsonResponse
-
-# Setup Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'padhoplus.settings')
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-try:
-    django.setup()
-    print("✓ Django setup successful")
-    
-    # Test basic Django functionality
-    from django.conf import settings
-    print(f"✓ DEBUG mode: {settings.DEBUG}")
-    print(f"✓ Database engine: {settings.DATABASES['default']['ENGINE']}")
-    
-    # Test URL routing
-    client = Client()
-    
-    # Test API root
+def test_batch_api():
+    """Quick test of batch API"""
     try:
-        response = client.get('/')
-        print(f"✓ API root status: {response.status_code}")
-    except Exception as e:
-        print(f"⚠ API root error: {e}")
-    
-    # Test faculty endpoint (without database)
-    try:
-        response = client.get('/api/users/faculty/')
-        print(f"✓ Faculty endpoint status: {response.status_code}")
-        if response.status_code != 500:
-            print("✓ Faculty endpoint is accessible")
+        # Test batch detail that was failing
+        url = "http://localhost:8000/api/batches/jee-rankers-mathematics-2026-advanced-prep-batch/"
+        response = requests.get(url)
+        
+        print(f"Status: {response.status_code}")
+        print(f"Content-Type: {response.headers.get('content-type', 'Unknown')}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"✅ Success - Batch: {data.get('name', 'Unknown')}")
+            print(f"Faculty count: {len(data.get('faculty', []))}")
+            print(f"FAQs count: {len(data.get('faqs', []))}")
         else:
-            print("⚠ Faculty endpoint has server error (likely database)")
+            print(f"❌ Error: {response.text[:200]}")
+            
     except Exception as e:
-        print(f"⚠ Faculty endpoint error: {e}")
-    
-    print("\n" + "="*50)
-    print("QUICK TEST COMPLETE")
-    print("="*50)
-    
-except Exception as e:
-    print(f"❌ Django setup failed: {e}")
-    sys.exit(1)
+        print(f"❌ Exception: {e}")
+
+if __name__ == "__main__":
+    test_batch_api()
