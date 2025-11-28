@@ -3,6 +3,24 @@ from django.utils.text import slugify
 from padhoplus.users.models import User
 
 
+class Language(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    code = models.CharField(max_length=10, unique=True)
+    icon = models.CharField(max_length=50, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'languages'
+        ordering = ['order', 'name']
+    
+    def __str__(self):
+        return f"{self.name} ({self.code})"
+
+
 class Subject(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -90,12 +108,6 @@ class Batch(models.Model):
         ('completed', 'Completed'),
     ]
     
-    LANGUAGE_CHOICES = [
-        ('en', 'English'),
-        ('hi', 'Hindi'),
-        ('hinglish', 'Hinglish'),
-    ]
-    
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -103,7 +115,7 @@ class Batch(models.Model):
     target_exam = models.CharField(max_length=50, choices=EXAM_CHOICES)
     target_class = models.CharField(max_length=50, choices=CLASS_CHOICES)
     target_year = models.IntegerField(choices=YEAR_CHOICES, blank=True, null=True)
-    language = models.CharField(max_length=20, default='en')
+    language = models.ForeignKey(Language, on_delete=models.SET_NULL, null=True, blank=True, related_name='batches')
     thumbnail = models.ImageField(upload_to='batch_thumbnails/', blank=True, null=True)
     promo_video_url = models.CharField(max_length=500, blank=True, null=True)
     start_date = models.DateField()

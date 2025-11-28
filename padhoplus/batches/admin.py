@@ -1,8 +1,25 @@
 from django.contrib import admin
 from .models import (
-    Subject, Topic, Batch, BatchFAQ, Schedule,
+    Language, Subject, Topic, Batch, BatchFAQ, Schedule,
     Enrollment, Announcement, BatchReview
 )
+
+
+@admin.register(Language)
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = ['name', 'code', 'icon', 'is_active', 'order']
+    list_filter = ['is_active']
+    search_fields = ['name', 'code']
+    ordering = ['order', 'name']
+    
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'code', 'icon')
+        }),
+        ('Settings', {
+            'fields': ('is_active', 'order')
+        }),
+    )
 
 
 @admin.register(Subject)
