@@ -15,7 +15,7 @@ class User(AbstractUser):
         ('hinglish', 'Hinglish'),
     ]
     
-    role = models.CharField(max_length=10, default='student', blank=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='student', blank=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     profile_image = models.CharField(max_length=100, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
