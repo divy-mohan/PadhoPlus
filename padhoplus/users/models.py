@@ -16,20 +16,20 @@ class User(AbstractUser):
     ]
     
     role = models.CharField(max_length=10, default='student', blank=True)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    profile_picture = models.CharField(max_length=100, blank=True, null=True)
-    date_of_birth = models.DateField(blank=True, null=True)
-    target_exam = models.CharField(max_length=50, blank=True, null=True)
-    class_level = models.CharField(max_length=20, blank=True, null=True)
-    school_name = models.CharField(max_length=200, blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
-    experience_years = models.IntegerField(blank=True, null=True)
-    specialization = models.CharField(max_length=100, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-    # Additional alias fields for backward compatibility
     phone = models.CharField(max_length=15, blank=True, null=True)
     profile_image = models.CharField(max_length=100, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    target_exam = models.CharField(max_length=50, blank=True, null=True)
+    target_year = models.IntegerField(blank=True, null=True)
+    current_class = models.CharField(max_length=20, blank=True, null=True)
+    school_college = models.CharField(max_length=200, blank=True, null=True)
+    language_preference = models.CharField(max_length=20, default='en', blank=True)
+    qualifications = models.TextField(blank=True, null=True)
+    experience_years = models.IntegerField(blank=True, null=True)
+    specialization = models.CharField(max_length=100, blank=True, null=True)
+    referral_code = models.CharField(max_length=50, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     
     class Meta:
         db_table = 'users'
