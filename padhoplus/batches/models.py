@@ -82,7 +82,7 @@ class Batch(models.Model):
     target_class = models.CharField(max_length=50)
     target_year = models.IntegerField(blank=True, null=True)
     language = models.CharField(max_length=20, default='en')
-    thumbnail = models.CharField(max_length=255, blank=True, null=True)
+    thumbnail = models.ImageField(upload_to='batch_thumbnails/', blank=True, null=True)
     promo_video_url = models.CharField(max_length=500, blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)

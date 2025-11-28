@@ -61,10 +61,17 @@ class BatchAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ScheduleInline, BatchFAQInline]
+    readonly_fields = ['thumbnail_preview']
+    
+    def thumbnail_preview(self, obj):
+        if obj.thumbnail:
+            return f'<img src="{obj.thumbnail.url}" width="100" height="100" style="border-radius: 5px;" />'
+        return 'No image uploaded'
+    thumbnail_preview.allow_tags = True
     
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'description', 'short_description', 'thumbnail', 'promo_video_url')
+            'fields': ('name', 'slug', 'description', 'short_description', 'thumbnail', 'thumbnail_preview', 'promo_video_url')
         }),
         ('Target', {
             'fields': ('target_exam', 'target_class', 'target_year', 'language')
