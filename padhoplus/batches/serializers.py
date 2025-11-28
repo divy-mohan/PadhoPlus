@@ -65,7 +65,6 @@ class BatchListSerializer(serializers.ModelSerializer):
     language_display = serializers.CharField(source='get_language_display', read_only=True)
     enrolled_count = serializers.ReadOnlyField()
     effective_price = serializers.ReadOnlyField()
-    faculty_count = serializers.SerializerMethodField()
     
     class Meta:
         model = Batch
@@ -74,16 +73,11 @@ class BatchListSerializer(serializers.ModelSerializer):
             'target_exam', 'target_exam_display', 'target_class', 'target_year',
             'language', 'language_display', 'status', 'status_display',
             'start_date', 'price', 'discounted_price', 'effective_price',
-            'is_free', 'emi_available', 'is_featured', 'enrolled_count', 'faculty_count'
+            'is_free', 'emi_available', 'is_featured', 'enrolled_count'
         ]
-    
-    def get_faculty_count(self, obj):
-        return obj.faculty.count()
 
 
 class BatchDetailSerializer(serializers.ModelSerializer):
-    subjects = SubjectSerializer(many=True, read_only=True)
-    faculty = UserSerializer(many=True, read_only=True)
     schedules = ScheduleSerializer(many=True, read_only=True)
     faqs = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
@@ -102,7 +96,7 @@ class BatchDetailSerializer(serializers.ModelSerializer):
             'promo_video_url', 'target_exam', 'target_exam_display', 'target_class',
             'target_year', 'language', 'language_display', 'start_date', 'end_date',
             'status', 'status_display', 'price', 'discounted_price', 'effective_price',
-            'is_free', 'emi_available', 'emi_months', 'subjects', 'faculty',
+            'is_free', 'emi_available', 'emi_months',
             'features', 'includes', 'max_students', 'is_featured', 'enrolled_count',
             'schedules', 'faqs', 'reviews', 'average_rating',
             'created_at', 'updated_at'

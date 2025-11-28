@@ -1,8 +1,12 @@
 import os
 from pathlib import Path
-import dj_database_url
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+load_dotenv(BASE_DIR / '.env')
+load_dotenv()  # Also load from current directory
 
 SECRET_KEY = os.environ.get('SESSION_SECRET', 'django-insecure-dev-key-change-in-production')
 
@@ -59,15 +63,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'padhoplus.wsgi.application'
 
-# Database Configuration - ONLY External PostgreSQL Database
-# No fallbacks to Replit DB or SQLite
-DB_HOST = os.environ.get('DB_HOST')
-DB_USER = os.environ.get('DB_USER')
-DB_PASSWORD = os.environ.get('DB_PASSWORD')
-DB_NAME = os.environ.get('DB_NAME')
+# Database Configuration - External PostgreSQL Only
+DB_HOST = os.environ.get('DB_HOST', '69.62.78.57')
+DB_USER = os.environ.get('DB_USER', 'padhoplus_user')
+DB_PASSWORD = os.environ.get('DB_PASSWORD', 'Mohan123#')
+DB_NAME = os.environ.get('DB_NAME', 'padhoplus_test')
 DB_PORT = os.environ.get('DB_PORT', '5432')
 
-# Use ONLY external PostgreSQL database - NO FALLBACKS
+print(f"Connecting to database: {DB_HOST}:{DB_PORT}/{DB_NAME} as {DB_USER}")
+
+# Use external PostgreSQL database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -76,9 +81,10 @@ DATABASES = {
         'PASSWORD': DB_PASSWORD,
         'HOST': DB_HOST,
         'PORT': DB_PORT,
-        'CONN_MAX_AGE': 0,
+        'CONN_MAX_AGE': 600,
         'OPTIONS': {
-            'connect_timeout': 10,
+            'connect_timeout': 30,
+            'sslmode': 'prefer',
         }
     }
 }

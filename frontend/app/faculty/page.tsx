@@ -6,7 +6,7 @@ import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { Users, Star } from 'lucide-react'
-import { apiEndpoints } from '@/utils/api'
+import { apiEndpoints, apiCall } from '@/utils/api'
 
 export default function FacultyPage() {
   const [faculty, setFaculty] = useState<any[]>([])
@@ -18,15 +18,11 @@ export default function FacultyPage() {
 
   const fetchFaculty = async () => {
     try {
-      const response = await fetch(apiEndpoints.faculty(), {
-        credentials: 'include'
-      })
-      if (response.ok) {
-        const data = await response.json()
-        setFaculty(data.results || data)
-      }
+      const data = await apiCall(apiEndpoints.faculty())
+      setFaculty(data.results || data)
     } catch (error) {
       console.error('Error fetching faculty:', error)
+      setFaculty([])
     } finally {
       setLoading(false)
     }
@@ -67,27 +63,27 @@ export default function FacultyPage() {
 
                 <div className="px-6 pb-6 -mt-8 relative z-10">
                   <div className={`w-16 h-16 bg-gradient-to-br ${colors[idx % colors.length]} rounded-xl flex items-center justify-center text-white font-bold text-lg mb-4 shadow-lg border-4 border-white`}>
-                    {member.first_name?.[0]}{member.last_name?.[0]}
+                    {member.user?.first_name?.[0]}{member.user?.last_name?.[0]}
                   </div>
 
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">{member.first_name} {member.last_name}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">{member.user?.first_name} {member.user?.last_name}</h3>
                   
                   <div className="flex items-center gap-1 mb-3">
                     <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                    <p className="text-sm font-semibold text-blue-600">{member.role}</p>
+                    <p className="text-sm font-semibold text-blue-600">{member.designation || member.user?.role}</p>
                   </div>
 
                   <div className="space-y-2 text-xs text-gray-600 pt-3 border-t border-gray-100">
-                    {member.bio && (
+                    {(member.teaching_style || member.user?.bio) && (
                       <div>
-                        <span className="font-medium">Bio:</span>
-                        <p className="text-gray-700 mt-1 leading-relaxed">{member.bio.substring(0, 100)}...</p>
+                        <span className="font-medium">Teaching Style:</span>
+                        <p className="text-gray-700 mt-1 leading-relaxed">{(member.teaching_style || member.user?.bio)?.substring(0, 100)}...</p>
                       </div>
                     )}
-                    {member.email && (
-                      <div className="flex justify-between">
-                        <span className="font-medium">Email:</span>
-                        <span className="font-semibold text-gray-900">{member.email}</span>
+                    {member.subjects && member.subjects.length > 0 && (
+                      <div>
+                        <span className="font-medium">Subjects:</span>
+                        <p className="text-gray-700 mt-1">{member.subjects.join(', ')}</p>
                       </div>
                     )}
                   </div>

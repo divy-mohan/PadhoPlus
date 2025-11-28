@@ -31,7 +31,7 @@ class IsTeacherOrAdminOrReadOnly(permissions.BasePermission):
 
 
 class SubjectViewSet(viewsets.ModelViewSet):
-    queryset = Subject.objects
+    queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
     permission_classes = [IsAdminOrReadOnly]
     lookup_field = 'slug'
@@ -39,18 +39,18 @@ class SubjectViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def topics(self, request, slug=None):
         subject = self.get_object()
-        topics = subject.topics
+        topics = subject.topics.all()
         serializer = TopicSerializer(topics, many=True)
         return Response(serializer.data)
 
 
 class TopicViewSet(viewsets.ModelViewSet):
-    queryset = Topic.objects
+    queryset = Topic.objects.all()
     serializer_class = TopicSerializer
     permission_classes = [IsAdminOrReadOnly]
     
     def get_queryset(self):
-        queryset = Topic.objects
+        queryset = Topic.objects.all()
         subject = self.request.query_params.get('subject')
         if subject:
             queryset = queryset.filter(subject__slug=subject)
@@ -68,7 +68,12 @@ class BatchViewSet(viewsets.ModelViewSet):
         return BatchListSerializer
     
     def get_queryset(self):
-        queryset = Batch.objects
+        queryset = Batch.objects.all()
+        
+        # Filter by is_active if parameter is provided
+        is_active = self.request.query_params.get('is_active')
+        if is_active is not None:
+            queryset = queryset.filter(is_active=is_active.lower() == 'true')
         
         exam = self.request.query_params.get('exam')
         status_param = self.request.query_params.get('status')
@@ -94,7 +99,7 @@ class BatchViewSet(viewsets.ModelViewSet):
                 Q(target_class__icontains=search)
             )
         
-        return queryset.prefetch_related('faculty', 'subjects')
+        return queryset.all()
     
     @action(detail=False, methods=['get'])
     def featured(self, request):

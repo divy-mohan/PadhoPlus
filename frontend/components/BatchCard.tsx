@@ -56,7 +56,7 @@ export default function BatchCard({
           </div>
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-blue-500 flex-shrink-0" />
-            <span>{faculty.length} instructor(s)</span>
+            <span>{faculty?.length || 0} instructor(s)</span>
           </div>
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-blue-500 flex-shrink-0" />

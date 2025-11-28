@@ -13,56 +13,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { apiEndpoints } from '@/utils/api'
 
-const featuredBatches = [
-  {
-    id: '1',
-    name: 'NEET 2025 - Lakshya',
-    exam: 'NEET',
-    startDate: 'Jan 15, 2025',
-    price: '4,999',
-    isFree: false,
-    language: 'Hindi',
-    faculty: ['Dr. Sharma', 'Prof. Verma'],
-    slug: 'neet-2025-lakshya',
-    image: '/media/batches/thumbnails/neet-2025-lakshya.jpg'
-  },
-  {
-    id: '2',
-    name: 'JEE Advanced Prep',
-    exam: 'JEE',
-    startDate: 'Jan 20, 2025',
-    price: 'FREE',
-    isFree: true,
-    language: 'English',
-    faculty: ['Mr. Patel'],
-    slug: 'jee-advanced-prep',
-    image: '/media/batches/thumbnails/jee-advanced-prep.jpg'
-  },
-  {
-    id: '3',
-    name: 'Class 12 Boards - Physics',
-    exam: 'Boards',
-    startDate: 'Feb 1, 2025',
-    price: '2,999',
-    isFree: false,
-    language: 'Hinglish',
-    faculty: ['Dr. Reddy'],
-    slug: 'class-12-physics',
-    image: '/media/batches/thumbnails/class-12-physics.jpg'
-  },
-  {
-    id: '4',
-    name: 'Foundation - Mathematics',
-    exam: 'Foundation',
-    startDate: 'Feb 10, 2025',
-    price: 'FREE',
-    isFree: true,
-    language: 'English',
-    faculty: ['Prof. Khan'],
-    slug: 'foundation-math',
-    image: '/media/batches/thumbnails/foundation-math.jpg'
-  },
-]
+
 
 const features = [
   {
@@ -202,9 +153,10 @@ const testimonials = [
 
 export default function Home() {
   const [batchesByCategory, setBatchesByCategory] = useState<any>({})
+  const [featuredBatches, setFeaturedBatches] = useState<any[]>([])
 
   useEffect(() => {
-    const fetchBatchesByCategory = async () => {
+    const fetchBatches = async () => {
       try {
         const response = await fetch(apiEndpoints.batches(), {
           credentials: 'include'
@@ -212,6 +164,10 @@ export default function Home() {
         if (response.ok) {
           const data = await response.json()
           const batches = data.results || data
+          
+          // Get featured batches
+          const featured = batches.filter((b: any) => b.is_featured).slice(0, 4)
+          setFeaturedBatches(featured)
           
           // Group batches by exam type
           const grouped: any = {}
@@ -231,7 +187,7 @@ export default function Home() {
         }
       }
     }
-    fetchBatchesByCategory()
+    fetchBatches()
   }, [])
   
   return (

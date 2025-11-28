@@ -206,10 +206,10 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
                 </LoadingButton>
 
                 <div className="space-y-3 text-sm">
-                  {(batch.includes || ['Live Classes', 'Study Materials', 'Doubt Support', 'Performance Analytics']).slice(0, 4).map((item: string, idx: number) => (
+                  {(Array.isArray(batch.includes) ? batch.includes : ['Live Classes', 'Study Materials', 'Doubt Support', 'Performance Analytics']).slice(0, 4).map((item: string, idx: number) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">{item}</span>
+                      <span className="text-gray-700">{typeof item === 'string' ? item : item.name || JSON.stringify(item)}</span>
                     </div>
                   ))}
                 </div>
@@ -240,10 +240,10 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
               <div>
                 <h2 className="text-2xl font-bold mb-6 text-gray-900">What You'll Get</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {(batch.includes || batch.features || []).map((item: string, idx: number) => (
+                  {(Array.isArray(batch.includes) ? batch.includes : Array.isArray(batch.features) ? batch.features : []).map((item: string, idx: number) => (
                     <div key={idx} className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 hover-lift">
                       <Zap className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 font-medium">{item}</span>
+                      <span className="text-gray-700 font-medium">{typeof item === 'string' ? item : item.name || JSON.stringify(item)}</span>
                     </div>
                   ))}
                 </div>

@@ -19,6 +19,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     
     def get_permissions(self):
+        # Public actions that don't require authentication
+        if self.action in ['faculty', 'testimonials', 'results']:
+            return [permissions.AllowAny()]
         if self.action in ['list', 'retrieve']:
             return [permissions.IsAuthenticated()]
         if self.action == 'create':
@@ -69,13 +72,13 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def faculty(self, request):
         faculty_members = Faculty.objects.filter(is_featured=True).select_related('user')
         serializer = FacultySerializer(faculty_members, many=True)
         return Response(serializer.data)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def testimonials(self, request):
         testimonials = Testimonial.objects.filter(is_active=True)
         featured = request.query_params.get('featured')
@@ -84,7 +87,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = TestimonialSerializer(testimonials, many=True)
         return Response(serializer.data)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def results(self, request):
         results = Result.objects.filter(is_active=True)
         exam = request.query_params.get('exam')
