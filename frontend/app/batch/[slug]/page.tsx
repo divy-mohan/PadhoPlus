@@ -24,7 +24,7 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
     const fetchBatch = async () => {
       try {
         const resolvedParams = await params
-        const response = await fetch(apiEndpoints.batch(resolvedParams.slug), {
+        const response = await fetch(`http://localhost:8000/api/batches/${resolvedParams.slug}/`, {
           credentials: 'include'
         })
         
@@ -32,7 +32,9 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
           const data = await response.json()
           setBatch(data)
         } else {
-          setError('Batch not found')
+          const errorText = await response.text()
+          console.error('Batch fetch error:', response.status, errorText)
+          setError(`Batch not found (${response.status})`)
         }
       } catch (err) {
         console.error('Error fetching batch:', err)
@@ -48,7 +50,7 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   const handleEnroll = async () => {
     setEnrollLoading(true)
     try {
-      const response = await fetch(apiEndpoints.batchEnroll(batch.slug), {
+      const response = await fetch(`http://localhost:8000/api/batches/${batch.slug}/enroll/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +81,7 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   const handleDemo = async () => {
     setDemoLoading(true)
     try {
-      const response = await fetch(apiEndpoints.batchDemo(batch.slug), {
+      const response = await fetch(`http://localhost:8000/api/batches/${batch.slug}/demo_lectures/`, {
         credentials: 'include'
       })
 
@@ -307,26 +309,40 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
             {activeTab === 'faculty' && batch.faculty && batch.faculty.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold mb-6 text-gray-900">Meet Your Instructors</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {batch.faculty.map((prof: any, idx: number) => {
-                    const user = prof.user || {};
-                    return (
-                    <div key={idx} className="card hover-lift">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                          {user.first_name?.[0]}{user.last_name?.[0]}
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900 text-lg">{prof.title || `${user.first_name} ${user.last_name}`}</h3>
-                          <p className="text-sm text-blue-600 font-medium">{prof.designation || user.email}</p>
-                        </div>
+                <div className="space-y-8">
+                  {Object.entries(
+                    batch.faculty.reduce((acc: any, prof: any) => {
+                      const subjectName = prof.subject?.name || 'General';
+                      if (!acc[subjectName]) acc[subjectName] = [];
+                      acc[subjectName].push(prof);
+                      return acc;
+                    }, {})
+                  ).map(([subject, profs]: [string, any]) => (
+                    <div key={subject}>
+                      <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">{subject}</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {profs.map((prof: any, idx: number) => {
+                          const user = prof.user || {};
+                          return (
+                            <div key={idx} className="card hover-lift">
+                              <div className="flex items-center gap-4 mb-4">
+                                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                  {user.first_name?.[0]}{user.last_name?.[0]}
+                                </div>
+                                <div>
+                                  <h4 className="font-semibold text-gray-900 text-lg">{prof.title || `${user.first_name} ${user.last_name}`}</h4>
+                                  <p className="text-sm text-blue-600 font-medium">{prof.designation || user.email}</p>
+                                </div>
+                              </div>
+                              {prof.achievements && <p className="text-sm text-gray-600 mb-2"><strong>Achievements:</strong> {prof.achievements}</p>}
+                              {user.bio && <p className="text-sm text-gray-600">{user.bio}</p>}
+                              {prof.teaching_style && <p className="text-sm text-gray-600 mt-2"><strong>Teaching Style:</strong> {prof.teaching_style}</p>}
+                            </div>
+                          );
+                        })}
                       </div>
-                      {prof.achievements && <p className="text-sm text-gray-600 mb-2"><strong>Achievements:</strong> {prof.achievements}</p>}
-                      {user.bio && <p className="text-sm text-gray-600">{user.bio}</p>}
-                      {prof.teaching_style && <p className="text-sm text-gray-600 mt-2"><strong>Teaching Style:</strong> {prof.teaching_style}</p>}
                     </div>
-                  );
-                  })}
+                  ))}
                 </div>
               </div>
             )}

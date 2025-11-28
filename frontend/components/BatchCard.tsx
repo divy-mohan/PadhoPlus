@@ -29,7 +29,18 @@ export default function BatchCard({
       <div className="card-interactive group overflow-hidden">
         {/* Image Section - Responsive with landscape orientation */}
         <div className="relative w-full aspect-video bg-gradient-to-br from-blue-50 to-purple-50 overflow-hidden mb-4">
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+          {image ? (
+            <img 
+              src={`http://localhost:8000${image}`} 
+              alt={name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none'
+                e.currentTarget.nextElementSibling?.classList.remove('hidden')
+              }}
+            />
+          ) : null}
+          <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 ${image ? 'hidden' : ''}`}>
             <div className="flex flex-col items-center gap-2">
               <BookOpen className="w-12 h-12 text-blue-500" />
               <span className="text-sm text-blue-600 font-medium">{exam}</span>

@@ -158,33 +158,35 @@ export default function Home() {
   useEffect(() => {
     const fetchBatches = async () => {
       try {
-        const response = await fetch(apiEndpoints.batches(), {
+        const response = await fetch('http://localhost:8000/api/batches/?is_active=true', {
           credentials: 'include'
         })
-        if (response.ok) {
-          const data = await response.json()
-          const batches = data.results || data
-          
-          // Get featured batches
-          const featured = batches.filter((b: any) => b.is_featured).slice(0, 4)
-          setFeaturedBatches(featured)
-          
-          // Group batches by exam type
-          const grouped: any = {}
-          examCategoriesConfig.forEach(cat => {
-            grouped[cat.id] = {}
-            cat.classLevels.forEach(level => {
-              grouped[cat.id][level] = batches.filter(
-                (b: any) => b.target_exam === cat.id && b.target_class === level
-              )
-            })
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        }
+        const data = await response.json()
+        const batches = data.results || data
+        
+        // Get featured batches
+        const featured = batches.filter((b: any) => b.is_featured).slice(0, 4)
+        setFeaturedBatches(featured)
+        
+        // Group batches by exam type
+        const grouped: any = {}
+        examCategoriesConfig.forEach(cat => {
+          grouped[cat.id] = {}
+          cat.classLevels.forEach(level => {
+            grouped[cat.id][level] = batches.filter(
+              (b: any) => b.target_exam === cat.id && b.target_class === level
+            )
           })
-          setBatchesByCategory(grouped)
-        }
+        })
+        setBatchesByCategory(grouped)
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error('Error fetching batches:', error.message)
-        }
+        console.error('Error fetching batches:', error instanceof Error ? error.message : 'Unknown error')
+        // Set empty states on error to prevent UI issues
+        setFeaturedBatches([])
+        setBatchesByCategory({})
       }
     }
     fetchBatches()

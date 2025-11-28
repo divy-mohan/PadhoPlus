@@ -146,6 +146,21 @@ class Batch(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
     
+    @property
+    def enrolled_count(self):
+        return self.enrollments.filter(status='active').count()
+    
+    @property
+    def effective_price(self):
+        return self.discounted_price if self.discounted_price else self.price
+    
+    def get_target_exam_display(self):
+        return dict(self.EXAM_CHOICES).get(self.target_exam, self.target_exam)
+    
+    def get_language_display(self):
+        choices = [('en', 'English'), ('hi', 'Hindi'), ('hinglish', 'Hinglish')]
+        return dict(choices).get(self.language, self.language)
+    
     def __str__(self):
         return self.name
 

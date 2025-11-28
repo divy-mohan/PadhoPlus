@@ -78,19 +78,14 @@ class BatchListSerializer(serializers.ModelSerializer):
 
 
 class BatchDetailSerializer(serializers.ModelSerializer):
-    schedules = ScheduleSerializer(many=True, read_only=True)
     faqs = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
-    faculty = FacultySerializer(many=True, read_only=True)
-    subjects = serializers.SerializerMethodField()
-    syllabus = serializers.SerializerMethodField()
+    faculty = serializers.SerializerMethodField()
     
     target_exam_display = serializers.CharField(source='get_target_exam_display', read_only=True)
-    status_display = serializers.CharField(source='get_status_display', read_only=True)
     language_display = serializers.CharField(source='get_language_display', read_only=True)
     enrolled_count = serializers.ReadOnlyField()
     effective_price = serializers.ReadOnlyField()
-    average_rating = serializers.SerializerMethodField()
     
     class Meta:
         model = Batch
@@ -125,6 +120,19 @@ class BatchDetailSerializer(serializers.ModelSerializer):
             is_active=True
         ).distinct()
         return SubjectSerializer(subjects, many=True).data
+    
+    def get_faculty(self, obj):
+        faculty_relations = obj.batch_subject_faculties.select_related('faculty__user', 'subject').all()
+        faculty_data = []
+        for relation in faculty_relations:
+            faculty_info = FacultySerializer(relation.faculty).data
+            faculty_info['subject'] = {
+                'id': relation.subject.id,
+                'name': relation.subject.name,
+                'slug': relation.subject.slug
+            }
+            faculty_data.append(faculty_info)
+        return faculty_data
     
     def get_syllabus(self, obj):
         subjects = Subject.objects.filter(

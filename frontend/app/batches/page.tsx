@@ -24,16 +24,21 @@ export default function BatchesPage() {
 
   const fetchBatches = async () => {
     try {
-      const response = await fetch(apiEndpoints.batches(), {
+      const url = 'http://localhost:8000/api/batches/?is_active=true'
+      console.log('Fetching from URL:', url)
+      const response = await fetch(url, {
         credentials: 'include'
       })
-      if (response.ok) {
-        const data = await response.json()
-        setAllBatches(data.results || data)
-        setBatches(data.results || data)
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
+      const data = await response.json()
+      setAllBatches(data.results || data)
+      setBatches(data.results || data)
     } catch (error) {
       console.error('Error fetching batches:', error)
+      setAllBatches([])
+      setBatches([])
     } finally {
       setLoading(false)
     }
