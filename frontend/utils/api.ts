@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = '/api';
 
 export const apiEndpoints = {
   batches: () => `${API_BASE}/batches/?is_active=true`,
