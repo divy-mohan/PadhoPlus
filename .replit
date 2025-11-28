@@ -64,16 +64,16 @@ localPort = 42379
 externalPort = 3000
 
 [[ports]]
+localPort = 42555
+externalPort = 4200
+
+[[ports]]
 localPort = 42907
 externalPort = 3002
 
 [[ports]]
 localPort = 43557
 externalPort = 3003
-
-[[ports]]
-localPort = 44951
-externalPort = 4200
 
 [deployment]
 deploymentTarget = "autoscale"
@@ -89,4 +89,4 @@ DB_HOST = "69.62.78.57"
 DB_PORT = "5432"
 
 [userenv.development]
-NEXT_PUBLIC_API_URL = "http://localhost:8000"
+NEXT_PUBLIC_API_URL = "http://localhost:8000/api"
