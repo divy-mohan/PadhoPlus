@@ -7,12 +7,12 @@ from .models import User, Faculty, Testimonial, Result
 class UserAdmin(BaseUserAdmin):
     list_display = ['username', 'email', 'first_name', 'last_name', 'role', 'is_active', 'date_joined']
     list_filter = ['role', 'is_active', 'is_staff', 'date_joined']
-    search_fields = ['username', 'email', 'first_name', 'last_name', 'phone_number', 'phone']
+    search_fields = ['username', 'email', 'first_name', 'last_name', 'phone']
     ordering = ['-date_joined']
     readonly_fields = ['profile_preview']
     
     def profile_preview(self, obj):
-        img = obj.profile_picture or obj.profile_image
+        img = obj.profile_image
         if img:
             return f'<img src="{img}" width="100" height="100" />'
         return 'No image uploaded'
@@ -20,10 +20,10 @@ class UserAdmin(BaseUserAdmin):
     
     fieldsets = BaseUserAdmin.fieldsets + (
         ('Profile', {
-            'fields': ('role', 'phone_number', 'phone', 'profile_picture', 'profile_image', 'profile_preview', 'bio', 'date_of_birth')
+            'fields': ('role', 'phone', 'profile_image', 'profile_preview', 'bio')
         }),
         ('Student Info', {
-            'fields': ('target_exam', 'class_level', 'school_name'),
+            'fields': ('target_exam', 'current_class', 'school_college'),
             'classes': ('collapse',)
         }),
         ('Teacher Info', {
@@ -34,7 +34,7 @@ class UserAdmin(BaseUserAdmin):
     
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         ('Profile', {
-            'fields': ('role', 'email', 'first_name', 'last_name', 'phone_number')
+            'fields': ('role', 'email', 'first_name', 'last_name', 'phone')
         }),
     )
 
@@ -51,7 +51,7 @@ class FacultyAdmin(admin.ModelAdmin):
             'fields': ('user', 'designation', 'title')
         }),
         ('Profile', {
-            'fields': ('subjects', 'specialization', 'achievements', 'teaching_style', 'intro_video_url')
+            'fields': ('subjects', 'achievements', 'teaching_style', 'intro_video_url')
         }),
         ('Display Settings', {
             'fields': ('is_featured', 'order')
