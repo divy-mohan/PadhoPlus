@@ -10,7 +10,6 @@ class Subject(models.Model):
     icon = models.CharField(max_length=50, blank=True, null=True)
     color = models.CharField(max_length=20, blank=True, null=True)
     order = models.IntegerField(default=0)
-    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

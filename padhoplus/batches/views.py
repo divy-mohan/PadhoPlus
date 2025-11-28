@@ -31,7 +31,7 @@ class IsTeacherOrAdminOrReadOnly(permissions.BasePermission):
 
 
 class SubjectViewSet(viewsets.ModelViewSet):
-    queryset = Subject.objects.filter(is_active=True)
+    queryset = Subject.objects
     serializer_class = SubjectSerializer
     permission_classes = [IsAdminOrReadOnly]
     lookup_field = 'slug'
@@ -39,18 +39,18 @@ class SubjectViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def topics(self, request, slug=None):
         subject = self.get_object()
-        topics = subject.topics.filter(is_active=True)
+        topics = subject.topics
         serializer = TopicSerializer(topics, many=True)
         return Response(serializer.data)
 
 
 class TopicViewSet(viewsets.ModelViewSet):
-    queryset = Topic.objects.filter(is_active=True)
+    queryset = Topic.objects
     serializer_class = TopicSerializer
     permission_classes = [IsAdminOrReadOnly]
     
     def get_queryset(self):
-        queryset = Topic.objects.filter(is_active=True)
+        queryset = Topic.objects
         subject = self.request.query_params.get('subject')
         if subject:
             queryset = queryset.filter(subject__slug=subject)
@@ -58,7 +58,7 @@ class TopicViewSet(viewsets.ModelViewSet):
 
 
 class BatchViewSet(viewsets.ModelViewSet):
-    queryset = Batch.objects.filter(is_active=True)
+    queryset = Batch.objects
     permission_classes = [IsAdminOrReadOnly]
     lookup_field = 'slug'
     
@@ -68,7 +68,7 @@ class BatchViewSet(viewsets.ModelViewSet):
         return BatchListSerializer
     
     def get_queryset(self):
-        queryset = Batch.objects.filter(is_active=True)
+        queryset = Batch.objects
         
         exam = self.request.query_params.get('exam')
         status_param = self.request.query_params.get('status')
@@ -219,7 +219,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     permission_classes = [IsTeacherOrAdminOrReadOnly]
     
     def get_queryset(self):
-        queryset = Announcement.objects.filter(is_active=True)
+        queryset = Announcement.objects
         user = self.request.user
         
         if user.is_authenticated:
