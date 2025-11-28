@@ -64,7 +64,7 @@ class BatchAdmin(admin.ModelAdmin):
     
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'description', 'thumbnail', 'demo_video_url')
+            'fields': ('name', 'slug', 'description', 'thumbnail', 'promo_video_url')
         }),
         ('Target', {
             'fields': ('target_exam', 'target_class', 'language')

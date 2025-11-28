@@ -86,7 +86,7 @@ class Batch(models.Model):
     end_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=20, default='upcoming')
     thumbnail = models.CharField(max_length=255, blank=True, null=True)
-    demo_video_url = models.CharField(max_length=500, blank=True, null=True)
+    promo_video_url = models.CharField(max_length=500, blank=True, null=True)
     has_live_classes = models.BooleanField(default=False)
     has_recorded_lectures = models.BooleanField(default=False)
     has_dpp = models.BooleanField(default=False)
