@@ -85,8 +85,8 @@ class BatchDetailSerializer(serializers.ModelSerializer):
     subjects = SubjectSerializer(many=True, read_only=True)
     faculty = UserSerializer(many=True, read_only=True)
     schedules = ScheduleSerializer(many=True, read_only=True)
-    faqs = BatchFAQSerializer(many=True, read_only=True)
-    reviews = BatchReviewSerializer(many=True, read_only=True)
+    faqs = serializers.SerializerMethodField()
+    reviews = serializers.SerializerMethodField()
     
     target_exam_display = serializers.CharField(source='get_target_exam_display', read_only=True)
     status_display = serializers.CharField(source='get_status_display', read_only=True)
@@ -107,6 +107,14 @@ class BatchDetailSerializer(serializers.ModelSerializer):
             'schedules', 'faqs', 'reviews', 'average_rating',
             'created_at', 'updated_at'
         ]
+    
+    def get_faqs(self, obj):
+        faqs = obj.faqs.filter(is_active=True)
+        return BatchFAQSerializer(faqs, many=True).data
+    
+    def get_reviews(self, obj):
+        reviews = obj.reviews.filter(is_active=True)
+        return BatchReviewSerializer(reviews, many=True).data
     
     def get_average_rating(self, obj):
         reviews = obj.reviews.filter(is_active=True)

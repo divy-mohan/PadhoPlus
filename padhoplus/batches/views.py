@@ -219,7 +219,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     permission_classes = [IsTeacherOrAdminOrReadOnly]
     
     def get_queryset(self):
-        queryset = Announcement.objects
+        queryset = Announcement.objects.filter(is_active=True)
         user = self.request.user
         
         if user.is_authenticated:
