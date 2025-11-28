@@ -117,7 +117,7 @@ class Batch(models.Model):
     target_exam = models.CharField(max_length=50, choices=EXAM_CHOICES)
     target_class = models.CharField(max_length=50, choices=CLASS_CHOICES)
     target_year = models.IntegerField(choices=YEAR_CHOICES, blank=True, null=True)
-    language = models.ForeignKey(Language, on_delete=models.SET_NULL, null=True, blank=True, related_name='batches')
+    language = models.CharField(max_length=20, choices=[('en', 'English'), ('hi', 'Hindi'), ('hinglish', 'Hinglish')], default='en')
     thumbnail = models.ImageField(upload_to='batch_thumbnails/', blank=True, null=True)
     promo_video_url = models.CharField(max_length=500, blank=True, null=True)
     start_date = models.DateField()
