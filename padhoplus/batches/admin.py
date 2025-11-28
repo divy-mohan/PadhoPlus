@@ -56,30 +56,30 @@ class ScheduleInline(admin.TabularInline):
 
 @admin.register(Batch)
 class BatchAdmin(admin.ModelAdmin):
-    list_display = ['name', 'target_exam', 'status', 'is_free', 'price']
-    list_filter = ['target_exam', 'status', 'is_free', 'language', 'has_live_classes', 'has_tests']
+    list_display = ['name', 'target_exam', 'status', 'is_free', 'price', 'is_featured']
+    list_filter = ['target_exam', 'status', 'is_free', 'language', 'is_featured', 'is_active']
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ScheduleInline, BatchFAQInline]
     
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'description', 'thumbnail', 'promo_video_url')
+            'fields': ('name', 'slug', 'description', 'short_description', 'thumbnail', 'promo_video_url')
         }),
         ('Target', {
-            'fields': ('target_exam', 'target_class', 'language')
+            'fields': ('target_exam', 'target_class', 'target_year', 'language')
         }),
         ('Schedule', {
             'fields': ('start_date', 'end_date', 'status')
         }),
         ('Pricing', {
-            'fields': ('price', 'is_free')
+            'fields': ('price', 'discounted_price', 'is_free', 'emi_available', 'emi_months')
         }),
-        ('Features', {
-            'fields': ('has_live_classes', 'has_recorded_lectures', 'has_dpp', 'has_tests', 'has_doubt_support')
+        ('Content', {
+            'fields': ('features', 'includes')
         }),
         ('Settings', {
-            'fields': ('max_students',)
+            'fields': ('max_students', 'is_featured', 'is_active')
         }),
     )
     
