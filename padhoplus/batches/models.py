@@ -169,6 +169,22 @@ class BatchFAQ(models.Model):
         return f"{self.batch.name} - {self.question[:50]}"
 
 
+class BatchSubjectFaculty(models.Model):
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE, related_name='batch_subject_faculties')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    faculty = models.ForeignKey('users.Faculty', on_delete=models.CASCADE)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'batch_subject_faculties'
+        unique_together = ['batch', 'subject', 'faculty']
+    
+    def __str__(self):
+        return f"{self.batch.name} - {self.subject.name} - {self.faculty.user.full_name}"
+
+
 class Schedule(models.Model):
     DAY_CHOICES = [
         ('mon', 'Monday'),

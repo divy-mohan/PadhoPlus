@@ -1,7 +1,8 @@
 from django.contrib import admin
+from django.forms import ModelForm
 from .models import (
     Language, Subject, Topic, Batch, BatchFAQ, Schedule,
-    Enrollment, Announcement, BatchReview
+    Enrollment, Announcement, BatchReview, BatchSubjectFaculty
 )
 
 
@@ -71,13 +72,27 @@ class ScheduleInline(admin.TabularInline):
     extra = 1
 
 
+class BatchSubjectFacultyInline(admin.TabularInline):
+    model = BatchSubjectFaculty
+    extra = 0
+    fields = ['subject', 'faculty']
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'faculty':
+            kwargs['queryset'] = __import__('padhoplus.users.models', fromlist=['Faculty']).Faculty.objects.select_related('user')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
+    class Media:
+        js = ('admin/js/batch_subject_faculty_filter.js',)
+
+
 @admin.register(Batch)
 class BatchAdmin(admin.ModelAdmin):
     list_display = ['name', 'target_exam', 'status', 'is_free', 'price', 'is_featured']
     list_filter = ['target_exam', 'status', 'is_free', 'language', 'is_featured', 'is_active']
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ScheduleInline, BatchFAQInline]
+    inlines = [ScheduleInline, BatchSubjectFacultyInline, BatchFAQInline]
     readonly_fields = ['thumbnail_preview']
     
     def thumbnail_preview(self, obj):
@@ -103,7 +118,7 @@ class BatchAdmin(admin.ModelAdmin):
             'fields': ('features', 'includes')
         }),
         ('Settings', {
-            'fields': ('max_students', 'is_featured', 'is_active')
+            'fields': ('max_students', 'is_featured', 'is_active', 'faculty')
         }),
     )
     
