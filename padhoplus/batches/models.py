@@ -62,6 +62,28 @@ class Batch(models.Model):
         ('other', 'Other'),
     ]
     
+    CLASS_CHOICES = [
+        ('class_6', 'Class 6'),
+        ('class_7', 'Class 7'),
+        ('class_8', 'Class 8'),
+        ('class_9', 'Class 9'),
+        ('class_10', 'Class 10'),
+        ('class_11', 'Class 11'),
+        ('class_12', 'Class 12'),
+        ('foundation', 'Foundation'),
+        ('drop_year', 'Drop Year'),
+    ]
+    
+    YEAR_CHOICES = [
+        (2024, '2024'),
+        (2025, '2025'),
+        (2026, '2026'),
+        (2027, '2027'),
+        (2028, '2028'),
+        (2029, '2029'),
+        (2030, '2030'),
+    ]
+    
     STATUS_CHOICES = [
         ('upcoming', 'Upcoming'),
         ('ongoing', 'Ongoing'),
@@ -78,9 +100,9 @@ class Batch(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField()
     short_description = models.CharField(max_length=255, blank=True, null=True)
-    target_exam = models.CharField(max_length=50)
-    target_class = models.CharField(max_length=50)
-    target_year = models.IntegerField(blank=True, null=True)
+    target_exam = models.CharField(max_length=50, choices=EXAM_CHOICES)
+    target_class = models.CharField(max_length=50, choices=CLASS_CHOICES)
+    target_year = models.IntegerField(choices=YEAR_CHOICES, blank=True, null=True)
     language = models.CharField(max_length=20, default='en')
     thumbnail = models.ImageField(upload_to='batch_thumbnails/', blank=True, null=True)
     promo_video_url = models.CharField(max_length=500, blank=True, null=True)
