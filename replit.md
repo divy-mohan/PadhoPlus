@@ -4,10 +4,16 @@
 PadhoPlus is a comprehensive online education platform for JEE/NEET exam preparation. Built with Django REST Framework backend and Next.js frontend, using PostgreSQL database.
 
 ## Project Status
-- **Backend**: Complete Django REST API (Port 8000) with payment system
-- **Frontend**: Minimalistic Next.js application (Port 5000) with advanced animations
-- **Database**: PostgreSQL with all models implemented
-- **Status**: Production-ready with advanced features
+- **Backend**: ✅ Complete Django REST API (Port 8000) with payment system - FULLY OPERATIONAL
+- **Frontend**: ✅ Minimalistic Next.js application (Port 5000) with advanced animations - FULLY OPERATIONAL
+- **Database**: ✅ PostgreSQL with all models implemented
+- **Status**: ✅ Production-ready with advanced features
+
+## Access Points
+- **Frontend**: https://2129eb58-67fd-4fe1-b316-34da8aa0df29-00-34f4qhkyg0lfb.picard.replit.dev
+- **Admin Panel**: https://2129eb58-67fd-4fe1-b316-34da8aa0df29-00-34f4qhkyg0lfb.picard.replit.dev/admin/
+- **API**: https://2129eb58-67fd-4fe1-b316-34da8aa0df29-00-34f4qhkyg0lfb.picard.replit.dev/api/
+- **Admin Credentials**: username=admin, password=Admin@123
 
 ## Project Structure
 
@@ -23,7 +29,7 @@ padhoplus/
 ├── assessments/         # Tests, questions, practice
 ├── doubts/              # Doubt resolution system
 ├── analytics/           # Progress tracking & dashboards
-└── payments/            # Payment & enrollment system (NEW)
+└── payments/            # Payment & enrollment system
 ```
 
 ### Frontend (Next.js/TypeScript)
@@ -33,7 +39,7 @@ frontend/
 │   ├── page.tsx              # Home/landing page
 │   ├── layout.tsx            # Root layout with progress bar
 │   ├── globals.css           # Global styles + 15+ animations
-│   ├── dashboard/            # Student dashboard (NEW)
+│   ├── dashboard/            # Student dashboard
 │   ├── batches/              # Batches listing with search
 │   ├── batch/[slug]/         # Batch detail
 │   ├── login/                # Authentication
@@ -47,9 +53,9 @@ frontend/
 │   ├── Breadcrumb.tsx        # Navigation breadcrumbs
 │   ├── Banner.tsx            # Alerts/notifications
 │   ├── LoadingSpinner.tsx    # Loading indicator
-│   ├── PageProgressBar.tsx   # YouTube-style progress bar (NEW)
-│   ├── VideoPlayer.tsx       # HLS/MP4 player (NEW)
-│   ├── SearchBar.tsx         # Advanced search (NEW)
+│   ├── PageProgressBar.tsx   # YouTube-style progress bar
+│   ├── VideoPlayer.tsx       # HLS/MP4 player
+│   ├── SearchBar.tsx         # Advanced search
 │   └── AnimatedEducationCard.tsx  # Animated wrapper
 ├── lib/
 │   └── api.ts                # API client
@@ -58,12 +64,19 @@ frontend/
 
 ## Advanced Features Implemented
 
-### 1. Beautiful Loader & Progress Tracking
+### 1. Content Management & is_active Filtering
+- **FAQs**: Only active FAQs display in batch detail pages
+- **Announcements**: Only active announcements visible to students/teachers
+- **Reviews/Ratings**: Only active reviews counted for ratings & display
+- **Lectures/Notes/Resources**: All filtered by is_active status
+- **Admin Control**: Toggle is_active in Django admin to hide/show content instantly
+
+### 2. Beautiful Loader & Progress Tracking
 - **Page Progress Bar**: YouTube-style progress indicator on page navigation
 - **Smart animation**: Starts on route change, ends smoothly on page load
 - **Zero lag**: Responsive and non-blocking
 
-### 2. Animation System
+### 3. Animation System
 - **15+ education-themed animations**:
   - `bookFlip`: Rotating book effect
   - `starPulse`: Pulsing stars with rotation
@@ -73,42 +86,40 @@ frontend/
   - `gradientShift`: Dynamic gradient shift
   - `shineEffect`: Shine/shimmer effect
   - `spinReverse`: Reverse spinning animation
-  - Plus stagger, bounce, and fade effects
 
-### 3. Student Dashboard
+### 4. Student Dashboard
 - Personalized welcome with gradient text
 - Quick stats cards (batches, watch time, streak, achievements)
 - Enrolled courses with progress bars
 - Achievements/badges system
 - Learning streak tracking
 
-### 4. Video Player Component
+### 5. Video Player Component
 - Full-featured HLS/MP4 player
 - Playback controls (play/pause, mute, volume)
 - Adjustable playback speed (0.5x to 2x)
 - Full-screen support
 - Real-time progress tracking
-- Video duration display
 
-### 5. Advanced Search & Filtering
+### 6. Advanced Search & Filtering
 - Real-time search with suggestions
 - Trending searches display
 - Auto-complete functionality
 - Filter by exam type, price, language
-- Instant result filtering
 
-### 6. Payment Integration (Stripe Setup Ready)
+### 7. Payment Integration (Stripe Ready)
 - `BatchPricing` model for flexible pricing
 - `Enrollment` model for student-batch relationships
 - `Payment` model for transaction tracking
-- `StudentProgress` for gamification data
+- `StudentProgress` for gamification
 - `Achievement` & `StudentAchievement` for badges
 
-### 7. Admin Dashboard Fully Configured
+### 8. Complete Admin Dashboard
 - Payment management
 - Enrollment tracking
 - Achievement administration
 - Progress monitoring
+- Content activation/deactivation
 - All accessible at `/admin/`
 
 ## User Roles & Permissions
@@ -123,8 +134,9 @@ frontend/
 - **Authentication**: Session & JWT-based
 - **Role-based Access**: Student, Teacher, Parent, Admin
 - **Payment Processing**: Stripe integration ready
+- **Content Filtering**: All content filtered by is_active status
 - **Core Endpoints**:
-  - `/api/auth/` - Login, register, logout
+  - `/api/auth/` - Login, register, logout, auth check
   - `/api/batches/` - Course batches with pricing
   - `/api/lectures/` - Video content
   - `/api/tests/` - Assessments
@@ -132,6 +144,7 @@ frontend/
   - `/api/dashboard/` - Analytics
   - `/api/payments/` - Payment processing
   - `/api/enrollments/` - Course enrollment
+  - `/api/announcements/` - Active announcements only
 
 ### Frontend (Port 5000)
 - **Responsive Design**: Mobile-first approach
@@ -141,14 +154,15 @@ frontend/
 - **Search**: Real-time with suggestions
 - **Dashboard**: Personalized student portal
 - **Gamification**: Achievements & streaks
+- **Content Display**: Only shows active FAQs, announcements, reviews
 
 ## Technology Stack
 
 ### Backend
-- Python 3.10+
-- Django 4.2+
-- Django REST Framework
-- PostgreSQL
+- Python 3.11
+- Django 5.2.8
+- Django REST Framework 3.14+
+- PostgreSQL (External: 69.62.78.57)
 - Gunicorn
 - Stripe (for payments)
 
@@ -159,6 +173,65 @@ frontend/
 - Lucide React icons
 - Axios
 
+## Database Configuration
+
+### External Database (Currently Active)
+```
+Host: 69.62.78.57
+Port: 5432
+Database: padhoplus_test
+User: padhoplus_user
+Password: [configured in environment]
+```
+
+### Database Models
+- **Users**: User, Faculty, Testimonial, Result
+- **Batches**: Batch, Subject, Topic, Schedule, BatchFAQ, Announcement, BatchReview
+- **Content**: Lecture, Note, Resource, WatchHistory, Bookmark
+- **Assessments**: Question, Test, TestAttempt, TestResponse, PracticeSession
+- **Doubts**: Doubt, DoubtResponse, DoubtUpvote
+- **Analytics**: UserProgress, DailyActivity, Streak
+- **Payments**: BatchPricing, Enrollment, Payment, StudentProgress, Achievement, StudentAchievement
+
+## Recent Changes
+
+### 2025-11-28 - CRITICAL FIXES & CONTENT MANAGEMENT
+✅ **Fixed UserSerializer Fields Mismatch**
+- Removed non-existent fields (phone_number, profile_picture, date_of_birth)
+- Aligned serializer with actual User model fields
+- Backend now returns clean JSON responses ✓
+
+✅ **Implemented is_active Content Filtering**
+- BatchFAQ now filters: only displays active FAQs in batch detail
+- Announcement now filters: students only see active announcements
+- BatchReview now filters: ratings calculated from active reviews only
+- Added is_active field to all batch-related models with default=True
+- Admin can toggle visibility without deleting content ✓
+
+✅ **Backend Error Resolution**
+- Fixed 500 errors on API calls
+- Frontend now successfully fetches batches, announcements, reviews ✓
+
+✅ **All Workflows Operational**
+- Django Backend running cleanly (Port 8000) ✓
+- Next.js Frontend running smoothly (Port 5000) ✓
+- No console errors - platform fully functional ✓
+
+### 2025-11-27
+- Enhanced Doubt Portal with complete backend integration
+- Created Toast notification component
+- Implemented upvote functionality for doubts and responses
+- Added advanced filtering and sorting options
+- Built answer submission form with real-time updates
+
+### 2025-11-26
+- Added YouTube-style page progress bar
+- Implemented 15+ education-themed animations
+- Created student dashboard with enrollment tracking
+- Built full-featured video player with speed control
+- Added advanced search with real-time suggestions
+- Set up Stripe payment integration
+
 ## Running the Application
 
 ### Start Backend API (Port 8000)
@@ -168,116 +241,23 @@ python main.py
 
 ### Start Frontend (Port 5000)
 ```bash
-cd frontend
-npm run dev
+cd frontend && npm run dev
 ```
 
-### Access Points
-- **Frontend**: http://localhost:5000
-- **API**: http://localhost:8000/api/
-- **Admin Panel**: http://localhost:8000/admin/
-- **Dashboard**: http://localhost:5000/dashboard
+## Admin Panel Usage
 
-## Database Models
+### Login
+- **URL**: /admin/
+- **Username**: admin
+- **Password**: Admin@123
 
-### Payments App (NEW)
-- `BatchPricing` - Pricing variations for batches
-- `Enrollment` - Student enrollment tracking
-- `Payment` - Payment transactions
-- `StudentProgress` - Learning statistics
-- `Achievement` - Badge definitions
-- `StudentAchievement` - Student badge tracking
-
-### Existing Models
-- **Users**: User, Faculty, Testimonial, Result
-- **Batches**: Batch, Subject, Topic, Schedule
-- **Content**: Lecture, Note, Resource, WatchHistory
-- **Assessments**: Question, Test, TestAttempt, TestResponse
-- **Doubts**: Doubt, DoubtResponse, DoubtUpvote
-- **Analytics**: UserProgress, DailyActivity, Streak
-
-## Environment Variables
-
-### External Database Configuration (Currently Active)
-```
-DB_HOST=69.62.78.57
-DB_PORT=5432
-DB_USER=padhoplus_user
-DB_PASSWORD=Mohan123#
-DB_NAME=padhoplus_test
-```
-
-### Other Environment Variables
-```
-SESSION_SECRET=random_secret_key
-STRIPE_PUBLIC_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
-```
-
-### Database Priority
-1. **External PostgreSQL** - If DB_HOST, DB_USER, DB_NAME are set (currently active)
-2. **Replit PostgreSQL** - If DATABASE_URL is set (fallback)
-3. **SQLite** - Local development fallback
-
-## Design System (Frontend)
-
-### Colors
-- Primary: Blue (#3B82F6)
-- Secondary: Purple (#8B5CF6)
-- Success: Green (#10B981)
-- Warning: Amber (#F59E0B)
-- Danger: Red (#EF4444)
-
-### Components
-- **Card**: Minimalistic with animations
-- **Button**: Primary, secondary, outline styles
-- **Navbar**: Sticky responsive navigation
-- **VideoPlayer**: Full-featured media player
-- **SearchBar**: Advanced with suggestions
-- **Dashboard**: Personalized student portal
-
-## Future Enhancements
-
-### Phase 3 (Advanced Features)
-- [ ] Live class integration
-- [ ] Email notifications system
-- [ ] Mobile app (React Native)
-- [ ] Multi-language support
-- [ ] AI-based recommendations
-- [ ] Leaderboards
-- [ ] Real-time doubt chat
-- [ ] Parent portal
-- [ ] Teacher portal
-
-## Recent Changes
-- **2025-11-27**:
-  - Enhanced Doubt Portal with complete backend integration
-  - Created Toast notification component for better UX feedback
-  - Implemented upvote functionality for doubts and responses
-  - Added advanced filtering (by subject, status) and sorting options
-  - Built answer submission form with real-time updates
-  - Added related questions sidebar on answer page
-  - Configured Next.js proxy for seamless API communication
-  - Fixed all API endpoint mappings (doubt-responses, my_doubts)
-
-- **2025-11-26**:
-  - Added beautiful YouTube-style page progress bar
-  - Implemented 15+ education-themed animations with stagger effects
-  - Created student dashboard with enrollment tracking & achievements
-  - Built full-featured video player with speed control & fullscreen
-  - Added advanced search with real-time suggestions & trending
-  - Set up Stripe payment integration backend models
-  - Created payments admin interface
-  - Added AnimatedEducationCard wrapper component
-
-- **2025-11-25**: 
-  - Created minimalistic Next.js frontend with Tailwind CSS
-  - Implemented responsive design with mobile-first approach
-  - Created reusable components (Navbar, Footer, Cards, etc.)
-  - Set up education-focused color scheme and icons
-  - Configured API integration with axios
-  - Set up dual-port architecture (API:8000, Frontend:5000)
-  - Implemented 7 main pages with proper routing
+### Managing Content
+1. **Batches**: Add/edit batches with pricing, target exams, classes
+2. **FAQs**: Toggle `is_active` to show/hide FAQs instantly
+3. **Announcements**: Create announcements (auto-active=True)
+4. **Reviews**: Moderate reviews by toggling `is_active`
+5. **Lectures**: Upload lectures with is_active toggle
+6. **Payments**: Manage enrollments and payments
 
 ## Deployment Notes
 
@@ -289,10 +269,12 @@ npm start
 ```
 
 ### Backend Deployment (Gunicorn)
-Already configured in `main.py`. Can be deployed to Heroku, Railway, Render, etc.
+```bash
+gunicorn --bind=0.0.0.0:8000 --workers=4 padhoplus.wsgi
+```
 
 ## Support & Documentation
 - **API Docs**: Available at `/api/`
-- **Admin Panel**: http://localhost:8000/admin/
-- **Frontend README**: `frontend/README.md`
-- **Stripe Setup**: Connected to Replit connection system
+- **Admin Panel**: Access content management at `/admin/`
+- **Frontend**: Next.js with Tailwind CSS styling
+- **Database**: PostgreSQL with 27+ models fully implemented
