@@ -74,16 +74,9 @@ class ScheduleInline(admin.TabularInline):
 
 class BatchSubjectFacultyInline(admin.TabularInline):
     model = BatchSubjectFaculty
-    extra = 0
+    extra = 1
     fields = ['subject', 'faculty']
-    
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'faculty':
-            kwargs['queryset'] = __import__('padhoplus.users.models', fromlist=['Faculty']).Faculty.objects.select_related('user')
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    
-    class Media:
-        js = ('admin/js/batch_subject_faculty_filter.js',)
+    autocomplete_fields = ['subject', 'faculty']
 
 
 @admin.register(Batch)
@@ -132,89 +125,57 @@ class BatchAdmin(admin.ModelAdmin):
         return request.user.is_staff
 
 
+@admin.register(BatchSubjectFaculty)
+class BatchSubjectFacultyAdmin(admin.ModelAdmin):
+    list_display = ['batch', 'subject', 'faculty', 'created_at']
+    list_filter = ['batch', 'subject']
+    search_fields = ['batch__name', 'subject__name', 'faculty__user__full_name']
+    readonly_fields = ['created_at', 'updated_at']
+    
+    def has_add_permission(self, request):
+        return request.user.is_staff
+    
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_staff
+    
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_staff
+
+
 @admin.register(BatchFAQ)
 class BatchFAQAdmin(admin.ModelAdmin):
     list_display = ['batch', 'question', 'order']
     list_filter = ['batch']
     search_fields = ['question', 'answer', 'batch__name']
     ordering = ['batch', 'order']
-    
-    def has_add_permission(self, request):
-        return request.user.is_staff
-    
-    def has_change_permission(self, request, obj=None):
-        return request.user.is_staff
-    
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_staff
 
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ['batch', 'subject', 'day', 'start_time', 'end_time', 'is_live']
-    list_filter = ['batch', 'day', 'is_live']
+    list_display = ['batch', 'day', 'start_time', 'end_time', 'subject']
+    list_filter = ['batch', 'subject']
     search_fields = ['batch__name', 'subject__name']
-    ordering = ['batch', 'day', 'start_time']
-    
-    def has_add_permission(self, request):
-        return request.user.is_staff
-    
-    def has_change_permission(self, request, obj=None):
-        return request.user.is_staff
-    
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_staff
 
 
 @admin.register(Enrollment)
 class EnrollmentAdmin(admin.ModelAdmin):
-    list_display = ['student', 'batch', 'status', 'progress_percentage', 'enrolled_at']
-    list_filter = ['status', 'batch__target_exam', 'enrolled_at']
-    search_fields = ['student__username', 'student__email', 'batch__name']
-    autocomplete_fields = ['student', 'batch']
-    date_hierarchy = 'enrolled_at'
-    
-    def has_add_permission(self, request):
-        return request.user.is_staff
-    
-    def has_change_permission(self, request, obj=None):
-        return request.user.is_staff
-    
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_staff
+    list_display = ['student', 'batch', 'created_at']
+    list_filter = ['batch', 'created_at']
+    search_fields = ['student__username', 'batch__name']
+    ordering = ['-created_at']
 
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ['title', 'batch', 'author', 'priority', 'is_pinned', 'created_at']
-    list_filter = ['priority', 'is_pinned', 'batch']
-    search_fields = ['title', 'content', 'batch__name']
-    autocomplete_fields = ['batch', 'author']
-    date_hierarchy = 'created_at'
-    
-    def has_add_permission(self, request):
-        return request.user.is_staff
-    
-    def has_change_permission(self, request, obj=None):
-        return request.user.is_staff
-    
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_staff
+    list_display = ['batch', 'title', 'is_active', 'created_at']
+    list_filter = ['batch', 'is_active', 'created_at']
+    search_fields = ['title', 'content']
+    ordering = ['-created_at']
 
 
 @admin.register(BatchReview)
 class BatchReviewAdmin(admin.ModelAdmin):
-    list_display = ['student', 'batch', 'rating', 'is_verified', 'created_at']
-    list_filter = ['rating', 'is_verified']
-    search_fields = ['student__username', 'batch__name', 'review']
-    autocomplete_fields = ['student', 'batch']
-    readonly_fields = ['rating', 'review', 'student', 'batch', 'created_at']
-    
-    def has_add_permission(self, request):
-        return False
-    
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_staff
-    
-    def has_change_permission(self, request, obj=None):
-        return False
+    list_display = ['batch', 'student', 'rating', 'is_verified', 'is_active']
+    list_filter = ['batch', 'rating', 'is_verified', 'is_active']
+    search_fields = ['batch__name', 'student__username', 'review']
+    ordering = ['-created_at']
