@@ -1,13 +1,12 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-
+// Use relative URLs for browser to work correctly with Next.js rewrites
 export const apiEndpoints = {
-  batches: () => `${API_BASE}/batches/?is_active=true`,
-  batch: (slug: string) => `${API_BASE}/batches/${slug}/`,
-  batchEnroll: (slug: string) => `${API_BASE}/batches/${slug}/enroll/`,
-  batchDemo: (slug: string) => `${API_BASE}/batches/${slug}/demo_lectures/`,
-  faculty: () => `${API_BASE}/users/faculty/`,
-  notes: () => `${API_BASE}/notes/?is_active=true`,
-  doubts: () => `${API_BASE}/doubts/`,
+  batches: () => `/api/batches/?is_active=true`,
+  batch: (slug: string) => `/api/batches/${slug}/`,
+  batchEnroll: (slug: string) => `/api/batches/${slug}/enroll/`,
+  batchDemo: (slug: string) => `/api/batches/${slug}/demo_lectures/`,
+  faculty: () => `/api/users/faculty/`,
+  notes: () => `/api/notes/?is_active=true`,
+  doubts: () => `/api/doubts/`,
 }
 
 // Helper function for API calls with error handling
