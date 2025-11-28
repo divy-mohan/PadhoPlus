@@ -76,6 +76,10 @@ localPort = 43557
 externalPort = 3003
 
 [[ports]]
+localPort = 43743
+externalPort = 5173
+
+[[ports]]
 localPort = 45477
 externalPort = 5000
 
@@ -91,6 +95,6 @@ DB_USER = "padhoplus_user"
 DB_PASSWORD = "Mohan123#"
 DB_HOST = "69.62.78.57"
 DB_PORT = "5432"
+NEXT_PUBLIC_API_URL = "https://2129eb58-67fd-4fe1-b316-34da8aa0df29-00-34f4qhkyg0lfb.picard.replit.dev/api"
 
 [userenv.development]
-NEXT_PUBLIC_API_URL = "http://localhost:8000/api"
