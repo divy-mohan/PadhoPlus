@@ -108,15 +108,7 @@ class Batch(models.Model):
         super().save(*args, **kwargs)
     
     def __str__(self):
-        return f"{self.name} ({self.get_target_exam_display()} {self.target_year})"
-    
-    @property
-    def enrolled_count(self):
-        return self.enrollments.filter(status='active').count()
-    
-    @property
-    def effective_price(self):
-        return self.discounted_price if self.discounted_price else self.price
+        return self.name
 
 
 class BatchFAQ(models.Model):
