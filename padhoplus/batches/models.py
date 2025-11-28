@@ -155,6 +155,7 @@ class BatchFAQ(models.Model):
     question = models.CharField(max_length=500)
     answer = models.TextField()
     order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -246,6 +247,7 @@ class Announcement(models.Model):
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
     
     is_pinned = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -264,6 +266,7 @@ class BatchReview(models.Model):
     rating = models.IntegerField()
     review = models.TextField(blank=True, null=True)
     is_verified = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
