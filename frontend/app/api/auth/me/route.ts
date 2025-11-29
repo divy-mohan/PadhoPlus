@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json()
     
-    if (data.authenticated && data.user) {
+    if (response.ok && data.authenticated && data.user) {
       return NextResponse.json({ user: data.user }, { status: 200 })
     } else {
       return NextResponse.json(

@@ -4,8 +4,8 @@ export const apiEndpoints = {
   batch: (slug: string) => `/api/batches/${slug}/`,
   batchEnroll: (slug: string) => `/api/batches/${slug}/enroll/`,
   batchDemo: (slug: string) => `/api/batches/${slug}/demo_lectures/`,
-  faculty: () => `/api/users/faculty/`,
-  notes: () => `/api/notes/?is_active=true`,
+  faculty: () => `http://localhost:8000/api/users/faculty/`,
+  notes: () => `http://localhost:8000/api/notes/?is_active=true`,
   doubts: () => `/api/doubts/`,
 }
 

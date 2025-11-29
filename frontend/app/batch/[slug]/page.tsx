@@ -10,6 +10,7 @@ import LoadingSpinner from '@/components/LoadingSpinner'
 import { Star, Users, CheckCircle, GraduationCap, Calendar, BookOpen, Zap } from 'lucide-react'
 import Link from 'next/link'
 import { apiEndpoints } from '@/utils/api'
+import { useAuth } from '@/context/AuthContext'
 
 export default function BatchDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const [activeTab, setActiveTab] = useState('overview')
@@ -19,6 +20,7 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
     const fetchBatch = async () => {
@@ -48,6 +50,11 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   }, [params])
 
   const handleEnroll = async () => {
+    if (!isAuthenticated) {
+      router.push(`/login?redirect=${encodeURIComponent(window.location.pathname)}&action=enroll`)
+      return
+    }
+    
     setEnrollLoading(true)
     try {
       const response = await fetch(`http://localhost:8000/api/batches/${batch.slug}/enroll/`, {
@@ -79,6 +86,11 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
   }
 
   const handleDemo = async () => {
+    if (!isAuthenticated) {
+      router.push(`/login?redirect=${encodeURIComponent(window.location.pathname)}&action=demo`)
+      return
+    }
+    
     setDemoLoading(true)
     try {
       const response = await fetch(`http://localhost:8000/api/batches/${batch.slug}/demo_lectures/`, {
@@ -248,15 +260,35 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
 
           <div className="mb-12 animate-fade-in">
             {activeTab === 'overview' && (
-              <div>
-                <h2 className="text-2xl font-bold mb-6 text-gray-900">What You'll Get</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {(Array.isArray(batch.includes) ? batch.includes : Array.isArray(batch.features) ? batch.features : []).map((item: string, idx: number) => (
-                    <div key={idx} className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 hover-lift">
-                      <Zap className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 font-medium">{typeof item === 'string' ? item : item.name || JSON.stringify(item)}</span>
-                    </div>
-                  ))}
+              <div className="space-y-8">
+                <div>
+                  <h2 className="text-2xl font-bold mb-6 text-gray-900">Features</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {batch.features && typeof batch.features === 'object' && Object.entries(batch.features).map(([key, value]: [string, any], idx: number) => (
+                      <div key={idx} className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 hover:shadow-md transition-shadow">
+                        <i className="bi bi-star-fill text-blue-600 mt-1 text-lg"></i>
+                        <div>
+                          <span className="text-gray-900 font-semibold block">{key}</span>
+                          <span className="text-gray-600 text-sm">{value}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div>
+                  <h2 className="text-2xl font-bold mb-6 text-gray-900">What's Included</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {batch.includes && typeof batch.includes === 'object' && Object.entries(batch.includes).map(([key, value]: [string, any], idx: number) => (
+                      <div key={idx} className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 hover:shadow-md transition-shadow">
+                        <i className="bi bi-check-circle-fill text-green-600 mt-1 text-lg"></i>
+                        <div>
+                          <span className="text-gray-900 font-semibold block">{key}</span>
+                          {value !== true && <span className="text-gray-600 text-sm">{value}</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -268,9 +300,17 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
                   {batch.schedules.map((schedule: any, idx: number) => (
                     <div key={idx} className="card hover-lift">
                       <div className="flex justify-between items-center">
-                        <div>
-                          <h3 className="font-semibold text-gray-900">{schedule.subject?.name || schedule.subject}</h3>
-                          <p className="text-sm text-gray-600">{schedule.day_display || schedule.day} • {schedule.start_time} - {schedule.end_time}</p>
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                            {(schedule.subject?.name || schedule.subject) === 'Mathematics' && <i className="bi bi-calculator text-blue-600 text-xl animate-pulse"></i>}
+                            {(schedule.subject?.name || schedule.subject) === 'Physics' && <i className="bi bi-lightning text-purple-600 text-xl animate-bounce"></i>}
+                            {(schedule.subject?.name || schedule.subject) === 'Chemistry' && <i className="bi bi-radioactive text-green-600 text-xl animate-spin"></i>}
+                            {(schedule.subject?.name || schedule.subject) === 'English' && <i className="bi bi-book text-orange-600 text-xl" style={{animation: 'pageFlip 2s ease-in-out infinite'}}></i>}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-gray-900">{schedule.subject?.name || schedule.subject}</h3>
+                            <p className="text-sm text-gray-600">{schedule.day_display || schedule.day} • {schedule.start_time} - {schedule.end_time}</p>
+                          </div>
                         </div>
                         {schedule.is_live && (
                           <span className="badge bg-red-100 text-red-700">Live</span>
@@ -349,12 +389,35 @@ export default function BatchDetailPage({ params }: { params: Promise<{ slug: st
 
             {activeTab === 'faq' && batch.faqs && batch.faqs.length > 0 && (
               <div>
-                <h2 className="text-2xl font-bold mb-6 text-gray-900">Frequently Asked Questions</h2>
-                <div className="space-y-4">
+                <div className="text-center mb-8">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <i className="bi bi-patch-question text-blue-600 text-4xl"></i>
+                    <h2 className="text-3xl font-bold text-gray-900">Frequently Asked Questions</h2>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <i className="bi bi-info-circle text-gray-500"></i>
+                    <p className="text-gray-600">Get answers to common questions about this batch</p>
+                  </div>
+                </div>
+                <div className="max-w-4xl mx-auto space-y-4">
                   {batch.faqs.map((faq: any, idx: number) => (
-                    <div key={idx} className="card">
-                      <h3 className="font-semibold text-gray-900 mb-2">{faq.question}</h3>
-                      <p className="text-gray-600 text-sm">{faq.answer}</p>
+                    <div key={idx} className="group">
+                      <div className="bg-white border-2 border-gray-100 rounded-lg sm:rounded-xl p-4 sm:p-6 hover:border-blue-200 hover:shadow-lg transition-all duration-300">
+                        <div className="flex items-start gap-3 sm:gap-4">
+                          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <i className="bi bi-question-lg text-white text-xs sm:text-sm"></i>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-2 sm:mb-3 group-hover:text-blue-600 transition-colors pr-2">{faq.question}</h3>
+                            <div className="flex items-start gap-2 sm:gap-3">
+                              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i className="bi bi-check text-green-600 text-xs sm:text-sm"></i>
+                              </div>
+                              <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{faq.answer}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>

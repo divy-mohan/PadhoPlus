@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     // Get all cookies from the browser request
     const cookies = request.headers.get('cookie') || ''
     
-    await fetch(`${backendUrl}/api/auth/logout/`, {
+    const response = await fetch(`${backendUrl}/api/auth/logout/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,15 +15,18 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // Always return success for logout, even if backend returns 403
+    // This handles cases where user isn't actually authenticated on backend
     return NextResponse.json(
       { message: 'Logged out successfully' },
       { status: 200 }
     )
   } catch (error) {
     console.error('Logout error:', error)
+    // Still return success for logout
     return NextResponse.json(
-      { error: 'Unable to logout' },
-      { status: 500 }
+      { message: 'Logged out successfully' },
+      { status: 200 }
     )
   }
 }

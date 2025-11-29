@@ -30,12 +30,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/auth/me', {
+      const response = await fetch('http://localhost:8000/api/auth/check/', {
         credentials: 'include'
       })
       if (response.ok) {
         const data = await response.json()
-        setUser(data.user)
+        if (data.authenticated && data.user) {
+          setUser(data.user)
+        } else {
+          setUser(null)
+        }
       } else {
         setUser(null)
       }
@@ -52,16 +56,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const logout = async () => {
-    try {
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
-      })
-      setUser(null)
-      window.location.href = '/'
-    } catch (error) {
-      console.error('Logout error:', error)
-    }
+    // Clear user state immediately
+    setUser(null)
+    
+    // Clear any local storage or session storage
+    localStorage.clear()
+    sessionStorage.clear()
+    
+    // Redirect to home
+    window.location.href = '/'
   }
 
   return (
